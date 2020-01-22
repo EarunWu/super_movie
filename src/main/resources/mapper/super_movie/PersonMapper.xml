@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.super_movie.mapper.PersonMapper">
+    <select id="findMovieByPerson" resultType="com.example.super_movie.vo.PersonMovie" parameterType="java.lang.Integer" >
+        SELECT DISTINCT movie.id as movie_id,movie.name as movie_name,movie.time
+        FROM person_movie left join movie on person_movie.movie_id=movie.id
+        WHERE person_id = #{personId} order by time
+    </select>
+    <select id="findJobByPersonId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+        SELECT DISTINCT job FROM person_movie WHERE person_id=#{personId} order by job
+    </select>
+</mapper>

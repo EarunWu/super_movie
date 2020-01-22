@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Single</title>
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <!-- Custom Theme files -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Custom Theme files -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--webfont-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<!-- header-section-starts -->
+<div class="full">
+    <div class="menu">
+        <ul>
+            <li><a href="index.html"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
+            <li><a href="findMovie.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+            <li><a class="active" href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
+            <li><a href="404.html"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
+            <li><a href="msg.html"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="single-content">
+            <div class="top-header span_top">
+                <div class="logo">
+                    <a href="index.html"><img src="images/logo.png" alt="" /></a>
+                    <p>Movie Theater</p>
+                </div>
+                <div class="search v-search">
+                    <form>
+                        <input type="text" value="Search.." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search..';}"/>
+                        <input type="submit" value="">
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="reviews-section">
+
+                <div class="col-md-9 reviews-grids">
+                    <h3 class="head"><span th:text="${person.name}"></span><span th:text="${person.name}" style="float: right"></span></h3>
+                    <div class="review">
+                        <div class="movie-pic">
+                            <img src="images/m1.jpg" alt="" />
+                        </div>
+                        <div class="review-info">
+                            <!--								<a class="span" href="movieInfo.html">Lorem  <i>Movie Review</i></a>-->
+                            <!--								<p class="dirctr"><a href="">Reagan Gavin Rasquinha, </a>TNN, Mar 12, 2015, 12.47PM IST</p>-->
+                            <!--								<p class="ratingview">8.0</p>-->
+                            <!--								<p class="ratingview">-->
+                            <!--								&nbsp;3.5/5  -->
+                            <!--								</p>-->
+                            <!--								<div class="clearfix"></div>-->
+                            <!--								<p class="ratingview c-rating">Avg Readers' Rating:</p>-->
+                            <!--								<div class="rating c-rating">-->
+                            <!--									<span>☆</span>-->
+                            <!--									<span>☆</span>-->
+                            <!--									<span>☆</span>-->
+                            <!--									<span>☆</span>-->
+                            <!--									<span>☆</span>-->
+                            <!--								</div> 	-->
+                            <!--								<p class="ratingview c-rating">-->
+                            <!--								&nbsp; 3.3/5</p>-->
+                            <div class="clearfix"></div>
+                            <!--								<div class="yrw">-->
+                            <!--&lt;!&ndash;									<div class="dropdown-button">           			&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<select class="dropdown" tabindex="9" data-settings='{"wrapperClass":"flat"}'>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="0">Your rating</option>	&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="1">1.Poor</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="2">1.5(Below average)</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="3">2.Average</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="4">2.5(Above average)</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="5">3.Watchable</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="6">3.5(Good)</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="7">4.5(Very good)</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<option value="8">5.Outstanding</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;									  </select>&ndash;&gt;-->
+                            <!--&lt;!&ndash;									</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;									<div class="rtm text-center">&ndash;&gt;-->
+                            <!--&lt;!&ndash;										<a href="#">REVIEW THIS MOVIE</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;									</div>&ndash;&gt;-->
+                            <!--									<h3 class="head">-->
+                            <!--									<div class="wt text-center">-->
+                            <!--										<a href="#">WATCH</a>-->
+                            <!--									</div><span style="float: right">8.8</span></h3>-->
+                            <!--									<div class="clearfix"></div>-->
+                            <!--								</div>-->
+                            <p class="info">英文名:&nbsp;&nbsp;&nbsp; &nbsp; <span th:text="${person.engName}"></span></p>
+                            <p class="info">性别: &nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${person.sexString()}"></span></p>
+<!--                            <p class="info">编剧: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="director:${movieInfo.getDirector()}"><span th:text="${director.name}"></span>&nbsp;</span></p>-->
+                            <p class="info">职业: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="job:${jobList}"><span th:switch="${job}"><span th:case="1">导演</span><span th:case="2">编剧</span><span th:case="3">演员</span></span>&nbsp;&nbsp;</span></p>
+<!--                            <p class="info">制片国家/地区: &nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${movieInfo.country}"></span></p>-->
+<!--                            <p class="info">语言: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="language:${movieInfo.getLanguage()}"><span th:text="${language}"></span>&nbsp;</span></p>-->
+<!--                            <p class="info">类型:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:each="kind:${movieInfo.getKind()}"><span th:text="${kind}"></span>&nbsp;</span></p>-->
+                            <p class="info">国家:&nbsp;&nbsp;&nbsp; &nbsp; <span th:text="${person.country}"></span></p>
+                            <p class="info">出生日期:&nbsp;&nbsp;&nbsp; &nbsp; <span th:text="${person.born}"></span></p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div>
+                        <h3 class="single">演员简介</h3>
+                        <p class="info"> <span th:text="${person.info}"></span></p>
+                    </div>
+                    <!--							<div class="best-review">-->
+                    <!--								<h4>Best Reader's Review</h4>-->
+                    <!--								<p>Excellent Movie and great performance by Lorem, one of the finest thriller of recent  like Aldus PageMaker including versions of Lorem Ipsum.</p>-->
+                    <!--								<p><span>Neeraj Upadhyay (Noida)</span> 16/03/2015 at 12:14 PM</p>-->
+                    <!--							</div>-->
+                    <!--							<div class="story-review">-->
+                    <!--								<h4>REVIEW:</h4>-->
+                    <!--								<p>So,Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>-->
+                    <!--							</div>-->
+                    <!-- comments-section-starts -->
+                    <div class="comments-section">
+                        <div class="comments-section-head">
+                            <div class="comments-section-head-text">
+                                <h3>25 影评</h3>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="comments-section-grids">
+                            <div class="comments-section-grid">
+                                <div class="col-md-2 comments-section-grid-image">
+                                    <img src="images/eye-brow.jpg" class="img-responsive" alt="" />
+                                </div>
+                                <div class="col-md-10 comments-section-grid-text">
+                                    <h4><a href="#">MARWA ELGENDY</a></h4>
+                                    <label>5/4/2014 at 22:00   </label>
+                                    <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound but because those who do not know how to pursue pleasure rationally encounter consequences.</p>
+                                    <i class="rply-arrow"></i>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <!--				<div class="comments-section-grid comments-section-middle-grid">-->
+                            <!--					<div class="col-md-2 comments-section-grid-image">-->
+                            <!--						<img src="images/beauty.jpg" class="img-responsive" alt="" />-->
+                            <!--					</div>-->
+                            <!--					<div class="col-md-10 comments-section-grid-text">-->
+                            <!--						<h4><a href="#">MARWA ELGENDY</a></h4>-->
+                            <!--						<label>5/4/2014 at 22:00   </label>-->
+                            <!--						<p>But I must explain to you how all this idea denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound but because those who do not know how to pursue pleasure rationally encounter consequences.</p>-->
+                            <!--						<i class="rply-arrow"></i>-->
+                            <!--					</div>-->
+                            <!--					<div class="clearfix"></div>-->
+                            <!--				</div>-->
+                            <div class="comments-section-grid">
+                                <div class="col-md-2 comments-section-grid-image">
+                                    <img src="images/stylish.jpg" class="img-responsive" alt="" />
+                                </div>
+                                <div class="col-md-10 comments-section-grid-text">
+                                    <h4><a href="#">MARWA ELGENDY</a></h4>
+                                    <label>5/4/2014 at 22:00   </label>
+                                    <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound but because those who do not know how to pursue pleasure rationally encounter consequences.</p>
+                                    <i class="rply-arrow"></i>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- comments-section-ends -->
+                    <div class="reply-section">
+                        <div class="reply-section-head">
+                            <div class="reply-section-head-text">
+                                <h3>影评</h3>
+                            </div>
+                        </div>
+                        <div class="blog-form">
+                            <form>
+                                <input type="text" class="text" value="标题" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '标题';}">
+                                <!--					<input type="text" class="text" value="Enter Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Email';}">-->
+                                <!--					<input type="text" class="text" value="Subject" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Subject';}">-->
+                                <textarea></textarea>
+                                <input type="button" value="发布">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 side-bar">
+                    <div class="featured">
+                        <h3>Featured Today in Movie Reviews</h3>
+                        <ul>
+                            <li>
+                                <a href="movieInfo.html"><img src="images/f1.jpg" alt="" /></a>
+                                <p>lorem movie review</p>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html"><img src="images/f2.jpg" alt="" /></a>
+                                <p>lorem movie review</p>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html"><img src="images/f3.jpg" alt="" /></a>
+                                <p>lorem movie review</p>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html"><img src="images/f4.jpg" alt="" /></a>
+                                <p>lorem movie review</p>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html"><img src="images/f5.jpg" alt="" /></a>
+                                <p>lorem movie review</p>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html"><img src="images/f6.jpg" alt="" /></a>
+                                <p>lorem movie review</p>
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+
+                    <div class="entertainment">
+                        <h3>最新影评</h3>
+                        <ul>
+                            <li class="ent">
+                                <a href="movieInfo.html"><img src="images/f6.jpg" alt="" /></a>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html">Watch ‘Bombay Velvet’ trailer during WC match</a>
+
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                        <ul>
+                            <li class="ent">
+                                <a href="movieInfo.html"><img src="images/f5.jpg" alt="" /></a>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html">Watch ‘Bombay Velvet’ trailer during WC match</a>
+
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                        <ul>
+                            <li class="ent">
+                                <a href="movieInfo.html"><img src="images/f3.jpg" alt="" /></a>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html">Watch ‘Bombay Velvet’ trailer during WC match</a>
+
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                        <ul>
+                            <li class="ent">
+                                <a href="movieInfo.html"><img src="images/f4.jpg" alt="" /></a>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html">Watch ‘Bombay Velvet’ trailer during WC match</a>
+
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                        <ul>
+                            <li class="ent">
+                                <a href="movieInfo.html"><img src="images/f2.jpg" alt="" /></a>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html">Watch ‘Bombay Velvet’ trailer during WC match</a>
+
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                        <ul>
+                            <li class="ent">
+                                <a href="movieInfo.html"><img src="images/f1.jpg" alt="" /></a>
+                            </li>
+                            <li>
+                                <a href="movieInfo.html">Watch ‘Bombay Velvet’ trailer during WC match</a>
+
+                            </li>
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+                    <div class="might">
+                        <h4>你可能也喜欢</h4>
+                        <div class="might-grid">
+                            <div class="grid-might">
+                                <a href="movieInfo.html"><img src="images/mi.jpg" class="img-responsive" alt=""> </a>
+                            </div>
+                            <div class="might-top">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                <a href="movieInfo.html">Lorem Ipsum <i> </i></a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="might-grid">
+                            <div class="grid-might">
+                                <a href="movieInfo.html"><img src="images/mi1.jpg" class="img-responsive" alt=""> </a>
+                            </div>
+                            <div class="might-top">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                <a href="movieInfo.html">Lorem Ipsum <i> </i></a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="might-grid">
+                            <div class="grid-might">
+                                <a href="movieInfo.html"><img src="images/mi2.jpg" class="img-responsive" alt=""> </a>
+                            </div>
+                            <div class="might-top">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                <a href="movieInfo.html">Lorem Ipsum <i> </i></a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="might-grid">
+                            <div class="grid-might">
+                                <a href="movieInfo.html"><img src="images/mi3.jpg" class="img-responsive" alt=""> </a>
+                            </div>
+                            <div class="might-top">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                <a href="movieInfo.html">Lorem Ipsum <i> </i></a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <!---->
+                    <div class="grid-top">
+                        <h4>Archives</h4>
+                        <ul>
+                            <li><a href="movieInfo.html">Lorem Ipsum is simply dummy text of the printing and typesetting industry. </a></li>
+                            <li><a href="movieInfo.html">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</a></li>
+                            <li><a href="movieInfo.html">When an unknown printer took a galley of type and scrambled it to make a type specimen book. </a> </li>
+                            <li><a href="movieInfo.html">It has survived not only five centuries, but also the leap into electronic typesetting</a> </li>
+                            <li><a href="movieInfo.html">Remaining essentially unchanged. It was popularised in the 1960s with the release of </a> </li>
+                            <li><a href="movieInfo.html">Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing </a> </li>
+                            <li><a href="movieInfo.html">Software like Aldus PageMaker including versionsof Lorem Ipsum.</a> </li>
+                        </ul>
+                    </div>
+                    <!---->
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="review-slider">
+            <ul id="flexiselDemo1">
+                <li><img src="images/r1.jpg" alt=""/></li>
+                <li><img src="images/r2.jpg" alt=""/></li>
+                <li><img src="images/r3.jpg" alt=""/></li>
+                <li><img src="images/r4.jpg" alt=""/></li>
+                <li><img src="images/r5.jpg" alt=""/></li>
+                <li><img src="images/r6.jpg" alt=""/></li>
+            </ul>
+            <script type="text/javascript">
+                $(window).load(function() {
+
+                    $("#flexiselDemo1").flexisel({
+                        visibleItems: 6,
+                        animationSpeed: 1000,
+                        autoPlay: true,
+                        autoPlaySpeed: 3000,
+                        pauseOnHover: false,
+                        enableResponsiveBreakpoints: true,
+                        responsiveBreakpoints: {
+                            portrait: {
+                                changePoint:480,
+                                visibleItems: 1
+                            },
+                            landscape: {
+                                changePoint:640,
+                                visibleItems: 2
+                            },
+                            tablet: {
+                                changePoint:768,
+                                visibleItems: 3
+                            }
+                        }
+                    });
+                });
+            </script>
+            <script type="text/javascript" src="js/jquery.flexisel.js"></script>
+        </div>
+        <div class="footer">
+            <h6>Disclaimer : </h6>
+            <p class="claim">This is a freebies and not an official website, I have no intention of disclose any movie, brand, news.My goal here is to train or excercise my skill and share this freebies.</p>
+            <a href="example@mail.com">example@mail.com</a>
+            <div class="copyright">
+                <p>Copyright &copy; 2015.Company name All rights reserved.<a target="_blank" href="http://www.cssmoban.com/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a> - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="手机网站模板">手机网站模板</a> </p>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+</body>
+</html>

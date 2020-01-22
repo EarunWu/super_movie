@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>yes</title>
+</head>
+<body>
+<!--<form method="POST" action="/hilox">-->
+<!--    <table>-->
+
+<!--        <tr>-->
+<!--            <td colspan="2"><input type="submit" value="qqqqqq" /></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+<!--</form>-->
+<button onclick="aaa()" >aaa</button>
+<button onclick="getToken()" >get token</button>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+function aaa() {
+    var token=getToken();
+    $.ajax({
+        url: "/hilox",
+        contentType: "application/json",
+        data:{},
+        type: "POST",
+        dataType: "json",
+        headers: {
+            "Authorization": token //这里是Token
+        },
+        success: function(data) {
+            console.log(data);
+            console.log(11111111111)
+        },
+        error: function(data) {
+            console.log(data);
+            console.log(00000000000)
+        }
+    });
+}
+function getToken() {
+    var name='token'
+    var cookieValue = "啥也没有！！";
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = $.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    console.log(cookieValue);
+    return cookieValue;
+}
+</script>
+</html>

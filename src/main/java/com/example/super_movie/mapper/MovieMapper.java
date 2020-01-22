@@ -1,0 +1,25 @@
+package com.example.super_movie.mapper;
+
+import com.example.super_movie.entity.Movie;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.super_movie.entity.Person;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+/**
+ * <p>
+ *  Mapper 接口
+ * </p>
+ *
+ * @author earun
+ * @since 2020-01-13
+ */
+@Mapper
+public interface MovieMapper extends BaseMapper<Movie> {
+    List<Person> findActorById(Integer id);
+    List<Person> findDirectorById(Integer id);
+    List<Person> findScreenwriterById(Integer id);
+    List<String> findKindByMovieId(int movieId);
+    List<String> findLanguageByMovieId(int movieId);
+}
