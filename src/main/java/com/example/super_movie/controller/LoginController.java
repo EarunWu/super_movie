@@ -15,10 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * 登录验证Controller
- * Created by Hilox on 2018/11/16 0016.
- */
+
 @Slf4j
 @Controller
 public class LoginController {
