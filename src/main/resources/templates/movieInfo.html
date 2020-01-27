@@ -25,7 +25,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<li><a href="index.html"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
 					<li><a href="findMovie.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a class="active" href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
-					<li><a href="404.html"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
+					<li><a href="wangEditor.html"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
 					<li><a href="msg.html"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
 				</ul>
 			</div>
@@ -167,20 +167,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	    </div>
 	  <!-- comments-section-ends -->
 		  <div class="reply-section">
-			  <div class="reply-section-head">
-				  <div class="reply-section-head-text">
-					  <h3>影评</h3>
-				  </div>
-			  </div> 
-			<div class="blog-form">
-			    <form>
-					<input type="text" class="text" value="标题" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '标题';}">
-<!--					<input type="text" class="text" value="Enter Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Email';}">-->
-<!--					<input type="text" class="text" value="Subject" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Subject';}">-->
-					<textarea></textarea>
-					<input type="button" value="发布">
-			    </form>
-			 </div>
+<!--			  <div class="reply-section-head">-->
+<!--				  <div class="reply-section-head-text">-->
+<!--					  <h3>影评</h3>-->
+<!--				  </div>-->
+<!--			  </div>-->
+			  <div class="blog-form">
+			  <input id="title" type="text" class="text" value="标题" autocomplete="off" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Name';}">
+			  </div>
+			  <div id="editor">
+				  <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+			  </div>
+			  <button id="btn1">发布</button>
 		  </div>
 		  </div>
 					<div class="col-md-3 side-bar">
@@ -390,5 +388,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</div>
 	<div class="clearfix"></div>
 	</div>
+	<script type="text/javascript" src="js/wangEditor.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript">
+		var E = window.wangEditor
+		var editor = new E('#editor')
+		// 或者 var editor = new E( document.getElementById('editor') )
+		editor.create()
+		document.getElementById('btn1').addEventListener('click', function () {
+			$.ajax({
+				url:"postMovieComment",    //请求的url地址
+				dataType:"json",   //返回格式为json
+				async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+				data:{"userId":1,"content":editor.txt.html(),"title":document.getElementById('title').value},    //参数值
+				type:"POST",   //请求方式
+				success:function(req){
+					alert("成功")
+					//请求成功时处理
+				},
+				error:function(){
+					alert("error")
+					//请求出错处理
+				}
+			});
+			// 读取 html
+			// document.getElementById("aaa").innerHTML = editor.txt.html();
+		}, false)
+
+		document.getElementById('btn2').addEventListener('click', function () {
+			// 读取 text
+			document.getElementById("aaa").innerHTML = editor.txt.html();
+		}, false)
+
+	</script>
 </body>
 </html>

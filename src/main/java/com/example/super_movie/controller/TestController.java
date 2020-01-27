@@ -47,7 +47,10 @@ public class TestController{
     @RequestMapping("/msg")
     public String toMsg(Model model){
         return "msg";
-
+    }
+    @RequestMapping("/fuwenben")
+    public String fuwenben(Model model){
+        return "wangEditor";
     }
     @ResponseBody
     @RequestMapping("/redis")

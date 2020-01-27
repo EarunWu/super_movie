@@ -47,7 +47,7 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
         Person person=(Person) redisUtil.get("person"+personId);
         if (person==null){
             person=getById(personId);
-            redisUtil.set("person"+personId,person);
+            redisUtil.set("person"+personId,person,3600);
         }
         return person;
     }

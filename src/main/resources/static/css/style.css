@@ -1183,7 +1183,7 @@ font-weight: 700;
 }
 .blog-form textarea {
 	resize:none;
-	height:11em;
+	height:40em;
 }
 .blog-form input[type="button"] {
 	padding: 1em;
