@@ -1,9 +1,9 @@
 package com.example.super_movie.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.Person;
 import com.example.super_movie.mapper.PersonMapper;
 import com.example.super_movie.service.IPersonService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.PersonMovie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -40,6 +38,7 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
         }else {
             List<PersonMovie> personMovieList=getBaseMapper().findMovieByPerson(personId);
             redisTemplate.opsForList().rightPushAll("personMovieList"+personId,personMovieList);
+            redisUtil.expire("personMovieList"+personId,3600);
             return personMovieList;
         }
     }

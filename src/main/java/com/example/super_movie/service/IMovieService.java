@@ -1,8 +1,10 @@
 package com.example.super_movie.service;
 
-import com.example.super_movie.entity.Movie;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.super_movie.entity.Movie;
 import com.example.super_movie.vo.MovieInfo;
+
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -15,5 +17,6 @@ import com.example.super_movie.vo.MovieInfo;
 public interface IMovieService extends IService<Movie> {
     MovieInfo getMovieInfo(Integer movieId);
     double getAvgScoreById(Integer movieId);
+    int saveMovie(String name, LocalDate time, String country, int length, String info);
 
 }

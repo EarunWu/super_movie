@@ -1,9 +1,9 @@
 package com.example.super_movie.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.Test;
 import com.example.super_movie.mapper.TestMapper;
 import com.example.super_movie.service.ITestService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,8 @@
 package com.example.super_movie.entity;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -13,8 +12,7 @@ import lombok.experimental.Accessors;
  * @author earun
  * @since 2020-01-26
  */
-@Data
-@Accessors(chain = true)
+@Getter
 public class MovieComment{
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +28,8 @@ public class MovieComment{
     private LocalDateTime updateTime;
 
     private String title;
+
+    private Integer movieId;
 
 
 }

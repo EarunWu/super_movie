@@ -1,7 +1,7 @@
 package com.example.super_movie.mapper;
 
-import com.example.super_movie.entity.Test;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.super_movie.entity.Test;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

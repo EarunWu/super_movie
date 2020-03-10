@@ -1,7 +1,7 @@
 package com.example.super_movie.service;
 
-import com.example.super_movie.entity.Person;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.super_movie.entity.Person;
 import com.example.super_movie.vo.PersonMovie;
 
 import java.util.List;

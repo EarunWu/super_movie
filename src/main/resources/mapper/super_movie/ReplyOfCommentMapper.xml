@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.super_movie.mapper.ReplyOfCommentMapper">
+    <select id="findReplyListByCommentId" resultType="com.example.super_movie.vo.ReplyOfCommentInfo" parameterType="java.lang.Integer" >
+        SELECT reply_of_comment.id,user.username,reply_of_comment.user_id,reply_of_comment.movie_comment_id,reply_of_comment.reply_id,reply_of_comment.content,reply_of_comment.create_time
+        FROM reply_of_comment LEFT JOIN user ON reply_of_comment.user_id=user.id
+        WHERE reply_of_comment.movie_comment_id=#{id} and reply_of_comment.reply_id=0
+        ORDER BY reply_of_comment.create_time
+        LIMIT #{star},#{end}
+    </select>
+    <select id="findReplyListByCommentIdDesc" resultType="com.example.super_movie.vo.ReplyOfCommentInfo" parameterType="java.lang.Integer" >
+        SELECT reply_of_comment.id,user.username,reply_of_comment.user_id,reply_of_comment.movie_comment_id,reply_of_comment.reply_id,reply_of_comment.content,reply_of_comment.create_time
+        FROM reply_of_comment LEFT JOIN user ON reply_of_comment.user_id=user.id
+        WHERE reply_of_comment.movie_comment_id=#{id} and reply_of_comment.reply_id=0
+        ORDER BY reply_of_comment.create_time desc
+        LIMIT #{star},#{end}
+    </select>
+    <select id="getNum" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+        SELECT count(*)
+        FROM reply_of_comment LEFT JOIN user ON reply_of_comment.user_id=user.id
+        WHERE reply_of_comment.movie_comment_id=#{id} and reply_of_comment.reply_id=0
+    </select>
+    <insert id="saveReply">
+        INSERT INTO reply_of_comment (user_id,movie_comment_id,reply_id,content)VALUES(#{userId},#{movieCommentId},#{replyId},#{content})
+    </insert>
+</mapper>

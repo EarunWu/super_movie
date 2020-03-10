@@ -53,47 +53,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<img src="images/m1.jpg" alt="" />
 							</div>
 							<div class="review-info">
-<!--								<a class="span" href="movieInfo.html">Lorem  <i>Movie Review</i></a>-->
-<!--								<p class="dirctr"><a href="">Reagan Gavin Rasquinha, </a>TNN, Mar 12, 2015, 12.47PM IST</p>-->
-<!--								<p class="ratingview">8.0</p>-->
-<!--								<p class="ratingview">-->
-<!--								&nbsp;3.5/5  -->
-<!--								</p>-->
-<!--								<div class="clearfix"></div>-->
-<!--								<p class="ratingview c-rating">Avg Readers' Rating:</p>-->
-<!--								<div class="rating c-rating">-->
-<!--									<span>☆</span>-->
-<!--									<span>☆</span>-->
-<!--									<span>☆</span>-->
-<!--									<span>☆</span>-->
-<!--									<span>☆</span>-->
-<!--								</div> 	-->
-<!--								<p class="ratingview c-rating">-->
-<!--								&nbsp; 3.3/5</p>-->
 								<div class="clearfix"></div>
-<!--								<div class="yrw">-->
-<!--&lt;!&ndash;									<div class="dropdown-button">           			&ndash;&gt;-->
-<!--&lt;!&ndash;										<select class="dropdown" tabindex="9" data-settings='{"wrapperClass":"flat"}'>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="0">Your rating</option>	&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="1">1.Poor</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="2">1.5(Below average)</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="3">2.Average</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="4">2.5(Above average)</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="5">3.Watchable</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="6">3.5(Good)</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="7">4.5(Very good)</option>&ndash;&gt;-->
-<!--&lt;!&ndash;										<option value="8">5.Outstanding</option>&ndash;&gt;-->
-<!--&lt;!&ndash;									  </select>&ndash;&gt;-->
-<!--&lt;!&ndash;									</div>&ndash;&gt;-->
-<!--&lt;!&ndash;									<div class="rtm text-center">&ndash;&gt;-->
-<!--&lt;!&ndash;										<a href="#">REVIEW THIS MOVIE</a>&ndash;&gt;-->
-<!--&lt;!&ndash;									</div>&ndash;&gt;-->
-<!--									<h3 class="head">-->
-<!--									<div class="wt text-center">-->
-<!--										<a href="#">WATCH</a>-->
-<!--									</div><span style="float: right">8.8</span></h3>-->
-<!--									<div class="clearfix"></div>-->
-<!--								</div>-->
 								<p class="info">导演: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="screenwriter:${movieInfo.getScreenwriter()}"><span th:text="${screenwriter.name}"></span>&nbsp;</span></p>
 								<p class="info">编剧: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="director:${movieInfo.getDirector()}"><span th:text="${director.name}"></span>&nbsp;</span></p>
 								<p class="info">演员: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="actor:${movieInfo.getActor()}"><span th:text="${actor.name}"></span>&nbsp;</span></p>
@@ -109,16 +69,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<h3 class="single">剧情简介</h3>
 							<p class="info"> <span th:text="${movieInfo.info}"></span></p>
 						</div>
-<!--							<div class="best-review">-->
-<!--								<h4>Best Reader's Review</h4>-->
-<!--								<p>Excellent Movie and great performance by Lorem, one of the finest thriller of recent  like Aldus PageMaker including versions of Lorem Ipsum.</p>-->
-<!--								<p><span>Neeraj Upadhyay (Noida)</span> 16/03/2015 at 12:14 PM</p>-->
-<!--							</div>-->
-<!--							<div class="story-review">-->
-<!--								<h4>REVIEW:</h4>-->
-<!--								<p>So,Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>-->
-<!--							</div>-->
-							<!-- comments-section-starts -->
 	    <div class="comments-section">
 	        <div class="comments-section-head">
 				<div class="comments-section-head-text">
@@ -178,6 +128,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			  <div id="editor">
 				  <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
 			  </div>
+			  <select id="score">
+				  <option value="score">评分</option>
+				  <option value="0">0</option>
+				  <option value="1">1</option>
+				  <option value="2">2</option>
+				  <option value="3">3</option>
+				  <option value="4">4</option>
+				  <option value="5">5</option>
+				  <option value="6">6</option>
+				  <option value="7">7</option>
+				  <option value="8">8</option>
+				  <option value="9">9</option>
+				  <option value="10">10</option>
+			  </select>
 			  <button id="btn1">发布</button>
 		  </div>
 		  </div>
@@ -394,23 +358,48 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		var E = window.wangEditor
 		var editor = new E('#editor')
 		// 或者 var editor = new E( document.getElementById('editor') )
+		editor.customConfig.uploadImgServer = '/upload'
+		editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024
+		editor.customConfig.uploadImgMaxLength = 5
+		editor.customConfig.uploadFileName = 'fileName'
+		editor.customConfig.uploadImgHooks = {
+			before : function(xhr, editor, files) {
+
+			},
+			success : function(xhr, editor, result) {
+				console.log("上传成功");
+			},
+			fail : function(xhr, editor, result) {
+				console.log("上传失败,原因是"+result);
+			},
+			error : function(xhr, editor) {
+				console.log("上传出错");
+			},
+			timeout : function(xhr, editor) {
+				console.log("上传超时");
+			}
+		}
 		editor.create()
 		document.getElementById('btn1').addEventListener('click', function () {
+			if(document.getElementById('score').value=='score'){
+				alert("未评分")
+			}else {
 			$.ajax({
 				url:"postMovieComment",    //请求的url地址
 				dataType:"json",   //返回格式为json
 				async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-				data:{"userId":1,"content":editor.txt.html(),"title":document.getElementById('title').value},    //参数值
+				data:{"userId":1,"content":editor.txt.html(),"title":document.getElementById('title').value,"movieId":1},    //参数值
 				type:"POST",   //请求方式
 				success:function(req){
 					alert("成功")
+					location.href = "index";
 					//请求成功时处理
 				},
 				error:function(){
 					alert("error")
 					//请求出错处理
 				}
-			});
+			});}
 			// 读取 html
 			// document.getElementById("aaa").innerHTML = editor.txt.html();
 		}, false)

@@ -1,7 +1,7 @@
 package com.example.super_movie.mapper;
 
-import com.example.super_movie.entity.MovieComment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.super_movie.entity.MovieComment;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface MovieCommentMapper extends BaseMapper<MovieComment> {
-    void postMovieComment(Integer userId,String content,String title);
+    int postMovieComment(Integer userId, String content, String title, Integer movieId);
 }

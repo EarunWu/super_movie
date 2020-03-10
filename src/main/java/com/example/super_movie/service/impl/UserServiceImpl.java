@@ -1,13 +1,13 @@
 package com.example.super_movie.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.User;
 import com.example.super_movie.mapper.UserMapper;
 import com.example.super_movie.service.IUserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.example.super_movie.util.CodeUtil;
 import com.example.super_movie.util.MailUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -47,7 +47,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         System.out.println("激活码1");
         //生成激活码
-        String code=CodeUtil.generateUniqueCode();
+        String code= CodeUtil.generateUniqueCode();
 //		User user=new User(userName,email,password,0,code);
 //		//将用户保存到数据库
 //		UserDao userDao=new UserDaoImpl();

@@ -4,12 +4,10 @@ package com.example.super_movie.controller;
 import com.example.super_movie.entity.Person;
 import com.example.super_movie.service.ITestService;
 import com.example.super_movie.util.RedisUtil;
-import com.example.super_movie.vo.MovieInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -39,6 +37,11 @@ public class TestController{
         return "index";
 
     }
+    @RequestMapping("/hhh")
+    public String hhh(Model model){
+        return "hhhh";
+
+    }
     @RequestMapping("/findMovie")
     public String toFindMovie(Model model){
         return "findMovie";
@@ -52,6 +55,10 @@ public class TestController{
     public String fuwenben(Model model){
         return "wangEditor";
     }
+//    @RequestMapping("/selectMovie")
+//    public String toSelectMovie(Model model){
+//        return "selectMovie";
+//    }
     @ResponseBody
     @RequestMapping("/redis")
     public String redisSet(){

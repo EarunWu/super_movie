@@ -1,15 +1,15 @@
 package com.example.super_movie.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.Movie;
 import com.example.super_movie.mapper.MovieMapper;
 import com.example.super_movie.service.IMovieService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -47,17 +47,26 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
     }
     //取平均分
     public double getAvgScoreById(Integer movieId){
-        if (redisUtil.get("score"+movieId)!=null){
-            return (double)redisUtil.get("score"+movieId);
-        }else {
+        //将score先存进redis的做法
+//        if (redisUtil.get("score"+movieId)!=null){
+//            return (double)redisUtil.get("score"+movieId);
+//        }else {
+//            double sum=redisUtil.zCount("scoreSet"+movieId,1,1)+redisUtil.zCount("scoreSet"+movieId,2,2)*2+redisUtil.zCount("scoreSet"+movieId,3,3)*3+redisUtil.zCount("scoreSet"+movieId,4,4)*4+redisUtil.zCount("scoreSet"+movieId,5,5)*5;
+//            double avg=sum/redisUtil.zCard("scoreSet"+movieId);
+//            avg=(double) Math.round(avg * 20) / 10;
+//            redisUtil.set("score"+movieId,avg,3600);
+//            System.out.println("计算得score并存入redis");
+//            return avg;
+//        }
+        //不存的做法，直接返回score
             double sum=redisUtil.zCount("scoreSet"+movieId,1,1)+redisUtil.zCount("scoreSet"+movieId,2,2)*2+redisUtil.zCount("scoreSet"+movieId,3,3)*3+redisUtil.zCount("scoreSet"+movieId,4,4)*4+redisUtil.zCount("scoreSet"+movieId,5,5)*5;
             double avg=sum/redisUtil.zCard("scoreSet"+movieId);
             avg=(double) Math.round(avg * 20) / 10;
-            redisUtil.set("score"+movieId,avg,3600);
-            System.out.println("计算得score并存入redis");
             return avg;
-        }
 
+    }
+    public int saveMovie(String name, LocalDate time, String country, int length, String info){
+        return getBaseMapper().addMovie(name, time, country, length, info);
     }
 
 }

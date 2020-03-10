@@ -14,7 +14,7 @@ public class MovieInfo extends Movie {
     private List<String> language;
     private Double score;
 
-    public MovieInfo(int id, String name, LocalDate time, String country, Integer length, String info,List<Person> director, List<Person> screenwriter, List<Person> actor, List<String> kind, List<String> language,Double score) {
+    public MovieInfo(int id, String name, LocalDate time, String country, Integer length, String info, List<Person> director, List<Person> screenwriter, List<Person> actor, List<String> kind, List<String> language, Double score) {
         super(id, name, time, country, length, info);
         this.director = director;
         this.screenwriter = screenwriter;

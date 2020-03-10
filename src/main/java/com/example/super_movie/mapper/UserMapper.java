@@ -1,7 +1,7 @@
 package com.example.super_movie.mapper;
 
-import com.example.super_movie.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.super_movie.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-    int save(String username,String email,String password,Integer state,String code);
+    int save(String username, String email, String password, Integer state, String code);
 
     int activeUser(String code);
 
