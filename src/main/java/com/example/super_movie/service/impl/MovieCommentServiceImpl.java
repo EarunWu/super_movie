@@ -39,14 +39,18 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         String stringDate1=localDate.plusDays(1).toString();
         String stringDate=localDate.toString();
         if (!redisUtil.hasKey(userId+stringDate)){
-            //redis中没有记录，批量插入用户当天的点赞记录到redis
+            //redis中没有记录，批量插入影评当天的点赞记录到redis set
             List<String> a=getBaseMapper().getLikesByDateAndUserId(userId,stringDate,stringDate1);
             redisService.insertKey(a,userId+stringDate);
-//            redisUtil.expire(userId+stringDate,60*60*24);
+            redisUtil.expire(userId+stringDate,60*60*24*7);
         }
         //返回查询结果
         return redisUtil.sHasKey(userId+stringDate,commentId);
 
+    }
+    public int getLikeNum(int commentId,int movieId){
+        Double d= redisUtil.zGetScore("likeNum"+movieId,commentId);
+        return d==null?0:d.intValue();
     }
     public boolean like(int userId,Integer commentId,Integer movieId, LocalDate localDate){
         String stringDate1=localDate.plusDays(1).toString();
@@ -73,6 +77,8 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             movieCommentInfo=getBaseMapper().getMovieCommentInfoById(id);
             redisUtil.set("comment"+id,movieCommentInfo,60*60*24);
         }
+        movieCommentInfo.setLike(getLikeNum(movieCommentInfo.getId(),movieCommentInfo.getMovieId()));
+        movieCommentInfo.setState(getLikeStateById(movieCommentInfo.getUserId(),id,movieCommentInfo.getCreateTime().toLocalDate()));
         return movieCommentInfo;
     }
     //获取指定电影的最高点赞的影评

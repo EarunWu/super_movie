@@ -300,7 +300,8 @@
                         <div id="fb-root"></div>
                         <div th:utext="${movieComment.getContent()}" >
                         </div>
-                        <div align="center"><h2 style="color: #777777;"><button style="border:none;background-color:transparent;">♥</button></h2><span th:text="${movieComment.like}"></span>人点赞</div>
+                        <div align="center" th:if="${not movieComment.state}"><h2 id="likeButton" style="color: lightsteelblue;"><button onclick="like()" style="border:none;background-color:transparent;">♥</button></h2><span id="likeNum" th:text="${movieComment.like}"></span>人点赞</div>
+                        <div align="center" th:if="${movieComment.state}"><h2 id="likeButton" style="color: deeppink;"><button onclick="like()" style="border:none;background-color:transparent;">♥</button></h2><span id="likeNum" th:text="${movieComment.like}"></span>人点赞</div>
                     </div>
                 </div>
                 <div class="wthree-related-news-left" >
@@ -681,9 +682,40 @@
     // editor.create()
     var page=[[${page}]];
     var id=[[${movieComment.id}]];
+    var userId=[[${movieComment.userId}]];
+    var movieId=[[${movieComment.movieId}]];
+    var date=[[${movieComment.createTime.toLocalDate()}]];
     var pageNum= document.getElementById("pageNum").textContent;
     var desc=1;
     var order=[[${order}]];
+    function like() {
+        var likeColor=document.getElementById("likeButton");
+        var likeNum=document.getElementById("likeNum").innerText;
+        $.ajax({
+            url:"like",
+            data:{"userId":userId,"commentId":id,"movieId":movieId,"localDate":date},
+            async:false,
+            type:"post",
+            dataType:"json",
+            success:function(state){
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+
+            }
+        });
+        if (likeColor.style.color=="lightsteelblue"){
+            likeColor.style.color="deeppink";
+            likeNum++;
+            document.getElementById("likeNum").innerText=likeNum;
+        }
+        else{
+            likeColor.style.color="lightsteelblue";
+            likeNum--;
+            document.getElementById("likeNum").innerText=likeNum;
+        }
+
+    }
     function nextPage() {
         if (order==null){
             order=0;

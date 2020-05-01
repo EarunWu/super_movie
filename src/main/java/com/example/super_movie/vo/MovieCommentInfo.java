@@ -8,5 +8,6 @@ public class MovieCommentInfo extends MovieComment {
     private int like=-1;
     private String username;
     private String name;
+    private boolean state;
 
 }

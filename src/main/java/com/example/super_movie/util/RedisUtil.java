@@ -339,7 +339,8 @@ public class RedisUtil {
      */
     public boolean sHasKey(String key,Object value){
         try {
-            return redisTemplate.opsForSet().isMember(key, value);
+            Boolean b=redisTemplate.opsForSet().isMember(key, value);
+            return b==null?false:b;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -506,12 +507,12 @@ public class RedisUtil {
      * @param value 值
      * @return score
      */
-    public double zGetScore(String key,Object value){
+    public Double zGetScore(String key,Object value){
         try {
             return redisTemplate.opsForZSet().score(key, value);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return -1.1;
         }
     }
 

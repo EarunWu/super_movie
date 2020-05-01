@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -99,6 +100,15 @@ public class MovieCommentController{
         model.addAttribute("order",order);
         return "movieComment";
     }
+    @ResponseBody
+    @RequestMapping("like")
+    public int toLike(Model model,int commentId,int movieId,String localDate){
+        int userId=1;
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        movieCommentService.like(userId,commentId,movieId,LocalDate.parse(localDate, fmt));
+        return 1;
+    }
+
     @ResponseBody
     @RequestMapping("upload")
     public EditorImg upload(@RequestParam("fileName") MultipartFile file){
