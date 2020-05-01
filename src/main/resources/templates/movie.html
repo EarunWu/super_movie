@@ -284,8 +284,7 @@
         <div class="agileits-news-top">
             <ol class="breadcrumb">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="news.html">News</a></li>
-                <li class="active">Single</li>
+                <li><span th:text="${movieInfo.name}"></span></li>
             </ol>
         </div>
         <div class="agileinfo-news-top-grids">
@@ -354,44 +353,23 @@
                     </div>
                 </div>
                 <div class="wthree-related-news-left">
-                    <h4>影评<a href="#" style="font-size: 15px;float: right;color: #777777">more</a> </h4>
-                    <div class="wthree-news-top-left">
+                    <h4>影评<a th:href="@{'movieCommentList?movieId='+${movieInfo.id}}" style="font-size: 15px;float: right;color: #777777">more</a> </h4>
+                    <div th:each="comment:${commentList}" class="wthree-news-top-left">
                         <table>
                             <tr>
                                 <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
                                     <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
                                 </div></td>
                                 <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="font-weight: 600;color: #777777">易雨寒</td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分9</td>
+                                <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
+                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
                             </tr>
                             <tr>
-                                <td colspan="2" style="font-weight: 300"><a href="#">点赞数圣诞快乐房价是独立访客受到法律</a></td>
+                                <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
                             </tr>
                             <tr>
-                                <td style="font-size: 13px">99<span style="color: red">❤</span> </td>
-                                <td style="font-weight: 500;color: #777777;font-size: 13px" align="right">2019-99-99</td>
-                            </tr>
-                        </table>
-                        <div class="clearfix"> </div>
-                    </div>
-
-                    <div class="wthree-news-top-left">
-                        <table>
-                            <tr>
-                                <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
-                                    <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
-                                </div></td>
-                                <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="font-weight: 600;color: #777777">易雨寒</td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分9</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="font-weight: 300"><a href="#">点赞数圣诞快乐房价是独立访客受到法律</a></td>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 13px">99<span style="color: red">❤</span> </td>
-                                <td style="font-weight: 500;color: #777777;font-size: 13px" align="right">2019-99-99</td>
+                                <td style="font-size: 13px"><span th:text="${maxLikeList.get(commentStat.index).score.intValue()}"></span><span style="color: red">❤</span> </td>
+                                <td style="font-weight: 500;color: #777777;font-size: 13px" align="right"><span th:text="${comment.createTime.toLocalDate()}"></span></td>
                             </tr>
                         </table>
                         <div class="clearfix"> </div>
@@ -767,7 +745,7 @@
                 url:"postMovieComment",    //请求的url地址
                 dataType:"json",   //返回格式为json
                 async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{"userId":1,"content":editor.txt.html(),"title":document.getElementById('title').value,"movieId":1},    //参数值
+                data:{"userId":1,"content":editor.txt.html(),"title":document.getElementById('title').value,"movieId":1,"score":document.getElementById('score').value},    //参数值
                 type:"POST",   //请求方式
                 success:function(req){
                     alert("成功")

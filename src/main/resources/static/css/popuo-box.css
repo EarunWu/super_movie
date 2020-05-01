@@ -1,24 +1,29 @@
 /* Styles for dialog window */
-#small-dialog,#small-dialog2,#small-dialog3,#small-dialog4{
-	background: #FFF;
-	padding:20px;
+#small-dialog,#small-dialog1,#small-dialog2{
+	background:transparent;
+	padding: 0;
 	text-align: left;
-	max-width: 700px;
+	max-width: 650px;
 	margin: 40px auto;
 	position: relative;
 	text-align:center;
 }
 #small-dialog-it,#small-dialog-in,#small-dialog-fr,#small-dialog-sh,#small-dialog-sf,#small-dialog-su,#small-dialog-me,#small-dialog-ch,#small-dialog-pi,#small-dialog-am {
 	background: white;
-	padding:20px;
+	padding:0px;
 	text-align: left;
 	max-width: 450px;
 	margin: 40px auto;
 	position: relative;
 	text-align:center;
 }
-.signup h4 {
-	color: #000;
+a.play-icon.popup-with-zoom-anim img:hover {
+	opacity: 0.5;
+	transition:0.5s all;
+	-webkit-transition:0.5s all;
+	-o-transition:0.5s all;
+	-moz-transition:0.5s all;
+	-ms-transition:0.5s all;
 }
 .portfolio-items{
 	text-align:center;
@@ -178,7 +183,7 @@ opacity: 0;
   display: none !important; }
 .mfp-content iframe{
 	width:100%;
-	min-height:500px;
+	min-height:380px;
 }
 .mfp-preloader {
   color: #cccccc;
@@ -218,27 +223,27 @@ button::-moz-focus-inner {
   border: 0; }
 
 .mfp-close {
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  text-decoration: none;
-  text-align: center;
-  padding: 0 0 18px 10px;
-  color: white;
-  font-style: normal;
-  font-size: 28px;
-  outline:none;
-  font-family: 'Open Sans', sans-serif;		
+	width: 23px;
+    height: 30px;
+    line-height: 25px;
+    position: absolute;
+    left: -30px;
+    top: -30px;
+    text-decoration: none;
+    text-align: center;
+    padding: 0 0 18px 10px;
+    color: white !important;
+    font-style: normal;
+    font-size: 45px;
+    outline: none;
+    font-family: 'Open Sans', sans-serif;
  }
   .mfp-close:hover, .mfp-close:focus {
     opacity: 1; }
 
 .mfp-close-btn-in .mfp-close {
   color: #333333; 
- background: #FFF;
+  background: none;
   }
 
 .mfp-image-holder .mfp-close,
@@ -251,94 +256,71 @@ button::-moz-focus-inner {
 }
 .login h3,.signup h3{
 	margin:1em 0;
-	color: #000000;
-	font-weight: 700;
-}
-.login p{	
-	color:##000000;
-	font-size:14px;
-	text-align:center;
+	color: #a63d56;
 }
 .login input[type="text"],.login input[type="password"]{
-	width: 90%;
-	border: none;
-	padding: 12px;
-	margin: 3px 0;
-	color: #9F9F9F;
-	font-size: 14px;
-	border: solid 1px #9F9F9F;
-	border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	-o-border-radius: 7px;
-	-ms-border-radius: 7px;
-	font-family: 'Open Sans', sans-serif;
+	width:90%;
+	padding:5px;
+	margin:3px 0;x
+	border: 1px solid #a63d56;
 	outline: none !important;
-	-webkit-appearance: none;
 }
 .signup input[type="text"]{
 	width: 44.5%;
-	padding: 10px;
+	padding: 5px;
 	margin: 10px 0;
 	outline: none;
-	color: #817F7F;
-	border: solid 1px #9F9F9F;
-	border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	-o-border-radius: 7px;
-	-ms-border-radius: 7px;
-	-webkit-appearance: none;
-}
-.signup input.password[type="text"] {
-	width: 90%;
+	background: #EBEBEB;
+	border: solid 1px #222;
 }
 .signup input.email[type="text"],.signup input[type="password"]{
 	width: 90%;
-	padding: 10px;
+	padding: 5px;
 	margin: 10px 0;
 	outline: none;
-	color: #817F7F;
-	border: solid 1px #9F9F9F;
-	border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	-o-border-radius: 7px;
-	-ms-border-radius: 7px;
-	-webkit-appearance: none;
+	background: #EBEBEB;
+	border: solid 1px #222;
 }
 .login input[type="submit"],.signup input[type="submit"]{
+	background: #347083;
 	border: 0px;
-	padding: 8px;
+	padding: 5px 10px;
 	margin: 10px 10px;
-	width: 90%;
 	outline: none;
-	font-size: 16px;
-	color: #9F9F9F;
-	font-weight: 700;
+	font-size: 18px;
+	color: #fff;
 	text-transform: uppercase;
-	font-family: 'Open Sans', sans-serif;
-	border: solid 1px #9F9F9F;
-	border-radius: 7px;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	-o-border-radius: 7px;
-	-ms-border-radius: 7px;
+	width: 17%;	
 	-webkit-appearance: none;
 }
 .login input[type="submit"]:hover,.signup input[type="submit"]:hover{
+	background:#163035;
 	-webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
 	-o-transition: all 0.5s ease-in-out;
 	transition: all 0.5s ease-in-out;
-	border: solid 1px #3EB5F1;
-	color: #3EB5F1;
+}
+@media all and (max-width:667px){
+	.mfp-content iframe {
+		min-height: 235px;
+	}
+}
+@media all and (max-width:640px){
+	.mfp-close {
+		left: 0;
+		top: -38px;
+	}
 }
 @media all and (max-width:480px){
 	.comments-area textarea{
 		height:100px;
 	}
 	.login input[type="submit"], .signup input[type="submit"] {
+		font-size: 14px;
+		width: 20%;
+	}
+	.mfp-close {
+		left: 0;
 	}
 }
 @media all and (max-width:320px){
@@ -360,12 +342,17 @@ button::-moz-focus-inner {
 	}
 	.mfp-content iframe{
 		width:100%;
-		min-height:250px;
+		min-height:150px;
 	}
 	.login input[type="submit"], .signup input[type="submit"] {
 		font-size: 12px;
+		width: 29%;
 	}
 	.signup input[type="text"] {
 		width: 90%;
+	}
+	.mfp-close {
+		right: 2px;
+		top: -35px;
 	}
 } 

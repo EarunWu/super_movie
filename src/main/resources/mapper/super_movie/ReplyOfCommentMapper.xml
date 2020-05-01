@@ -13,7 +13,7 @@
         FROM reply_of_comment LEFT JOIN user ON reply_of_comment.user_id=user.id
         WHERE reply_of_comment.movie_comment_id=#{id} and reply_of_comment.reply_id=0
         ORDER BY reply_of_comment.create_time desc
-        LIMIT #{star},#{end}
+        LIMIT #{start},#{end}
     </select>
     <select id="getNum" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
         SELECT count(*)

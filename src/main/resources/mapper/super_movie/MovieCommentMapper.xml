@@ -2,7 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.super_movie.mapper.MovieCommentMapper">
     <insert id="postMovieComment" >
-  insert into movie_comment (user_id,content,title,movie_id)
-  values (#{userId},#{content},#{title},#{movieId})
+  insert into movie_comment (user_id,content,title,movie_id,score)
+  values (#{userId},#{content},#{title},#{movieId},#{score})
     </insert>
+    <select id="getLikesByDateAndUserId" resultType="String"  >
+        SELECT cast(likes.comment_id as char )
+        FROM likes left join movie_comment on likes.comment_id=movie_comment.id
+        WHERE movie_comment.create_time>#{date} and #{date1}>movie_comment.create_time and likes.user_id=#{userId}
+    </select>
+    <select id="getMovieCommentInfoById" resultType="com.example.super_movie.vo.MovieCommentInfo" parameterType="java.lang.Integer" >
+        select movie_comment.id,movie_comment.user_id,movie_comment.content,movie_comment.create_time,movie_comment.update_time,movie_comment.title,movie_comment.movie_id,movie_comment.score,user.username,movie.name
+        from movie_comment INNER join user on movie_comment.user_id=user.id
+        INNER JOIN movie on movie_comment.movie_id=movie.id
+        WHERE movie_comment.id=#{id}
+    </select>
+    <select id="getCommentTimeOrderList" resultType="com.example.super_movie.vo.MovieCommentInfo" parameterType="java.lang.Integer" >
+        select movie_comment.id,movie_comment.user_id,movie_comment.content,movie_comment.create_time,movie_comment.update_time,movie_comment.title,movie_comment.movie_id,movie_comment.score,user.username,movie.name
+        from movie_comment INNER join user on movie_comment.user_id=user.id
+        INNER JOIN movie on movie_comment.movie_id=movie.id
+        WHERE movie_id=#{movieId} LIMIT #{start},#{number}
+    </select>
 </mapper>

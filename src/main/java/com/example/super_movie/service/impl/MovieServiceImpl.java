@@ -26,24 +26,14 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
 
     //取电影信息
     public MovieInfo getMovieInfo(Integer movieId){
-        Object object=redisUtil.get("movieInfo"+movieId);
-        try{
-            if (object!=null){
-                MovieInfo movieInfo=(MovieInfo)object;
-                System.out.println("redis中取得movieInfo");
-                return movieInfo;
-            }else {
+        MovieInfo movieInfo=(MovieInfo)redisUtil.get("movieInfo"+movieId);
+        if (movieInfo==null){
                 Movie movie=getById(movieId);
-                MovieInfo movieInfo=new MovieInfo(movie.getId(),movie.getName(),movie.getTime(),movie.getCountry(),movie.getLength(),movie.getInfo(),getBaseMapper().findDirectorById(movieId),getBaseMapper().findScreenwriterById(movieId),getBaseMapper().findActorById(movieId),getBaseMapper().findKindByMovieId(movieId),getBaseMapper().findLanguageByMovieId(movieId),getAvgScoreById(movieId));
+                movieInfo=new MovieInfo(movie.getId(),movie.getName(),movie.getTime(),movie.getCountry(),movie.getLength(),movie.getInfo(),getBaseMapper().findDirectorById(movieId),getBaseMapper().findScreenwriterById(movieId),getBaseMapper().findActorById(movieId),getBaseMapper().findKindByMovieId(movieId),getBaseMapper().findLanguageByMovieId(movieId),getAvgScoreById(movieId));
                 redisUtil.set("movieInfo"+movieId,movieInfo,3600);
                 System.out.println("mysql中取得movieInfo并存入redis");
-                return movieInfo;
             }
-        }catch (Exception e){
-            return null;
-        }
-
-
+        return movieInfo;
     }
     //取平均分
     public double getAvgScoreById(Integer movieId){

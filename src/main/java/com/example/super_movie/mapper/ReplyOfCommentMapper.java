@@ -18,7 +18,6 @@ import java.util.List;
 @Mapper
 public interface ReplyOfCommentMapper extends BaseMapper<ReplyOfComment> {
     List<ReplyOfCommentInfo> findReplyListByCommentId(int id, int star, int end);
-    List<ReplyOfCommentInfo> findReplyListByCommentIdDesc(int id, int star, int end);
-    Integer getNum(int id);
+    List<ReplyOfCommentInfo> findReplyListByCommentIdDesc(int id, int start, int end);
     Integer saveReply(int userId, int movieCommentId, int replyId, String content);
 }

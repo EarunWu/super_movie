@@ -2,6 +2,7 @@ package com.example.super_movie.controller;
 
 
 import com.example.super_movie.service.IReplyOfCommentService;
+import com.example.super_movie.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,9 @@ public class ReplyOfCommentController{
 
     @Autowired
     IReplyOfCommentService replyOfCommentService;
+
+    @Autowired
+    RedisUtil redisUtil;
 //获取评论
     @RequestMapping("/getReply")
     public String toReplyPage(int id, int page, Integer order, Model model){
@@ -33,6 +37,8 @@ public class ReplyOfCommentController{
     @RequestMapping("/saveReply")
     @ResponseBody
     public int toSaveReply(int movieCommentId,int replyId,String content){
-        return replyOfCommentService.saveReply(1, movieCommentId, replyId, content);
+        int a=replyOfCommentService.saveReply(1, movieCommentId, replyId, content);
+        redisUtil.hincr("number","comment"+movieCommentId,1);
+        return a;
     }
 }

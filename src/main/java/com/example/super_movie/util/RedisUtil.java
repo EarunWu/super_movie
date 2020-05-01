@@ -3,6 +3,7 @@ package com.example.super_movie.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -90,6 +91,15 @@ public class RedisUtil {
      */
     public Object get(String key){
         return key==null?null:redisTemplate.opsForValue().get(key);
+    }
+
+    /**
+     * 批量缓存获取
+     * @param keys 键
+     * @return 值
+     */
+    public List<Object> get(List<String> keys){
+        return redisTemplate.opsForValue().multiGet(keys);
     }
 
     /**
@@ -248,6 +258,22 @@ public class RedisUtil {
             return false;
         }
     }
+    /**
+     * 向一张hash表中放入原子增加
+     * @param key 键
+     * @param item 项
+     * @param value 值
+     * @return true 成功 false失败
+     */
+    public boolean hsetb(String key,String item,long value) {
+        try {
+            redisTemplate.opsForHash().increment(key,item,value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 删除hash表中的值
@@ -397,6 +423,51 @@ public class RedisUtil {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    /**
+     * 给指定元素加分
+     * @param key 键
+     * @param score 数字
+     * @param value 变化值
+     * @return 分数
+     */
+    public double zSetInc(String key, Object value,double score) {
+        try {
+            return redisTemplate.opsForZSet().incrementScore(key,value,score);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    /**
+     * 获得指定名次区间的值,分数从大到小
+     * @param key 键
+     * @param l1 开始
+     * @param l2 结束
+     * @return
+     */
+    public Set<Object> zGetRange(String key, long l1,long l2) {
+        try {
+            return redisTemplate.opsForZSet().reverseRange(key,l1,l2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * 获得指定名次区间的分数和值,分数从大到小
+     * @param key 键
+     * @param l1 开始
+     * @param l2 结束
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple<Object>> zGetRangeWithScore(String key, long l1, long l2) {
+        try {
+            return redisTemplate.opsForZSet().reverseRangeWithScores(key,l1,l2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
     /**
