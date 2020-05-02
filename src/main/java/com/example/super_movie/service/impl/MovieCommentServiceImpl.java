@@ -32,7 +32,9 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     @Autowired
     RedisService redisService;
     public int postMovieComment(Integer userId,String content,String title,Integer movieId,int score){
-        return getBaseMapper().postMovieComment(userId,content,title,movieId,score);
+        MovieComment movieComment=new MovieComment(userId,content,title,movieId,score);
+        getBaseMapper().postMovieComment(movieComment);
+        return movieComment.getId();
     }
 
     public boolean getLikeStateById(int userId,Integer commentId, LocalDate localDate){
@@ -77,6 +79,10 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             movieCommentInfo=getBaseMapper().getMovieCommentInfoById(id);
             redisUtil.set("comment"+id,movieCommentInfo,60*60*24);
         }
+        if (movieCommentInfo==null){
+            System.out.println("数据库不存在此数据");
+            return null;
+        }
         movieCommentInfo.setLike(getLikeNum(movieCommentInfo.getId(),movieCommentInfo.getMovieId()));
         movieCommentInfo.setState(getLikeStateById(movieCommentInfo.getUserId(),id,movieCommentInfo.getCreateTime().toLocalDate()));
         return movieCommentInfo;
@@ -100,13 +106,11 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     //由电影id获取此电影的点赞排行的id
     public List<ZSetOperations.TypedTuple<Object>> getLikeRankIdByMovieId(int movieId,int start,int end){
         Set<ZSetOperations.TypedTuple<Object>> set=redisUtil.zGetRangeWithScore("likeNum"+movieId,start,end);
-        List<ZSetOperations.TypedTuple<Object>> scoreList=new ArrayList<>(set);
-        return scoreList;
-
+        return new ArrayList<>(set);
     }
     //获取指定电影的影评按时间排序，按页码取
     public List<MovieCommentInfo> getCommentTimeOrderList(int page,int movieId){
-        Integer num=(Integer) redisUtil.hget("number","movie"+movieId);
+        Integer num=(Integer) redisUtil.hget("number","movieComment"+movieId);
         if (num==null||num==0)
             return null;
         List<MovieCommentInfo> list=redisTemplate.opsForList().range("commentList"+movieId+"_"+page,0,-1);

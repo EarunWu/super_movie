@@ -4,6 +4,7 @@ package com.example.super_movie.controller;
 import com.example.super_movie.entity.MovieComment;
 import com.example.super_movie.service.IMovieCommentService;
 import com.example.super_movie.service.IReplyOfCommentService;
+import com.example.super_movie.service.IUserService;
 import com.example.super_movie.service.impl.MovieCommentServiceImpl;
 import com.example.super_movie.util.FileNameUtils;
 import com.example.super_movie.util.FileUtils;
@@ -52,15 +53,21 @@ public class MovieCommentController{
     @Autowired
     RedisUtil redisUtil;
 
+    @Autowired
+    IUserService userService;
+
     @Value("${web.upload-path}")
     private String path;
 
     @RequestMapping("postMovieComment")
     @ResponseBody
-    public int postMovieComment(Integer userId,String content,String title,Integer movieId,int score){
-        int a=movieCommentService.postMovieComment(userId, content,title,movieId,score);
-        redisUtil.hincr("number","movie"+movieId,1);
-        return a;
+    public int postMovieComment(String content,String title,int movieId,int score){
+        int userId=1;
+        int id=movieCommentService.postMovieComment(userId, content,title,movieId,score);
+        redisUtil.hincr("number","movieComment"+movieId,1);
+        redisUtil.hincr("number","userComment"+userId,1);
+        redisUtil.zSet("likeNum"+movieId,0,id);
+        return id;
     }
 //按热度排名获取影评列表
     @RequestMapping("/movieCommentList")
@@ -78,7 +85,7 @@ public class MovieCommentController{
     @RequestMapping("getCommentListAsTime")
     public String toMovieListAsTime(Model model,int movieId,int page){
         //获取影评数量并计算页数
-        Integer num=(Integer)redisUtil.hget("number","movie"+movieId);
+        Integer num=(Integer)redisUtil.hget("number","movieComment"+movieId);
         int page1=num==null?0:num%7>0?(num/7)+1:num/7;
         List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentTimeOrderList(page,movieId);
         model.addAttribute("commentList",movieCommentInfoList);
@@ -91,6 +98,7 @@ public class MovieCommentController{
     @RequestMapping("movieComment")
     public String toMovieCommentPage(Model model, Integer id,Integer order){
         //order为null则正序
+        int userId=1;
         MovieCommentInfo movieComment=movieCommentService.getMovieCommentInfoById(id);
         LocalDate date=movieComment.getCreateTime().toLocalDate();
         movieCommentService.getLikeStateById(1,id,date);
@@ -98,6 +106,7 @@ public class MovieCommentController{
         model.addAttribute("page",replyOfCommentService.getPageNum(id));
         model.addAttribute("replyList",replyOfCommentService.getReplyOfCommentByIdAndPage(id,1,order));
         model.addAttribute("order",order);
+        model.addAttribute("writer",userService.getUserInfoById(movieComment.getUserId(),userId));
         return "movieComment";
     }
     @ResponseBody

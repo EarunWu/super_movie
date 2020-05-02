@@ -16,7 +16,6 @@ import java.time.LocalDate;
  */
 public interface IMovieService extends IService<Movie> {
     MovieInfo getMovieInfo(Integer movieId);
-    double getAvgScoreById(Integer movieId);
     int saveMovie(String name, LocalDate time, String country, int length, String info);
 
 }

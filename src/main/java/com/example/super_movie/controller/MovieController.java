@@ -42,13 +42,4 @@ public class MovieController{
         model.addAttribute("movieInfo",movieInfo);
         return "movie";
     }
-    @ResponseBody
-    @RequestMapping("/test1")
-    public double toTest(){
-        LocalDate time=LocalDate.of(1999,11,11);
-        for (int i=0;i<50;i++){
-            iMovieService.saveMovie("1",time,"1",1,"1");
-            System.out.println(i);
-        }
-        return iMovieService.getAvgScoreById(4396);}
 }

@@ -40,6 +40,8 @@ public class User{
      */
     private String code;
 
+    private String introduction;
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -90,5 +92,13 @@ public class User{
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

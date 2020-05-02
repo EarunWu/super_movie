@@ -13,8 +13,9 @@ public class MovieInfo extends Movie {
     private List<String> kind;
     private List<String> language;
     private Double score;
+    private int sum;
 
-    public MovieInfo(int id, String name, LocalDate time, String country, Integer length, String info, List<Person> director, List<Person> screenwriter, List<Person> actor, List<String> kind, List<String> language, Double score) {
+    public MovieInfo(int id, String name, LocalDate time, String country, Integer length, String info, List<Person> director, List<Person> screenwriter, List<Person> actor, List<String> kind, List<String> language, Double score,int sum) {
         super(id, name, time, country, length, info);
         this.director = director;
         this.screenwriter = screenwriter;
@@ -22,6 +23,8 @@ public class MovieInfo extends Movie {
         this.kind = kind;
         this.language = language;
         this.score=score;
+        this.sum=sum;
+
     }
     public MovieInfo(){
     };
@@ -72,5 +75,13 @@ public class MovieInfo extends Movie {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
     }
 }

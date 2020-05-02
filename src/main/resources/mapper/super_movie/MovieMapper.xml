@@ -30,4 +30,9 @@
         insert into movie (name,time,country,length,info)
         values (#{name},#{time},#{country},#{length},#{info})
     </insert>
+    <select id="getAvgScoreAndNumByMovieId" resultType="java.util.Map" parameterType="java.lang.Integer">
+    SELECT IFNULL(avg(score),0) as avg,count(*) as sum
+    FROM movie_comment
+    WHERE movie_id=#{movieId}
+    </select>
 </mapper>

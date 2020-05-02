@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Mapper
 public interface MovieCommentMapper extends BaseMapper<MovieComment> {
-    int postMovieComment(Integer userId, String content, String title, Integer movieId,int score);
+    int postMovieComment(MovieComment movieComment);
     List<String> getLikesByDateAndUserId(@Param("userId")int userId, @Param("date")String date, @Param("date1")String date1);
     MovieCommentInfo getMovieCommentInfoById(int id);
     List<MovieCommentInfo> getCommentTimeOrderList(int movieId,int start,int number);

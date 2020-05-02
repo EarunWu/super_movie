@@ -15,4 +15,14 @@
         from user
         where email = #{email}
     </select>
+    <select id="getUserInfoById" resultType="com.example.super_movie.vo.UserInfo" parameterType="java.lang.Integer" >
+        select id,username,introduction
+        FROM user
+        WHERE id=#{id}
+    </select>
+    <select id="getFollowByUserId" resultType="String" parameterType="java.lang.Integer" >
+        select cast(follow_id as char )
+        FROM follow
+        WHERE user_id=#{userId}
+    </select>
 </mapper>

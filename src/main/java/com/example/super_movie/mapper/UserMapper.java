@@ -2,7 +2,11 @@ package com.example.super_movie.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.super_movie.entity.User;
+import com.example.super_movie.vo.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,5 +23,9 @@ public interface UserMapper extends BaseMapper<User> {
     int activeUser(String code);
 
     User getStateByeMail(String email);
+
+    UserInfo getUserInfoById(int id);
+
+    List<String> getFollowByUserId(int userId);
 
 }

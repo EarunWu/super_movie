@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,4 +25,5 @@ public interface MovieMapper extends BaseMapper<Movie> {
     List<String> findKindByMovieId(int movieId);
     List<String> findLanguageByMovieId(int movieId);
     int addMovie(String name, LocalDate time, String country, int length, String info);
+    Map<String,Object> getAvgScoreAndNumByMovieId(int movieId);
 }

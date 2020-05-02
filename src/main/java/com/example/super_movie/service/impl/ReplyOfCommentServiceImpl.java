@@ -34,7 +34,7 @@ public class ReplyOfCommentServiceImpl extends ServiceImpl<ReplyOfCommentMapper,
 
     //根据影评id和页码获取评论
     public List<ReplyOfCommentInfo> getReplyOfCommentByIdAndPage(int id,int page,Integer order){
-        Integer num=(Integer) redisUtil.hget("number","comment"+id);
+        Integer num=(Integer) redisUtil.hget("number","commentReply"+id);
         if (num==null||num==0)
             return new ArrayList<>();
         if (order==null||order==0) {
@@ -56,7 +56,7 @@ public class ReplyOfCommentServiceImpl extends ServiceImpl<ReplyOfCommentMapper,
 
     //获取总页数
     public int getPageNum(int id){
-        Integer num=(Integer)redisUtil.hget("number","comment"+id);
+        Integer num=(Integer)redisUtil.hget("number","commentReply"+id);
         if (num==null)
             return 0;
         return (num%5)>0?(num/5)+1:(num/5);

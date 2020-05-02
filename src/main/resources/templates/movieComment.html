@@ -380,14 +380,14 @@
                         <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
                         </div>
                         <br>
-                        <h3>nslkjf</h3>
+                        <h3><span th:text="${writer.username}"></span></h3>
                         <br>
-                        <h4>8799个粉丝</h4>
+                        <h4><span id="followNum" th:text="${writer.followNum}">个粉丝</span></h4>
                         <br>
-                        <button>关注</button>
+                        <button onclick="follow()"><span th:if="not ${writer.followState}" id="followState">关注</span><span th:if="${writer.followState}" id="followState">已关注</span></button>
                         <br>
                         <br>
-                        <h4>一句话介绍自己</h4>
+                        <h4><span th:text="${writer.introduction}"></span></h4>
                     </div>
                 </div>
                 </div>
@@ -688,6 +688,43 @@
     var pageNum= document.getElementById("pageNum").textContent;
     var desc=1;
     var order=[[${order}]];
+    function follow() {
+        var state1=document.getElementById("followState").innerText;
+        var followNum=document.getElementById("followNum").innerText;
+        var f=followNum;
+        if (state1=="关注"){
+            followNum++;
+            document.getElementById("followState").innerText="已关注";
+        }else {
+            followNum--;
+            document.getElementById("followState").innerText="关注";
+        }
+        document.getElementById("followNum").innerText=followNum;
+        $.ajax({
+            url:"follow",
+            data:{"followId":userId},
+            async:true,
+            type:"get",
+            dataType:"json",
+            success:function(state){
+                if (state==0){
+                    document.getElementById("followNum").innerText=f;
+                    document.getElementById("followState").innerText=state1;
+                    alert("不能关注自己");
+                }
+                if (state==1){
+                    alert("关注成功");
+                }
+                if (state==-1){
+                    alert("取消关注成功");
+                }
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+                alert(error);
+            }
+        });
+    }
     function like() {
         var likeColor=document.getElementById("likeButton");
         var likeNum=document.getElementById("likeNum").innerText;

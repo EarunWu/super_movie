@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * <p>
@@ -20,6 +21,13 @@ public class UserController{
     @Autowired
     IUserService userService;
 
+
+    @ResponseBody
+    @RequestMapping("follow")
+    public int follow(int followId){
+        int userId=1;
+        return userService.follow(userId,followId);
+    }
 
     //注册
     @RequestMapping("/create")
