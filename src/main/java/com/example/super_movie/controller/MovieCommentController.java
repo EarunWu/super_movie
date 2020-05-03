@@ -1,11 +1,9 @@
 package com.example.super_movie.controller;
 
 
-import com.example.super_movie.entity.MovieComment;
 import com.example.super_movie.service.IMovieCommentService;
 import com.example.super_movie.service.IReplyOfCommentService;
 import com.example.super_movie.service.IUserService;
-import com.example.super_movie.service.impl.MovieCommentServiceImpl;
 import com.example.super_movie.util.FileNameUtils;
 import com.example.super_movie.util.FileUtils;
 import com.example.super_movie.util.RedisUtil;
@@ -69,6 +67,24 @@ public class MovieCommentController{
         redisUtil.zSet("likeNum"+movieId,0,id);
         return id;
     }
+
+    @RequestMapping("userInfo")
+    public String toUserInfo(Model model,int id,Integer p,Integer state){
+        int userId=1;
+        if (p==null)
+            p=1;
+        Integer num=(Integer)redisUtil.hget("number","userComment"+id);
+        int page=num==null?0:num%7>0?(num/7)+1:num/7;
+        model.addAttribute("commentList",movieCommentService.getCommentListByUserId(id,p,page));
+        model.addAttribute("page",page);
+        model.addAttribute("pageNum",p);
+        if (state!=null)
+            return "userInfo::commentListSpace";
+        model.addAttribute("writer",userService.getUserInfoById(id,userId));
+        return "userInfo";
+
+    }
+
 //按热度排名获取影评列表
     @RequestMapping("/movieCommentList")
     public String toMovieList(Model model,Integer movieId,Integer state){
@@ -87,7 +103,7 @@ public class MovieCommentController{
         //获取影评数量并计算页数
         Integer num=(Integer)redisUtil.hget("number","movieComment"+movieId);
         int page1=num==null?0:num%7>0?(num/7)+1:num/7;
-        List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentTimeOrderList(page,movieId);
+        List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentTimeOrderList(movieId,page,page1);
         model.addAttribute("commentList",movieCommentInfoList);
         model.addAttribute("page",page1);
         model.addAttribute("pageNum",page);

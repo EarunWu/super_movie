@@ -22,4 +22,11 @@
         INNER JOIN movie on movie_comment.movie_id=movie.id
         WHERE movie_id=#{movieId} LIMIT #{start},#{number}
     </select>
+    <select id="getCommentListByUserId" resultType="com.example.super_movie.vo.MovieCommentInfo" parameterType="java.lang.Integer" >
+        select movie_comment.id,movie_comment.user_id,movie_comment.content,movie_comment.create_time,movie_comment.update_time,movie_comment.title,movie_comment.movie_id,movie_comment.score,user.username,movie.name
+        from movie_comment INNER join user on movie_comment.user_id=user.id
+        INNER JOIN movie on movie_comment.movie_id=movie.id
+        WHERE user_id=#{userId} order by movie_comment.id desc
+        LIMIT #{start},#{number}
+    </select>
 </mapper>

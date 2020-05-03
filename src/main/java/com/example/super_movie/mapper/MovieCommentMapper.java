@@ -22,4 +22,5 @@ public interface MovieCommentMapper extends BaseMapper<MovieComment> {
     List<String> getLikesByDateAndUserId(@Param("userId")int userId, @Param("date")String date, @Param("date1")String date1);
     MovieCommentInfo getMovieCommentInfoById(int id);
     List<MovieCommentInfo> getCommentTimeOrderList(int movieId,int start,int number);
+    List<MovieCommentInfo> getCommentListByUserId(int userId,int start,int number);
 }

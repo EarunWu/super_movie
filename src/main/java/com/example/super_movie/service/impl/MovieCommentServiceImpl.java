@@ -109,15 +109,26 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         return new ArrayList<>(set);
     }
     //获取指定电影的影评按时间排序，按页码取
-    public List<MovieCommentInfo> getCommentTimeOrderList(int page,int movieId){
-        Integer num=(Integer) redisUtil.hget("number","movieComment"+movieId);
-        if (num==null||num==0)
-            return null;
+    public List<MovieCommentInfo> getCommentTimeOrderList(int movieId,int page,int pageNum){
+        if (pageNum==0)
+            return new ArrayList<>();
         List<MovieCommentInfo> list=redisTemplate.opsForList().range("commentList"+movieId+"_"+page,0,-1);
         if (list==null||list.size()==0){
             list=getBaseMapper().getCommentTimeOrderList(movieId,(page-1)*7,7);
             redisTemplate.opsForList().rightPushAll("commentList"+movieId+"_"+page,list);
             redisUtil.expire("commentList"+movieId+"_"+page,60*60);
+        }
+        return list;
+    }
+    //获取用户影评，时间倒序
+    public List<MovieCommentInfo> getCommentListByUserId(int userId,int page,int pageNum){
+        if (pageNum==0)
+            return new ArrayList<>();
+        List<MovieCommentInfo> list=redisTemplate.opsForList().range("userCommentList"+userId+"_"+page,0,-1);
+        if (list==null||list.size()==0){
+            list=getBaseMapper().getCommentListByUserId(userId,(page-1)*7,7);
+            redisTemplate.opsForList().rightPushAll("userCommentList"+userId+"_"+page,list);
+            redisUtil.expire("commentList"+userId+"_"+page,60*60);
         }
         return list;
     }

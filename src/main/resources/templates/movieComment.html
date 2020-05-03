@@ -295,7 +295,7 @@
                     <div class="wthree-news-left-img">
                         <h4><span th:text="${movieComment.title}"></span><span style="float: right;color: #ffc107" th:text="评分：+${movieComment.score}"></span> </h4>
                         <div class="s-author">
-                            <p>作者：<a href="#"><span th:text="${movieComment.username}"></span></a> &nbsp;&nbsp;发布时间：<span th:text="${movieComment.createTime.toLocalDate()}"></span>&nbsp;&nbsp;最后修改：<span th:text="${movieComment.updateTime.toLocalDate()}"></span></p>
+                            <p>作者：<a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${movieComment.username}"></span></a> &nbsp;&nbsp;发布时间：<span th:text="${movieComment.createTime.toLocalDate()}"></span>&nbsp;&nbsp;最后修改：<span th:text="${movieComment.updateTime.toLocalDate()}"></span></p>
                         </div>
                         <div id="fb-root"></div>
                         <div th:utext="${movieComment.getContent()}" >
@@ -380,7 +380,7 @@
                         <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
                         </div>
                         <br>
-                        <h3><span th:text="${writer.username}"></span></h3>
+                        <h3><a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a></h3>
                         <br>
                         <h4><span id="followNum" th:text="${writer.followNum}">个粉丝</span></h4>
                         <br>

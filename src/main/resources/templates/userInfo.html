@@ -236,69 +236,41 @@
         <div class="agileits-news-top">
             <ol class="breadcrumb">
                 <li><a href="index.html">Home</a></li>
-                <li><a th:href="@{'movieInfo?movieId='+${commentList.get(0).movieId}}"><span th:text="${commentList.get(0).name}"></span></a></li>
                 <li>影评列表</li>
             </ol>
         </div>
         <div class="agileinfo-news-top-grids">
-            <div  th:fragment="commentListSpace" id="commentListSpace">
-            <div class="col-md-8 wthree-top-news-left" th:if="${page} eq 0">
-                <div class="wthree-related-news-left">
-                    <h4>影评<a href="javascript:void(0);" onclick="toTime()" style="font-size: 15px;float: right;color: #777777">时间排序</a><a href="#" style="font-size: 15px;float: right;color: #777777">热度排序/</a> </h4>
-                    <div th:each="comment:${commentList}" class="wthree-news-top-left">
-                        <table>
-                            <tr>
-                                <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
-                                    <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
-                                </div></td>
-                                <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 13px"><span th:text="${maxLikeList.get(commentStat.index).score.intValue()}"></span><span style="color: red">❤</span> </td>
-                                <td style="font-weight: 500;color: #777777;font-size: 13px" align="right"><span th:text="${comment.createTime.toLocalDate()}"></span></td>
-                            </tr>
-                        </table>
-                        <div class="clearfix"> </div>
+                <div class="col-md-8 wthree-top-news-left" th:fragment="commentListSpace" id="commentListSpace">
+                    <div class="wthree-related-news-left">
+                        <h4>影评</h4>
+                        <div th:each="comment:${commentList}" class="wthree-news-top-left">
+                            <table>
+                                <tr>
+                                    <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
+                                        <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
+                                    </div></td>
+                                    <td rowspan="3">&nbsp;&nbsp;</td>
+                                    <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
+                                    <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 13px"> </td>
+                                    <td style="font-weight: 500;color: #777777;font-size: 13px" align="right"><span th:text="${comment.createTime.toLocalDate()}"></span></td>
+                                </tr>
+                            </table>
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div name="page" th:if="${page} ne 0" align="center">
+                            <a href="javascript:void(0);" onclick="previousPage()">上一页</a>
+                            &nbsp;<span id="pageNum" th:text="${pageNum}"></span>&nbsp;
+                            <a href="javascript:void(0);" onclick="nextPage()">下一页</a><br>
+                            共<span id="page" th:text="${page}"></span>页
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-8 wthree-top-news-left" th:if="${page} ne 0">
-                <div class="wthree-related-news-left">
-                    <h4>影评<a href="javascript:void(0);" onclick="toTime()" style="font-size: 15px;float: right;color: #777777">时间排序</a><a href="javascript:void(0);" onclick="toHot()" style="font-size: 15px;float: right;color: #777777">热度排序/</a> </h4>
-                    <div th:each="comment:${commentList}" class="wthree-news-top-left">
-                        <table>
-                            <tr>
-                                <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
-                                    <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
-                                </div></td>
-                                <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 13px"> </td>
-                                <td style="font-weight: 500;color: #777777;font-size: 13px" align="right"><span th:text="${comment.createTime.toLocalDate()}"></span></td>
-                            </tr>
-                        </table>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div name="page" th:if="${page} ne 0" align="center">
-                        <a href="javascript:void(0);" onclick="previousPage()">上一页</a>
-                        &nbsp;<span id="pageNum" th:text="${pageNum}"></span>&nbsp;
-                        <a href="javascript:void(0);" onclick="nextPage()">下一页</a><br>
-                        共<span id="page" th:text="${page}"></span>页
-                    </div>
-                </div>
-            </div>
-            </div>
             <div class="col-md-4 wthree-news-right">
                 <!-- news-right-top -->
                 <div class="news-right-top">
@@ -309,14 +281,14 @@
                             <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
                         </div>
                         <br>
-                        <h3>nslkjf</h3>
+                        <h3><a th:href="@{'userInfo?id='+${writer.id}}"><span th:text="${writer.username}"></span></a></h3>
                         <br>
-                        <h4>8799个粉丝</h4>
+                        <h4><span id="followNum" th:text="${writer.followNum}">个粉丝</span></h4>
                         <br>
-                        <button>关注</button>
+                        <button onclick="follow()"><span th:if="not ${writer.followState}" id="followState">关注</span><span th:if="${writer.followState}" id="followState">已关注</span></button>
                         <br>
                         <br>
-                        <h4>一句话介绍自己</h4>
+                        <h4><span th:text="${writer.introduction}"></span></h4>
                     </div>
                 </div>
             </div>
@@ -604,29 +576,59 @@
 </script>
 <!-- //here ends scrolling icon -->
 <script type="text/javascript" th:inline="javascript">
-    var id=[[${commentList.get(0).movieId}]];
+    var userId=[[${writer.id}]];
     function nextPage() {
         var page=document.getElementById("page").textContent;
         var pageNum=document.getElementById("pageNum").innerText;
-        console.log(pageNum);
-        console.log(page);
+        console.log(parseInt(pageNum)<parseInt(page));
         if (parseInt(pageNum)<parseInt(page)){
             pageNum++;
-            $('#commentListSpace').load("/getCommentListAsTime?movieId="+id+"&page="+pageNum);
+            $('#commentListSpace').load("/userInfo?id="+userId+"&p="+pageNum+"&state=1");
         }
     }
     function previousPage() {
         var pageNum=document.getElementById("pageNum").textContent;
         if(parseInt(pageNum)>1){
             pageNum--;
-            $('#commentListSpace').load("/getCommentListAsTime?movieId="+id+"&page="+pageNum);
+            $('#commentListSpace').load("/userInfo?id="+userId+"&p="+pageNum+"&state=1");
         }
     }
-    function toHot() {
-        $('#commentListSpace').load("/movieCommentList?movieId="+id+"&state=1");
-    }
-    function toTime() {
-        $('#commentListSpace').load("/getCommentListAsTime?movieId="+id+"&page=1");
+    function follow() {
+        var state1=document.getElementById("followState").innerText;
+        var followNum=document.getElementById("followNum").innerText;
+        var f=followNum;
+        if (state1=="关注"){
+            followNum++;
+            document.getElementById("followState").innerText="已关注";
+        }else {
+            followNum--;
+            document.getElementById("followState").innerText="关注";
+        }
+        document.getElementById("followNum").innerText=followNum;
+        $.ajax({
+            url:"follow",
+            data:{"followId":userId},
+            async:true,
+            type:"get",
+            dataType:"json",
+            success:function(state){
+                if (state==0){
+                    document.getElementById("followNum").innerText=f;
+                    document.getElementById("followState").innerText=state1;
+                    alert("不能关注自己");
+                }
+                if (state==1){
+                    alert("关注成功");
+                }
+                if (state==-1){
+                    alert("取消关注成功");
+                }
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+                alert(error);
+            }
+        });
     }
 </script>
 </body>
