@@ -120,7 +120,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         }
         return list;
     }
-    //获取用户影评，时间倒序
+    //获取用户的影评，时间倒序
     public List<MovieCommentInfo> getCommentListByUserId(int userId,int page,int pageNum){
         if (pageNum==0)
             return new ArrayList<>();
@@ -128,7 +128,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         if (list==null||list.size()==0){
             list=getBaseMapper().getCommentListByUserId(userId,(page-1)*7,7);
             redisTemplate.opsForList().rightPushAll("userCommentList"+userId+"_"+page,list);
-            redisUtil.expire("commentList"+userId+"_"+page,60*60);
+            redisUtil.expire("userCommentList"+userId+"_"+page,60*60);
         }
         return list;
     }

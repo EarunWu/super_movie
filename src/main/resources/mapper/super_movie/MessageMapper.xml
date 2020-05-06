@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.super_movie.mapper.MessageMapper">
+    <select id="getMessageList" resultType="com.example.super_movie.vo.MessageInfo">
+        SELECT message.*,user.username
+        FROM message join user on message.send_id=user.id
+        WHERE message.receive_id=#{userId} and create_time>#{date}
+    </select>
+    <insert id="saveMessage" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+  insert into message (send_id,receive_id,title,content)
+  values (#{sendId},#{receiveId},#{title},#{content})
+    </insert>
+    <delete id="deleteMessageByIdAndReceiveId">
+        DELETE FROM message WHERE id=#{id} and receive_id=#{userId}
+    </delete>
+</mapper>

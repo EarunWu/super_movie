@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>用户页面</title>
+    <title>站内邮件</title>
     <!-- for-mobile-apps -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -236,43 +236,42 @@
         <div class="agileits-news-top">
             <ol class="breadcrumb">
                 <li><a href="index.html">Home</a></li>
-                <li><span th:text="${writer.username}"></span>的影评列表</li>
+                <li>我的邮件</li>
             </ol>
         </div>
         <div class="agileinfo-news-top-grids">
-                <div class="col-md-8 wthree-top-news-left">
-                    <div th:fragment="commentListSpace" id="commentListSpace">
+            <div class="col-md-8 wthree-top-news-left">
+                <div th:fragment="messageListSpace" id="messageListSpace">
                     <div class="wthree-related-news-left">
-                        <h4>影评</h4>
-                        <div th:each="comment:${commentList}" class="wthree-news-top-left">
+                        <h4>收件箱</h4>
+                        <div th:each="message:${messageList}" class="wthree-news-top-left">
                             <table>
                                 <tr>
                                     <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
                                         <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
                                     </div></td>
                                     <td rowspan="3">&nbsp;&nbsp;</td>
-                                    <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
-                                    <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
+                                    <td style="font-weight: 600;color: #777777"><span th:text="${message.username}"></span></td>
+                                    <td align="right" width="90%" style="font-weight: 500;color: #bb7b29"><span th:text="${message.createTime}"></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
+                                    <td colspan="2" style="font-weight: 300"><span th:text="${message.title}"></span><button th:onclick="open1([[${message.id}]]);" style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;">展开</button><button style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;">回复</button></td>
                                 </tr>
                                 <tr>
-                                    <td style="font-size: 13px"> </td>
-                                    <td style="font-weight: 500;color: #777777;font-size: 13px" align="right"><span th:text="${comment.createTime.toLocalDate()}"></span></td>
+                                    <td colspan="2" style="word-break:break-all;font-weight: 300"><span th:id="'content'+${message.id}" style="display:none;" th:text="${message.content}"></span> </td>
                                 </tr>
                             </table>
                             <div class="clearfix"> </div>
                         </div>
-                        <div name="page" th:if="${page} ne 0" align="center">
+                        <div name="page" th:if="${page} gt 1" align="center">
                             <a href="javascript:void(0);" onclick="previousPage()">上一页</a>
                             &nbsp;<span id="pageNum" th:text="${pageNum}"></span>&nbsp;
                             <a href="javascript:void(0);" onclick="nextPage()">下一页</a><br>
                             共<span id="page" th:text="${page}"></span>页
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
             <div class="col-md-4 wthree-news-right">
                 <!-- news-right-top -->
                 <div class="news-right-top">
@@ -582,17 +581,19 @@
     function nextPage() {
         var page=document.getElementById("page").textContent;
         var pageNum=document.getElementById("pageNum").innerText;
+        console.log(pageNum);
+        console.log(page);
         console.log(parseInt(pageNum)<parseInt(page));
         if (parseInt(pageNum)<parseInt(page)){
             pageNum++;
-            $('#commentListSpace').load("/userInfo?id="+userId+"&p="+pageNum+"&state=1");
+            $('#messageListSpace').load("/message?page="+pageNum);
         }
     }
     function previousPage() {
         var pageNum=document.getElementById("pageNum").textContent;
         if(parseInt(pageNum)>1){
             pageNum--;
-            $('#commentListSpace').load("/userInfo?id="+userId+"&p="+pageNum+"&state=1");
+            $('#messageListSpace').load("/message?page="+pageNum);
         }
     }
     function follow() {
@@ -631,6 +632,14 @@
                 alert(error);
             }
         });
+    }
+    function open1(id) {
+        var display=document.getElementById("content"+id).style
+        if (display.display=="none"){
+            display.display="block"
+        }else {
+            display.display="none"
+        }
     }
 </script>
 </body>
