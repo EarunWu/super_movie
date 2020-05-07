@@ -42,9 +42,25 @@
         });
     </script>
 </head>
+<div style="z-index: 999;padding-top:80px;display: none; position: absolute;height: 100vh; width: 100vw;background-color: rgba(26,26,26,.65);"
+            id="modal">
+    <div style="text-align:center;border:1px solid black;margin: auto;height: 500px;width: 500px; background-color: #fff;">
+        <br>
+        <h4>发送给:<span id="replyUsername" name="0"></span><span style="color: #bd081c">(id=</span><span style="color: #bd081c" id="replyId"></span><span style="color: #bd081c">)</span><button style="float: right;border-width: 0px; border-radius: 3px; background: red;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="remove()">×</button></h4>
+        <br>
+        标题:<input id="title" style="width: 300px;border-radius: 3px;" autocomplete="off">
+        <br>
+        <br>
+        <textarea id="content" style="width: 350px;height: 340px"></textarea>
+        <br>
+        <button style="border-width: 0px; border-radius: 3px; background: #ffc107;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="sendMessage()">发送</button>
+    </div>
+</div>
 <body>
+
 <!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
+<div id="bodyDiv">
 <div class="header">
     <div class="container">
         <div class="w3layouts_logo">
@@ -244,18 +260,18 @@
                 <div th:fragment="messageListSpace" id="messageListSpace">
                     <div class="wthree-related-news-left">
                         <h4>收件箱</h4>
-                        <div th:each="message:${messageList}" class="wthree-news-top-left">
+                        <div th:id="'message'+${message.id}" style="display: block" th:each="message:${messageList}" class="wthree-news-top-left">
                             <table>
                                 <tr>
                                     <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
                                         <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
                                     </div></td>
                                     <td rowspan="3">&nbsp;&nbsp;</td>
-                                    <td style="font-weight: 600;color: #777777"><span th:text="${message.username}"></span></td>
+                                    <td style="font-weight: 600;color: #777777"><a th:href="@{'userInfo?id='+${message.sendId}}"><span th:text="${message.username}"></span><span style="color: #bd081c" th:text="'(id:'+${message.sendId}+')'"></span></a></td>
                                     <td align="right" width="90%" style="font-weight: 500;color: #bb7b29"><span th:text="${message.createTime}"></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" style="font-weight: 300"><span th:text="${message.title}"></span><button th:onclick="open1([[${message.id}]]);" style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;">展开</button><button style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;">回复</button></td>
+                                    <td colspan="2" style="font-weight: 300"><span th:text="${message.title}"></span><button th:onclick="open1([[${message.id}]]);" style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;">展开</button><button th:onclick="deleteMessage([[${message.id}]]);" style="border-width: 0px; border-radius: 3px; background: red;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;float: right">删除</button><button th:onclick="show([[${message.username}]],[[${message.sendId}]]);" style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;float: right">回复</button></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" style="word-break:break-all;font-weight: 300"><span th:id="'content'+${message.id}" style="display:none;" th:text="${message.content}"></span> </td>
@@ -276,7 +292,7 @@
                 <!-- news-right-top -->
                 <div class="news-right-top">
                     <div align="center" class="wthree-news-right-top">
-                        <h3>影评人</h3>
+                        <h3>我</h3>
                         <br>
                         <div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
                             <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
@@ -284,10 +300,10 @@
                         <br>
                         <h3><a th:href="@{'userInfo?id='+${writer.id}}"><span th:text="${writer.username}"></span></a></h3>
                         <br>
-                        <h4><span id="followNum" th:text="${writer.followNum}">个粉丝</span></h4>
+                        <h4><span id="followNum" th:text="${writer.followNum}"></span>个粉丝</h4>
                         <br>
-                        <button onclick="follow()"><span th:if="not ${writer.followState}" id="followState">关注</span><span th:if="${writer.followState}" id="followState">已关注</span></button>
-                        <br>
+<!--                        <button style="border-width: 0px; border-radius: 3px; background: #E89B29;cursor: pointer; outline: none;  color: white;font-size: 17px;" onclick="follow()"><span th:if="not ${writer.followState}" id="followState">关注</span><span th:if="${writer.followState}" id="followState">已关注</span></button>-->
+<!--                        <br>-->
                         <br>
                         <h4><span th:text="${writer.introduction}"></span></h4>
                     </div>
@@ -541,6 +557,7 @@
         <div class="clearfix"> </div>
     </div>
 </div>
+</div>
 <!-- //footer -->
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
@@ -641,6 +658,69 @@
             display.display="none"
         }
     }
+    function deleteMessage(id) {
+        alert("确定删除？");
+        $.ajax({
+            url:"deleteMessage",
+            data:{"id":id},
+            async:false,
+            type:"post",
+            dataType:"json",
+            success:function(state){
+                if (state){
+                    document.getElementById("message"+id).style.display="none";
+                }else {
+                    alert("删除失败,可能原因为此信息已被删除");
+                }
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+                alert(error);
+            }
+        });
+    }
+    function show(username,sendId) {
+        document.getElementById("replyUsername").innerText=username
+        document.getElementById("replyId").innerText=sendId
+        let modal = document.getElementById("modal")
+        modal.style.display = "block"
+        modal.style.top = document.documentElement.scrollTop + 'px'
+        document.body.style = "overflow-y: hidden;overflow-x: hidden;"
+    }
+    function remove() {
+        let modal = document.getElementById("modal")
+        modal.style.display = "none"
+        document.body.style = ""
+        document.getElementById("title").value=""
+        document.getElementById("content").value=""
+    }
+    function sendMessage() {
+        $.ajax({
+            url:"sendMessage",
+            data:{"receiveId":document.getElementById("replyId").innerText,"title":document.getElementById("title").value,"content":document.getElementById("content").value},
+            async:false,
+            type:"post",
+            dataType:"json",
+            success:function(state){
+                if (state==1){
+                    alert("发送成功");
+                }
+                if (state==0){
+                    alert("用户不存在")
+                }
+                if (state==-1){
+                    alert("小伙子，你被他拉黑了")
+                }
+                remove();
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+                alert(error);
+            }
+        });
+
+    }
+
 </script>
 </body>
 </html>

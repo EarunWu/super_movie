@@ -49,22 +49,28 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         return  redisTemplate.opsForList().range("messageList"+userId,page,page+6);
     }
 //有两种方案，一种是存入数据库同时即删除相应redis的key，一种是在存入数据库时同时push到redislist
-    public boolean sendMessage(int sendId,int receiveId,String title,String content){
-        try {
-            Message message=new Message(sendId,receiveId,title,content);
-            getBaseMapper().saveMessage(message);
-            System.out.println("=="+message.getId());
-            redisUtil.del("messageList"+receiveId);
-            redisUtil.hincr("number","message"+receiveId,1);
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
+    public int sendMessage(int sendId,int receiveId,String title,String content){
+        //检测用户是否激活
+        if (!redisUtil.getBit("userState",receiveId))
+            return 0;
+        //检测是否在黑名单里
+        if (redisUtil.sHasKey("receiveBlackList"+receiveId,sendId))
+            return -1;
+        Message message=new Message(sendId,receiveId,title,content);
+        getBaseMapper().saveMessage(message);
+        redisUtil.del("messageList"+receiveId);
+        redisUtil.hincr("number","message"+receiveId,1);
+        //标记有新信息
+        redisUtil.setBit("messageState",receiveId,true);
+        return 1;
 
     }
+
     public boolean deleteMessage(int id,int userId){
+        //防止缓存穿透在删除方法加个bitmap过滤器
+        if (redisUtil.setBit("messageDeleteState",id,true))
+            return false;
+        redisUtil.del("messageList"+userId);
         return getBaseMapper().deleteMessageByIdAndReceiveId(id,userId);
     }
 

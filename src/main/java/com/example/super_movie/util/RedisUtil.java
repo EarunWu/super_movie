@@ -729,4 +729,14 @@ public class RedisUtil {
 
     //=========BoundListOperations 用法 End============
 
+    /**
+     * 给bitmap存值
+     * 返回值为bitmap之前的值
+     */
+    public boolean setBit(String key,long index,boolean state){
+        return redisTemplate.opsForValue().setBit(key, index, state);
+    }
+    public boolean getBit(String key,long index){
+        return redisTemplate.opsForValue().getBit(key, index);
+    }
 }

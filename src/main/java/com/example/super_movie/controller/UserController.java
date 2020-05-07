@@ -29,6 +29,12 @@ public class UserController{
         return userService.follow(userId,followId);
     }
 
+    @RequestMapping("settings")
+    public String settings(){
+        int userId=1;
+        return "settings";
+    }
+
     //注册
     @RequestMapping("/create")
     public String login(Model model, String username, String password, String email){
@@ -59,5 +65,6 @@ public class UserController{
         }
         return "registerResult";
     }
+
 
 }

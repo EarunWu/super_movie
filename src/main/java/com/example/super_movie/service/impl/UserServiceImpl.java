@@ -113,7 +113,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 //userId是被被关注者，id是关注者
     public UserInfo getUserInfoById(int userId,int id){
-        //如果怕被缓存穿透可以设置一个布隆过滤器
+            //检测目标用户是否存在
+         if (!redisUtil.getBit("userState",userId))
+             return null;
          UserInfo userInfo=(UserInfo) redisUtil.get("userInfo"+userId);
          if (userInfo==null){
              userInfo=getBaseMapper().getUserInfoById(userId);

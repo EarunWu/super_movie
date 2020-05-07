@@ -107,7 +107,7 @@
         <div class="w3l_sign_in_register">
             <ul>
                 <li><i class="fa fa-phone" aria-hidden="true"></i> (+000) 123 345 653</li>
-                <li><a href="#">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
             </ul>
         </div>
         <div class="clearfix"> </div>
@@ -324,7 +324,7 @@
                             </div>
                             <div style="display: inline-block;width: 90%;">
                                 <div style="height: 25px">
-                                    <p style="float: left;color: #6F6F6F;font-weight: 600" th:text="${reply.username}"></p>
+                                    <a th:href="@{'userInfo?id='+${reply.userId}}"><p style="float: left;color: #6F6F6F;font-weight: 600" th:text="${reply.username}"></p></a>
                                     <p style="float: left;color: #bd081c" th:text="'(id:'+${reply.userId}+')'"></p>
                                     <p style="float: right;color: #6F6F6F;font-size: 15px;font-weight: 500" th:text="${reply.createTime}"></p>
                                 </div>
@@ -362,7 +362,7 @@
                     <div class="agile-news-comments-info">
                         <h4>Comments</h4>
                         <textarea id="replyContent" style="width: 100%;height: 100px"></textarea>
-                        <button id="btn1">发布</button>
+                        <h3><a class="label label-warning" id="btn1">发布</a></h3>
                     </div>
                 </div>
                 <!-- //agile-comments -->
@@ -382,9 +382,9 @@
                         <br>
                         <h3><a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a></h3>
                         <br>
-                        <h4><span id="followNum" th:text="${writer.followNum}">个粉丝</span></h4>
+                        <h4><span id="followNum" th:text="${writer.followNum}"></span>个粉丝</h4>
                         <br>
-                        <button onclick="follow()"><span th:if="not ${writer.followState}" id="followState">关注</span><span th:if="${writer.followState}" id="followState">已关注</span></button>
+                        <h3><a href="javascript:void(0);" onclick="follow()"><span class="label label-warning" th:if="not ${writer.followState}" id="followState">关注</span><span class="label label-default" th:if="${writer.followState}" id="followState">已关注</span></a></h3>
                         <br>
                         <br>
                         <h4><span th:text="${writer.introduction}"></span></h4>
@@ -689,15 +689,19 @@
     var desc=1;
     var order=[[${order}]];
     function follow() {
-        var state1=document.getElementById("followState").innerText;
+        var state1=document.getElementById("followState");
+        var state0=state1.innerText;
+        var class0=state1.className;
         var followNum=document.getElementById("followNum").innerText;
         var f=followNum;
-        if (state1=="关注"){
+        if (state1.innerText=="关注"){
             followNum++;
-            document.getElementById("followState").innerText="已关注";
+            state1.innerText="已关注";
+            state1.className="label label-default";
         }else {
             followNum--;
-            document.getElementById("followState").innerText="关注";
+            state1.innerText="关注";
+            state1.className="label label-warning";
         }
         document.getElementById("followNum").innerText=followNum;
         $.ajax({
@@ -709,7 +713,8 @@
             success:function(state){
                 if (state==0){
                     document.getElementById("followNum").innerText=f;
-                    document.getElementById("followState").innerText=state1;
+                    state1.innerText=state0;
+                    state1.className=class0;
                     alert("不能关注自己");
                 }
                 if (state==1){

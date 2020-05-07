@@ -17,6 +17,6 @@ import java.util.Map;
  */
 public interface IMessageService extends IService<Message> {
     List<MessageInfo> getMessageList(int userId,int page,int pageNum);
-    boolean sendMessage(int sendId,int receiveId,String title,String content);
+    int sendMessage(int sendId,int receiveId,String title,String content);
     boolean deleteMessage(int id,int userId);
 }

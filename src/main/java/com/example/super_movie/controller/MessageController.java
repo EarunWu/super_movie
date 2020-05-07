@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -52,6 +53,19 @@ public class MessageController{
         model.addAttribute("pageNum",page);
         model.addAttribute("messageList",messageService.getMessageList(userId,page,pageNum));
         return "message::messageListSpace";
+    }
+    @ResponseBody
+    @RequestMapping("deleteMessage")
+    public boolean deleteMessage(int id){
+        int userId=1;
+        return messageService.deleteMessage(id,userId);
+    }
+
+    @ResponseBody
+    @RequestMapping("sendMessage")
+    public int sendMessage(int receiveId,String title,String content){
+        int userId=1;
+        return messageService.sendMessage(userId,receiveId,title,content);
     }
 
 }

@@ -122,7 +122,8 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     }
     //获取用户的影评，时间倒序
     public List<MovieCommentInfo> getCommentListByUserId(int userId,int page,int pageNum){
-        if (pageNum==0)
+        //过滤
+        if (pageNum==0||!redisUtil.getBit("userState",userId))
             return new ArrayList<>();
         List<MovieCommentInfo> list=redisTemplate.opsForList().range("userCommentList"+userId+"_"+page,0,-1);
         if (list==null||list.size()==0){
