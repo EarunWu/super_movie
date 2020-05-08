@@ -25,4 +25,14 @@
         FROM follow
         WHERE user_id=#{userId}
     </select>
+    <update id="updateUserInfo">
+    update user set
+    username=#{username},introduction=#{introduction}
+    where id = #{userId}
+    </update>
+    <update id="updatePassword">
+    update user set
+    password=#{newPassword}
+    where id = #{userId} and password=#{password}
+    </update>
 </mapper>

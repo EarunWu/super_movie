@@ -2,11 +2,19 @@ package com.example.super_movie.controller;
 
 
 import com.example.super_movie.service.IUserService;
+import com.example.super_movie.util.FileNameUtils;
+import com.example.super_movie.util.FileUtils;
+import com.example.super_movie.vo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -21,6 +29,25 @@ public class UserController{
     @Autowired
     IUserService userService;
 
+    @Value("${web.upload-path}")
+    private String path;
+
+    @ResponseBody
+    @RequestMapping("updateUserInfo")
+    public int updateUserInfo(Model model,String username,String introduction){
+        int userId=1;
+        return userService.updateUserInfo(username,introduction,userId);
+    }
+
+    @ResponseBody
+    @RequestMapping("updatePassword")
+    public int updatePassword(Model model,String newPassword,String password){
+        int userId=1;
+        //判断密码是否为空
+        if (newPassword.length()==0||password.length()==0)
+            return -1;
+        return userService.updatePassword(newPassword,userId,password);
+    }
 
     @ResponseBody
     @RequestMapping("follow")
@@ -29,25 +56,49 @@ public class UserController{
         return userService.follow(userId,followId);
     }
 
-    @RequestMapping("settings")
-    public String settings(){
+    @RequestMapping("getBlackList")
+    public String getBlackList(Model model){
         int userId=1;
+        model.addAttribute("blackList",userService.getBlackList(userId));
+        return "settings::blackListSpace";
+    }
+
+    @ResponseBody
+    @RequestMapping("addBlackList")
+    public int addBlackList(int id){
+        int userId=1;
+        return userService.addBlackList(userId,id);
+    }
+
+    @ResponseBody
+    @RequestMapping("removeBlackList")
+    public int removeBlackList(int id){
+        int userId=1;
+        return userService.removeBlackList(userId,id);
+    }
+
+    @RequestMapping("settings")
+    public String settings(Model model){
+        int userId=1;
+        model.addAttribute("blackList",new ArrayList<UserInfo>());
+        model.addAttribute("userInfo",userService.getUserInfoById(userId,userId));
         return "settings";
     }
 
     //注册
     @RequestMapping("/create")
     public String login(Model model, String username, String password, String email){
-        System.out.println(username+" "+password+" "+email);
-        System.out.println("1111111111111");
-        String a="注册成功，请登录邮箱激活账号";
-        String b="账号已注册或格式不正确";
-        if(userService.doRegister(username,password,email)){
-            System.out.println("if里面");
-            model.addAttribute("information", a);
-        }else{
-            System.out.println("else里面");
-            model.addAttribute("information", b);
+        switch (userService.doRegister(username,password,email)){
+            case -1:
+                model.addAttribute("information", "格式不正确");
+                break;
+            case 0:
+                model.addAttribute("information", "该邮箱已被注册");
+                break;
+            case 1:
+                model.addAttribute("information", "请前往邮箱激活");
+                break;
+            default:model.addAttribute("information", "未知错误");
         }
         return "registerResult";
 
@@ -64,6 +115,27 @@ public class UserController{
             model.addAttribute("information", b);
         }
         return "registerResult";
+    }
+    @ResponseBody
+    @RequestMapping("uploadHead")
+    public String uploadHead(@RequestParam("fileName") MultipartFile file){
+        int  userId=1;
+        // 要上传的目标文件存放路径
+        String localPath = path;
+        String fileName= FileNameUtils.getHeadFileName(file.getOriginalFilename(),userId);
+        System.out.println(fileName);
+//        String[] imgData={"/show?fileName="+fileName};
+        // 上传成功或者失败的提示
+        String msg = "";
+
+        if (FileUtils.upload(file, localPath, fileName)){
+            // 上传成功，给出页面提示
+            msg = "上传成功！";
+        }else {
+            msg = "上传失败！";
+
+        }
+        return msg;
     }
 
 

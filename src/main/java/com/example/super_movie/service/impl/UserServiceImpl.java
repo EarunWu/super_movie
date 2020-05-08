@@ -11,8 +11,11 @@ import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -29,43 +32,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     RedisService redisService;
     @Override
-    public boolean doRegister(String username, String password, String email) {
+    public int doRegister(String username, String password, String email) {
         // 这里可以验证各字段是否为空
         if(username==null||password==null||email==null)
-            return false;
+            return -1;
         //利用正则表达式（可改进）验证邮箱是否符合邮箱的格式
         if(!email.matches("^\\w+@(\\w+\\.)+\\w+$")){
-            return false;
+            return -1;
         }
-        if (getBaseMapper().getStateByeMail(email)!=null){
-
-
-            if (getBaseMapper().getStateByeMail(email).getState()==0){
-                //已注册未激活的账号
-                System.out.println("已注册未激活");
-                new Thread(new MailUtil(email, getBaseMapper().getStateByeMail(email).getCode())).start();
-                return true;
-            }
-            if (getBaseMapper().getStateByeMail(email).getState()==1){
-                //已激活的账号
-                System.out.println("已激活账号");
-                return false;
-            }
+        if (redisUtil.sHasKey("userEmail",email)){
+            return 0;
         }
-        System.out.println("激活码1");
-        //生成激活码
         String code= CodeUtil.generateUniqueCode();
-//		User user=new User(userName,email,password,0,code);
-//		//将用户保存到数据库
-//		UserDao userDao=new UserDaoImpl();
-        //保存成功则通过线程的方式给用户发送一封邮件
-        System.out.println("激活码2");
-        if(getBaseMapper().save(username,email,password,0,code)>0){
-            System.out.println("2222222----1111");
-            new Thread(new MailUtil(email, code)).start();;
-            return true;
+        if(getBaseMapper().save(username,email, DigestUtils.md5DigestAsHex(password.getBytes()),0,code)>0){
+            redisUtil.sSet("userEmail",email);
+            new Thread(new MailUtil(email, code)).start();
+            return 1;
         }
-        return false;
+        return 2;
     }
 
     @Override
@@ -125,5 +109,57 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
          userInfo.setFollowState(getFollowState(id,userId));
         return userInfo;
     }
+    //获取黑名单
+    public List<UserInfo> getBlackList(int userId){
+        Set set=redisUtil.sGet("userBlackList"+userId);
+        List list0=new ArrayList(set);
+        List<String> keys = new ArrayList<>();
+        for (int i=0;i<list0.size();i++){
+            keys.add("userInfo"+list0.get(i));
+        }
+        Object ob=redisUtil.get(keys);
+        List<UserInfo> list=(List<UserInfo>) ob;
+        for (int i=0;i<list.size();i++){
+            if (list.get(0)==null)
+                list.set(i,getUserInfoById((int)list0.get(i),1));
+        }
+        return list;
+    }
+
+    public int addBlackList(int userId,int id){
+        //是否存在此用户
+        if (!redisUtil.getBit("userState",id))
+            return 0;
+        //加入黑名单
+        if (redisUtil.sSet("userBlackList"+userId,id)==1){
+            redisUtil.hincr("number","userBlackList"+userId,1);
+            return 1;
+        }
+        //加入失败说明已加入
+        return -1;
+
+    }
+
+    public int removeBlackList(int userId,int id){
+        if (redisUtil.setRemove("userBlackList"+userId,id)==1){
+            redisUtil.hincr("number","userBlackList"+userId,-1);
+            return 1;
+        }
+        return 0;
+    }
+
+    public int updateUserInfo(String username,String introduction,int userId){
+        if (getBaseMapper().updateUserInfo(username, introduction, userId)>0){
+            redisUtil.del("userInfo"+userId);
+            return 1;
+        }
+        return 0;
+    }
+
+    public int updatePassword(String newPassword,int userId,String password){
+        //如果怕有人疯狂爆破修改密码可以把密码存在redis一份
+        return getBaseMapper().updatePassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()), userId, DigestUtils.md5DigestAsHex(password.getBytes()));
+    }
+
 
 }

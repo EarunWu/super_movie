@@ -34,6 +34,8 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     public int postMovieComment(Integer userId,String content,String title,Integer movieId,int score){
         MovieComment movieComment=new MovieComment(userId,content,title,movieId,score);
         getBaseMapper().postMovieComment(movieComment);
+        redisUtil.hincr("number","movieComment"+movieId,1);
+        redisUtil.hincr("number","userComment"+userId,1);
         return movieComment.getId();
     }
 
@@ -62,7 +64,6 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             redisUtil.zSetInc("likeNum"+movieId,commentId,1);
             //存入新的点赞记录hash，以备导入数据库
             redisUtil.hset("newLikes",userId+"_"+commentId,1);
-            redisUtil.expire("comment"+commentId,60*60*24);
             return true;
         }else {
             //已点过赞，转为取消点赞

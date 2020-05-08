@@ -286,7 +286,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a th:href="@{'movieInfo?movieId='+${movieComment.movieId}}"><span th:text="${movieComment.name}"></span></a></li>
                 <li><a th:href="@{'movieCommentList?movieId='+${movieComment.movieId}}" style="font-size: 15px;float: right;color: #777777">影评列表</a></li>
-                <li class="active"><span th:text="${movieComment.username}"></span>的影评</li>
+                <li class="active"><span th:text="${writer.username}"></span>的影评</li>
             </ol>
         </div>
         <div class="agileinfo-news-top-grids">
@@ -295,13 +295,13 @@
                     <div class="wthree-news-left-img">
                         <h4><span th:text="${movieComment.title}"></span><span style="float: right;color: #ffc107" th:text="评分：+${movieComment.score}"></span> </h4>
                         <div class="s-author">
-                            <p>作者：<a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${movieComment.username}"></span></a> &nbsp;&nbsp;发布时间：<span th:text="${movieComment.createTime.toLocalDate()}"></span>&nbsp;&nbsp;最后修改：<span th:text="${movieComment.updateTime.toLocalDate()}"></span></p>
+                            <p>作者：<a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a> &nbsp;&nbsp;发布时间：<span th:text="${movieComment.createTime.toLocalDate()}"></span>&nbsp;&nbsp;最后修改：<span th:text="${movieComment.updateTime.toLocalDate()}"></span></p>
                         </div>
                         <div id="fb-root"></div>
                         <div th:utext="${movieComment.getContent()}" >
                         </div>
-                        <div align="center" th:if="${not movieComment.state}"><h2 id="likeButton" style="color: lightsteelblue;"><button onclick="like()" style="border:none;background-color:transparent;">♥</button></h2><span id="likeNum" th:text="${movieComment.like}"></span>人点赞</div>
-                        <div align="center" th:if="${movieComment.state}"><h2 id="likeButton" style="color: deeppink;"><button onclick="like()" style="border:none;background-color:transparent;">♥</button></h2><span id="likeNum" th:text="${movieComment.like}"></span>人点赞</div>
+                        <div align="center" th:if="${not movieComment.state}"><h2 id="likeButton" style="color: lightsteelblue;"><button onclick="like()" style="outline:none;border:none;background-color:transparent;">♥</button></h2><span id="likeNum" th:text="${movieComment.like}"></span>人点赞</div>
+                        <div align="center" th:if="${movieComment.state}"><h2 id="likeButton" style="color: deeppink;"><button onclick="like()" style="outline:none;border:none;background-color:transparent;">♥</button></h2><span id="likeNum" th:text="${movieComment.like}"></span>人点赞</div>
                     </div>
                 </div>
                 <div class="wthree-related-news-left" >
@@ -384,7 +384,7 @@
                         <br>
                         <h4><span id="followNum" th:text="${writer.followNum}"></span>个粉丝</h4>
                         <br>
-                        <h3><a href="javascript:void(0);" onclick="follow()"><span class="label label-warning" th:if="not ${writer.followState}" id="followState">关注</span><span class="label label-default" th:if="${writer.followState}" id="followState">已关注</span></a></h3>
+                        <h3><a style="text-decoration:none" href="javascript:void(0);" onclick="follow()"><span class="label label-warning" th:if="not ${writer.followState}" id="followState">关注</span><span class="label label-default" th:if="${writer.followState}" id="followState">已关注</span></a></h3>
                         <br>
                         <br>
                         <h4><span th:text="${writer.introduction}"></span></h4>

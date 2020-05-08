@@ -28,4 +28,8 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<String> getFollowByUserId(int userId);
 
+    int updateUserInfo(String username,String introduction,int userId);
+
+    int updatePassword(String newPassword,int userId,String password);
+
 }

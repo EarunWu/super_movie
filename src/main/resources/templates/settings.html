@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="css/font-awesome.min.css" />
 <!-- //font-awesome icons -->
 <!-- js -->
-<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <!-- //js -->
 <!---<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>--->
 <!-- start-smoth-scrolling -->
@@ -237,7 +237,7 @@
             <div class="agileits-single-top">
 				<ol class="breadcrumb">
 				  <li><a href="index.html">Home</a></li>
-				  <li class="active">TV - Series</li>
+				  <li class="active">个人设置</li>
 				</ol>
 			</div>
 		</div>
@@ -246,646 +246,71 @@
 				<ul id="myTab" class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">修改个人信息</a></li>
 					<li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">修改密码</a></li>
-					<li role="presentation"><a href="#rating" id="rating-tab" role="tab" data-toggle="tab" aria-controls="rating" aria-expanded="true">管理黑名单</a></li>
-					<li role="presentation"><a href="#imdb" role="tab" id="imdb-tab" data-toggle="tab" aria-controls="imdb" aria-expanded="false">Recently Added</a></li>
+					<li role="presentation"><a href="#rating" onclick="blackList()" id="rating-tab" role="tab" data-toggle="tab" aria-controls="rating" aria-expanded="true">管理黑名单</a></li>
+<!--					<li role="presentation"><a href="#imdb" role="tab" id="imdb-tab" data-toggle="tab" aria-controls="imdb" aria-expanded="false">Recently Added</a></li>-->
 				</ul>
 				<div id="myTabContent" class="tab-content">
-					<div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-						<div class="w3_agile_featured_movies">
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m15.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">God’s Compass</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
+					<div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab" >
+						<div class="w3_agile_featured_movies" align="center">
+							<div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
+								<img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
+							</div>
+							<div><a href="#"><h3 class="glyphicon glyphicon-camera" aria-hidden="true"></h3></a></div>
+							<div style="display:flex;justify-content:center;align-items:center;">
+								<div class="input-group input-group-lg w3_w3layouts">
+									<span class="input-group-addon">用户昵称</span>
+									<input id="username" type="text" class="form-control" style="width: 300px" th:value="${userInfo.username}" aria-describedby="sizing-addon1">
 								</div>
 							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m2.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">Bad Moms</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
+							<div style="display:flex;justify-content:center;align-items:center;">
+								<div class="input-group input-group-lg w3_w3layouts">
+									<span class="input-group-addon">用户签名</span>
+									<input id="introduction" type="text" class="form-control" style="width: 300px" th:value="${userInfo.introduction}" aria-describedby="sizing-addon1">
 								</div>
 							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m5.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">Jason Bourne</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m16.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">Rezort</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m17.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">Peter</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m18.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">ISRA 88</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m1.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">War Dogs</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m14.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">The Other Side</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m19.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">Civil War</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m20.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">The Secret Life of Pets</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m21.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">The Jungle Book</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
-							<div class="col-md-2 w3l-movie-gride-agile">
-								<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m22.jpg" title="album-name" class="img-responsive" alt=" " />
-									<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-								</a>
-								<div class="mid-1 agileits_w3layouts_mid_1_home">
-									<div class="w3l-movie-text">
-										<h6><a href="single.html">Assassin's Creed 3</a></h6>							
-									</div>
-									<div class="mid-2 agile_mid_2_home">
-										<p>2016</p>
-										<div class="block-stars">
-											<ul class="w3l-ratings">
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</div>
-								<div class="ribben">
-									<p>NEW</p>
-								</div>
-							</div>
+							<div><h3><a href="javascript:void(0);" onclick="updateUserInfo()" class="label label-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></h3></div>
 							<div class="clearfix"> </div>
 						</div>
+
 					</div>
-					<div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m22.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Assassin's Creed 3</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
+					<div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab" >
+						<div style="display:flex;justify-content:center;align-items:center;">
+							<div class="input-group input-group-lg w3_w3layouts">
+								<span class="input-group-addon">原密码</span>
+								<input id="password" type="password" class="form-control" style="width: 300px" aria-describedby="sizing-addon1">
 							</div>
 						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m2.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Bad Moms</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
+						<div style="display:flex;justify-content:center;align-items:center;">
+							<div class="input-group input-group-lg w3_w3layouts">
+								<span class="input-group-addon">新密码</span>
+								<input id="newPassword"  type="password" class="form-control" style="width: 300px" aria-describedby="sizing-addon1">
 							</div>
 						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m9.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Central Intelligence</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
+						<div align="center"><h3><a href="javascript:void(0);" onclick="updatePassword()" class="label label-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></h3></div>
 						<div class="clearfix"> </div>
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="rating" aria-labelledby="rating-tab">
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m7.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Light B/t Oceans</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
+						<div class="bs-docs-example" th:fragment="blackListSpace" id="blackListSpace">
+							<table class="table">
+								<thead>
+								<tr>
+									<th>序号</th>
+									<th>id</th>
+									<th>用户名</th>
+									<th>移除</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:id="'tr'+${black.id}" th:each="black:${blackList}">
+									<td><span th:text="${blackStat.index+1}"></span></td>
+									<td><span th:text="${black.id}"></span></td>
+									<td><span th:text="${black.username}"></span></td>
+									<td><h4><a href="javascript:void(0);" th:onclick="removeBlackList([[${black.id}]])" class="label label-danger">移除</a></h4></td>
+								</tr>
+								</tbody>
+							</table>
 						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m11.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">X-Men</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m8.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">The BFG</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m17.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Peter</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="clearfix"> </div>
-					</div>
-					<div role="tabpanel" class="tab-pane fade" id="imdb" aria-labelledby="imdb-tab">
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m22.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Assassin's Creed 3</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m2.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Bad Moms</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m9.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Central Intelligence</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m10.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Don't Think Twice</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
-						<div class="col-md-2 w3l-movie-gride-agile">
-							<a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m23.jpg" title="album-name" class="img-responsive" alt=" " />
-								<div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-							</a>
-							<div class="mid-1 agileits_w3layouts_mid_1_home">
-								<div class="w3l-movie-text">
-									<h6><a href="single.html">Dead Island 2</a></h6>							
-								</div>
-								<div class="mid-2 agile_mid_2_home">
-									<p>2016</p>
-									<div class="block-stars">
-										<ul class="w3l-ratings">
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-											<li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-										</ul>
-									</div>
-									<div class="clearfix"></div>
-								</div>
-							</div>
-							<div class="ribben">
-								<p>NEW</p>
-							</div>
-						</div>
+
 						<div class="clearfix"> </div>
 					</div>
 				</div>
@@ -1227,21 +652,83 @@ $(document).ready(function(){
 </script>
 <!-- //Bootstrap Core JavaScript -->
 <!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear' 
-				};
-			*/
-								
-			$().UItoTop({ easingType: 'easeOutQuart' });
-								
+<script type="text/javascript" th:inline="javascript">
+	var username=unescape([[${userInfo.username}]]);
+	var introduction=unescape([[${userInfo.introduction}]]);
+	function updateUserInfo() {
+		if (username!=document.getElementById("username").value||introduction!=document.getElementById("introduction").value){
+			$.ajax({
+				url:"updateUserInfo",
+				data:{"username":document.getElementById("username").value,"introduction":document.getElementById("introduction").value},
+				async:false,
+				type:"post",
+				dataType:"json",
+				success:function(state){
+					if (state==1){
+						alert("修改成功");
+					}else {
+						alert("未知错误")
+					}
+				},
+				error:function(error) {
+					alert("服务器繁忙");
+					alert(error);
+				}
 			});
-	</script>
-<!-- //here ends scrolling icon -->
+			username=document.getElementById("username").value;
+			introduction=document.getElementById("introduction").value;
+		}
+	}
+	function updatePassword() {
+		$.ajax({
+			url:"updatePassword",
+			data:{"newPassword":document.getElementById("newPassword").value,"password":document.getElementById("password").value},
+			async:false,
+			type:"post",
+			dataType:"json",
+			success:function(state){
+				if (state==1){
+					alert("修改成功");
+				}
+				if (state==0){
+					alert("密码错误")
+				}
+				if (state==-1){
+					alert("密码不能为空")
+				}
+			},
+			error:function(error) {
+				alert("服务器繁忙");
+				alert(error);
+			}
+		});
+	}
+	function blackList() {
+		$('#blackListSpace').load("getBlackList");
+	}
+	function removeBlackList(id) {
+		$.ajax({
+			url:"removeBlackList",
+			data:{"id":id},
+			async:false,
+			type:"post",
+			dataType:"json",
+			success:function(state){
+				if (state==1){
+					document.getElementById("tr"+id).style.display="none";
+					alert("删除成功");
+				}
+				if (state==0){
+					document.getElementById("tr"+id).style.display="none";
+					alert("不能重复删除")
+				}
+			},
+			error:function(error) {
+				alert("服务器繁忙");
+				alert(error);
+			}
+		});
+	}
+</script>
 </body>
 </html>

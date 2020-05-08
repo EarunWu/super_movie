@@ -252,8 +252,8 @@
                                     <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
                                 </div></td>
                                 <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
+                                <td style="font-weight: 600;color: #777777;width: 20%"><a th:href="'userInfo?id='+${comment.userId}"><span th:text="${comment.username}"></span><span style="color: red;font-size: 80%" th:text="'(id='+${comment.userId}+')'"></span> </a></td>
+                                <td align="right" width="90%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
@@ -277,8 +277,8 @@
                                     <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
                                 </div></td>
                                 <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
+                                <td style="font-weight: 600;color: #777777"><a th:href="'userInfo?id='+${comment.userId}"><span th:text="${comment.username}"></span><span style="color: red;font-size: 80%" th:text="'(id='+${comment.userId}+')'"></span></a></td>
+                                <td align="right" width="90%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>

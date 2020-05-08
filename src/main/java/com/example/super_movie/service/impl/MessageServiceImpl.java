@@ -54,7 +54,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         if (!redisUtil.getBit("userState",receiveId))
             return 0;
         //检测是否在黑名单里
-        if (redisUtil.sHasKey("receiveBlackList"+receiveId,sendId))
+        if (redisUtil.sHasKey("userBlackList"+receiveId,sendId))
             return -1;
         Message message=new Message(sendId,receiveId,title,content);
         getBaseMapper().saveMessage(message);

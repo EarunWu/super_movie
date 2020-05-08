@@ -62,8 +62,6 @@ public class MovieCommentController{
     public int postMovieComment(String content,String title,int movieId,int score){
         int userId=1;
         int id=movieCommentService.postMovieComment(userId, content,title,movieId,score);
-        redisUtil.hincr("number","movieComment"+movieId,1);
-        redisUtil.hincr("number","userComment"+userId,1);
         redisUtil.zSet("likeNum"+movieId,0,id);
         return id;
     }

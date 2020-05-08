@@ -20,4 +20,13 @@ public class FileNameUtils {
         return UUIDUtils.getUUID() + FileNameUtils.getSuffix(fileOriginName);
     }
 
+    /**
+     * 生成头像文件名
+     * @param fileOriginName 源文件名
+     * @return
+     */
+    public static String getHeadFileName(String fileOriginName,int userId){
+        return "userHead"+userId + FileNameUtils.getSuffix(fileOriginName);
+    }
+
 }
