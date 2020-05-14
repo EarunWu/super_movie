@@ -69,9 +69,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     public boolean getFollowState(int userId,int followId){
         if (!redisUtil.hasKey("follow"+userId)){
-            //redis中没有记录，批量插入影评当天的点赞记录到redis set
+            //redis中没有记录，批量插入用户的关注记录到redis set
             List<String> a=getBaseMapper().getFollowByUserId(userId);
             redisService.insertKey(a,"follow"+userId);
+            //插入个0值防止没有数据时被清空
+            redisUtil.sSet("follow"+userId,0);
             redisUtil.expire("follow"+userId,60*60*24*7);
         }
         //返回查询结果
@@ -81,16 +83,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (userId==followId)
             return 0;
         if (redisUtil.sSet("follow"+userId,followId)==1){
-            //点赞成功操作，点赞数加1
+            //关注成功操作，点赞数加1
             redisUtil.zSetInc("followNum",followId,1);
             //存入新的点赞记录hash，以备导入数据库
             redisUtil.hset("newFollow",userId+"_"+followId,1);
             return 1;
         }else {
-            //已点过赞，转为取消点赞
+            //已点关注，转为取消关注
             redisUtil.zSetInc("followNum",followId,-1);
             redisUtil.setRemove("follow"+userId,followId);
-            //存入新的点赞记录hash，以备导入数据库
+            //存入新的关注记录hash，以备导入数据库
             redisUtil.hset("newFollow",userId+"_"+followId,0);
             return -1;
         }

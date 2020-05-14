@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.MovieComment;
 import com.example.super_movie.mapper.MovieCommentMapper;
 import com.example.super_movie.service.IMovieCommentService;
+import com.example.super_movie.service.IUserService;
 import com.example.super_movie.util.RedisService;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieCommentInfo;
@@ -31,12 +32,21 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     RedisTemplate redisTemplate;
     @Autowired
     RedisService redisService;
+    @Autowired
+    IUserService userService;
     public int postMovieComment(Integer userId,String content,String title,Integer movieId,int score){
         MovieComment movieComment=new MovieComment(userId,content,title,movieId,score);
         getBaseMapper().postMovieComment(movieComment);
+        int id=movieComment.getId();
         redisUtil.hincr("number","movieComment"+movieId,1);
         redisUtil.hincr("number","userComment"+userId,1);
-        return movieComment.getId();
+        //标记存在此影评
+        redisUtil.setBit("commentState",id,true);
+        //标记点赞数
+        redisUtil.zSet("likeNum"+movieId,0,id);
+        //插入公共动态
+        redisUtil.lSetHead("publicHome",id);
+        return id;
     }
 
     public boolean getLikeStateById(int userId,Integer commentId, LocalDate localDate){
@@ -46,6 +56,8 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             //redis中没有记录，批量插入影评当天的点赞记录到redis set
             List<String> a=getBaseMapper().getLikesByDateAndUserId(userId,stringDate,stringDate1);
             redisService.insertKey(a,userId+stringDate);
+            //存个0防止set被清空自动删除key
+            redisUtil.sSet(userId+stringDate,0);
             redisUtil.expire(userId+stringDate,60*60*24*7);
         }
         //返回查询结果
@@ -80,7 +92,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             movieCommentInfo=getBaseMapper().getMovieCommentInfoById(id);
             redisUtil.set("comment"+id,movieCommentInfo,60*60*24);
         }
-        if (movieCommentInfo==null){
+        if (!redisUtil.getBit("commentState",id)){
             System.out.println("数据库不存在此数据");
             return null;
         }
@@ -134,4 +146,51 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         }
         return list;
     }
+    //获取主页的公共动态信息；
+    public List<MovieCommentInfo> getPublicHomeList(Integer page){
+        List list=redisUtil.lGet("publicHome",(page-1)*5,(page-1)*5+4);
+        List<String> keys=new ArrayList<>();
+        for (int i=0;i<list.size();i++){
+            keys.add("comment"+list.get(i));
+        }
+        Object o=redisUtil.get(keys);
+        List<MovieCommentInfo> movieCommentInfoList=(List<MovieCommentInfo>)o;
+        for (int i=0;i<list.size();i++){
+            if (movieCommentInfoList.get(i)==null)
+                movieCommentInfoList.set(i,getMovieCommentInfoById((int)list.get(i)));
+        }
+        return movieCommentInfoList;
+    }
+
+    public List<MovieCommentInfo> getPrivateHomeList(int userId,int page){
+        userService.getFollowState(userId,0);
+        Set set=redisUtil.sGet("follow"+userId);
+        List<MovieCommentInfo> list=redisTemplate.opsForList().range("privateHome"+userId,(page-1)*5,(page-1)*5+4);
+        if (list==null||list.size()==0){
+            Map<String,Object> map=new HashMap<>();
+            LocalDate localDate=LocalDate.now().minusMonths(1);
+            map.put("list",new ArrayList<>(set));
+            map.put("date",localDate.toString());
+            list=getBaseMapper().getPrivateHomeList(map);
+            list.add(new MovieCommentInfo());
+            redisTemplate.opsForList().rightPushAll("privateHome"+userId,list);
+            redisUtil.expire("privateHome"+userId,5*60);
+            return list.subList((page-1)*5,(page-1)*5+5);
+        }
+        return list;
+
+    }
+
+//    public int report(int state,int id,int userId){
+//        //0为举报影评，1为举报评论
+//        if (state==0){
+//            //把点赞数设置为举报人的id
+//            MovieCommentInfo movieCommentInfo=getMovieCommentInfoById(id);
+//            movieCommentInfo.setLike(userId);
+//            redisUtil.zSetInc("commentReport",movieCommentInfo,1);
+//        }
+//        if (state==1){
+//            redisUtil.lSet("replyReport",id);
+//        }
+//    }
 }

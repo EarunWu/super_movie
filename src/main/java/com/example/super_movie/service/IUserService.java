@@ -33,4 +33,6 @@ public interface IUserService extends IService<User> {
 
     int updatePassword(String newPassword,int userId,String password);
 
+    boolean getFollowState(int userId,int followId);
+
 }

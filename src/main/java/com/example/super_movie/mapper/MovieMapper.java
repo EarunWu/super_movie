@@ -3,7 +3,9 @@ package com.example.super_movie.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.super_movie.entity.Movie;
 import com.example.super_movie.entity.Person;
+import com.example.super_movie.vo.SelectMovieList;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,4 +28,9 @@ public interface MovieMapper extends BaseMapper<Movie> {
     List<String> findLanguageByMovieId(int movieId);
     int addMovie(String name, LocalDate time, String country, int length, String info);
     Map<String,Object> getAvgScoreAndNumByMovieId(int movieId);
+    List<SelectMovieList> findMovieListByKindOrderByTime(String kind);
+    List<SelectMovieList> findMovieListByKindOrderByHot(String kind);
+    Integer getKindNumByKind(String kind);
+    List<SelectMovieList> searchMovieByName(@Param("name")String name,@Param("start")int start);
+    int getSearchCountNum(String name);
 }

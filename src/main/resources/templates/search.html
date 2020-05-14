@@ -2,8 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>电影信息</title>
+    <title>搜索结果</title>
     <!-- for-mobile-apps -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,7 +26,7 @@
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <!-- //font-awesome icons -->
     <!-- js -->
-    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <!-- //js -->
     <!---<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>--->
     <!-- start-smoth-scrolling -->
@@ -42,56 +41,10 @@
         });
     </script>
     <!-- start-smoth-scrolling -->
-    <!--<style>-->
-    <!--    /* table 样式 */-->
-    <!--    table {-->
-    <!--        border-top: 1px solid #ccc;-->
-    <!--        border-left: 1px solid #ccc;-->
-    <!--    }-->
-    <!--    table td,-->
-    <!--    table th {-->
-    <!--        border-bottom: 1px solid #ccc;-->
-    <!--        border-right: 1px solid #ccc;-->
-    <!--        padding: 3px 5px;-->
-    <!--    }-->
-    <!--    table th {-->
-    <!--        border-bottom: 2px solid #ccc;-->
-    <!--        text-align: center;-->
-    <!--    }-->
 
-    <!--    /* blockquote 样式 */-->
-    <!--    blockquote {-->
-    <!--        display: block;-->
-    <!--        border-left: 8px solid #d0e5f2;-->
-    <!--        padding: 5px 10px;-->
-    <!--        margin: 10px 0;-->
-    <!--        line-height: 1.4;-->
-    <!--        font-size: 100%;-->
-    <!--        background-color: #f1f1f1;-->
-    <!--    }-->
-
-    <!--    /* code 样式 */-->
-    <!--    code {-->
-    <!--        display: inline-block;-->
-    <!--        *display: inline;-->
-    <!--        *zoom: 1;-->
-    <!--        background-color: #f1f1f1;-->
-    <!--        border-radius: 3px;-->
-    <!--        padding: 3px 5px;-->
-    <!--        margin: 0 3px;-->
-    <!--    }-->
-    <!--    pre code {-->
-    <!--        display: block;-->
-    <!--    }-->
-
-    <!--    /* ul ol 样式 */-->
-    <!--    ul, ol {-->
-    <!--        margin: 10px 0 10px 20px;-->
-    <!--    }-->
-    <!--</style>-->
 </head>
+
 <body>
-<!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
 <div class="header">
     <div class="container">
@@ -268,110 +221,58 @@
     </div>
 </div>
 <!-- //nav -->
-<!--<div class="general_social_icons">-->
-<!--    <nav class="social">-->
-<!--        <ul>-->
-<!--            <li class="w3_twitter"><a href="#">Twitter <i class="fa fa-twitter"></i></a></li>-->
-<!--            <li class="w3_facebook"><a href="#">Facebook <i class="fa fa-facebook"></i></a></li>-->
-<!--            <li class="w3_dribbble"><a href="#">Dribbble <i class="fa fa-dribbble"></i></a></li>-->
-<!--            <li class="w3_g_plus"><a href="#">Google+ <i class="fa fa-google-plus"></i></a></li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-<!--</div>-->
 <!-- faq-banner -->
 <div class="faq">
     <div class="container">
         <div class="agileits-news-top">
             <ol class="breadcrumb">
-                <li><a href="index.html">Home</a></li>
-                <li><span th:text="${movieInfo.name}"></span></li>
+                <li><a href="index">主页</a></li>
+                <li><span th:text="${name}+'  搜索结果'"></span></li>
             </ol>
         </div>
         <div class="agileinfo-news-top-grids">
             <div class="col-md-8 wthree-top-news-left">
                 <div class="wthree-news-left">
-                    <div class="wthree-news-left-img">
-                        <h4><span th:text="${movieInfo.name}"></span><span th:text="${movieInfo.score}+'&nbsp;&nbsp;&nbsp;&nbsp;'" style="float: right"></span></h4>
-                        <span style="float: right" th:text="'('+${movieInfo.sum}+'人评分)'"></span>
-                        <div id="fb-root"></div>
-                        <div>
-                            <div style="float: left">
-                                <img src="images/m1.jpg" height="412" width="287" alt="" />
-                            </div>
-                            <div style="float: right;width: 370px">
-                                <div class="clearfix"></div>
-                                <br><span class="pMovieInfo">导演: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="director:${movieInfo.getDirector()}"><a th:href="@{'person?personId='+${director.id}}"><span th:text="${director.name}"></span>&nbsp;</a></span></span>
-                                <br><br><span class="pMovieInfo">编剧: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="screenwriter:${movieInfo.getScreenwriter()}"><a th:href="@{'person?personId='+${screenwriter.id}}"><span th:text="${screenwriter.name}"></span>&nbsp;</a></span></span>
-                                <br><br><span class="pMovieInfo">演员: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="actor:${movieInfo.getActor()}"><a th:href="@{'person?personId='+${actor.id}}"><span th:text="${actor.name}"></span></a>&nbsp;</span></span>
-                                <br><br><span class="pMovieInfo">制片国家/地区: &nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${movieInfo.country}"></span></span>
-                                <br><br><span class="pMovieInfo">语言: &nbsp;&nbsp;&nbsp;&nbsp;<span th:each="language:${movieInfo.getLanguage()}"><span th:text="${language}"></span>&nbsp;</span></span>
-                                <br><br><span class="pMovieInfo">类型:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:each="kind:${movieInfo.getKind()}"><span th:text="${kind}"></span>&nbsp;</span></span>
-                                <br><br><span class="pMovieInfo">片长:&nbsp;&nbsp;&nbsp; &nbsp; <span th:text="${movieInfo.length}"></span></span>
-                                <br><br><span class="pMovieInfo">上映日期:&nbsp;&nbsp;&nbsp; &nbsp; <span th:text="${movieInfo.time}"></span></span>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div>
-                                <h4 class="single">剧情简介</h4>
-                                <p class="pMovieInfo"> <span th:text="${movieInfo.info}"></span></p>
+                    <div th:fragment="movieListSpace" id="movieListSpace" class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home1" aria-labelledby="home1-tab">
+                                <div class="wthree-news-top-left">
+                                    <div th:if="${movieList.size()==0}">
+                                        <h3 class="head">空空如也</h3>
+                                    </div>
+                                    <div th:each="movie:${movieList}" class="col-md-6 w3-agileits-news-left">
+                                        <div class="col-sm-5 wthree-news-img">
+                                            <a th:href="'movieInfo?movieId='+${movie.id}"><img src="images/m9.jpg" alt=""></a>
+                                        </div>
+                                        <div class="col-sm-7 wthree-news-info">
+                                            <h5><a th:text="${movie.name}" th:href="'movieInfo?movieId='+${movie.id}"></a></h5>
+                                            <p th:text="${movie.info}"></p>
+                                            <ul>
+                                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> <span th:text="${movie.time}"></span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="wthree-related-news-left">
-                    <h4>影评<a th:href="@{'movieCommentList?movieId='+${movieInfo.id}}" style="font-size: 15px;float: right;color: #777777">more</a> </h4>
-                    <div th:each="comment:${commentList}" class="wthree-news-top-left">
-                        <table>
-                            <tr>
-                                <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
-                                    <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
-                                </div></td>
-                                <td rowspan="3">&nbsp;&nbsp;</td>
-                                <td style="width:20%;font-weight: 600;color: #777777"><span th:text="${comment.username}"></span></td>
-                                <td align="right" width="80%" style="font-weight: 500;color: #bb7b29">评分:<span th:text="${comment.score}"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="font-weight: 300"><a th:href="@{'movieComment?id='+${comment.id}}"><span th:text="${comment.title}"></span></a></td>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 13px"><span th:text="${maxLikeList.get(commentStat.index).score.intValue()}"></span><span style="color: red">❤</span> </td>
-                                <td style="font-weight: 500;color: #777777;font-size: 13px" align="right"><span th:text="${comment.createTime.toLocalDate()}"></span></td>
-                            </tr>
-                        </table>
-                        <div class="clearfix"> </div>
-                    </div>
-                </div>
-                <!-- agile-comments -->
-                <div class="agile-news-comments">
-                    <div class="agile-news-comments-info">
-                        <h4>发表影评</h4>
-                        <input id="title" style="width: 100%" type="text" class="text" value="标题" autocomplete="off" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '标题';}">
-                        <div id="editor">
-
+                        <div class="blog-pagenat-wthree">
+                            <ul>
+                                <li><a class="frist" href="javascript:void(0);" onclick="prev()">上一页</a></li>
+                                <li th:if="${page} ne 1"><a href="javascript:void(0);" onclick="toPage(1)">1</a></li>
+                                <li th:if="${page} ne 1"><a href="#">...</a></li>
+                                <li><a style="color: white;background: black" id="page" href="#" th:text="${page}"></a></li>
+                                <li th:if="${page} ne ${pageNum}"><a href="#">...</a></li>
+                                <li th:if="${pageNum!=1 &&pageNum!=page}"><a href="javascript:void(0);" th:onclick="toPage([[${pageNum}]])" th:text="${pageNum}"></a></li>
+                                <li><a class="last" href="javascript:void(0);" onclick="next()">下一页</a></li>
+                            </ul>
                         </div>
-
-                        <select id="score">
-                            <option value="score">评分</option>
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select><a style="float: right;width: 100px;height: 30px;font-size: large" class="label label-warning" id="btn1">发布</a>
                     </div>
-                </div>
-                <!-- //agile-comments -->
-                <div class="news-related">
-
                 </div>
             </div>
             <div class="col-md-4 single-right">
-                <h3>推荐</h3>
+                <h3>热议</h3>
                 <div class="single-grid-right">
                     <div class="single-right-grids">
                         <div class="col-md-4 single-right-grid-left">
@@ -747,64 +648,25 @@
     });
 </script>
 <!-- //here ends scrolling icon -->
-<script type="text/javascript" src="js/wangEditor.min.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
-    var E = window.wangEditor
-    var editor = new E('#editor')
-    var movieId=[[${movieInfo.id}]]
-    // 或者 var editor = new E( document.getElementById('editor') )
-    editor.customConfig.uploadImgServer = '/upload'
-    editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024
-    editor.customConfig.uploadImgMaxLength = 5
-    editor.customConfig.uploadFileName = 'fileName'
-    editor.customConfig.uploadImgHooks = {
-        before : function(xhr, editor, files) {
-
-        },
-        success : function(xhr, editor, result) {
-            console.log("上传成功");
-        },
-        fail : function(xhr, editor, result) {
-            console.log("上传失败,原因是"+result);
-        },
-        error : function(xhr, editor) {
-            console.log("上传出错");
-        },
-        timeout : function(xhr, editor) {
-            console.log("上传超时");
-        }
+    var pageNum=[[${pageNum}]]
+    var name=unescape([[${name}]])
+    function next() {
+        let page=document.getElementById("page").innerText;
+        page++
+        $('#movieListSpace').load("search?page="+page+"&name="+name+"&reload=1");
+        scrollTo(0,0);
     }
-    editor.create()
-    document.getElementById('btn1').addEventListener('click', function () {
-        if(document.getElementById('score').value=='score'){
-            alert("未评分")
-        }else {
-            $.ajax({
-                url:"postMovieComment",    //请求的url地址
-                dataType:"json",   //返回格式为json
-                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{"content":editor.txt.html(),"title":document.getElementById('title').value,"movieId":movieId,"score":document.getElementById('score').value},    //参数值
-                type:"POST",   //请求方式
-                success:function(req){
-                    alert("成功")
-                    location.href = "movieComment?id="+req;
-                    //请求成功时处理
-                },
-                error:function(){
-                    alert("error")
-                    //请求出错处理
-                }
-            });}
-        // 读取 html
-        // document.getElementById("aaa").innerHTML = editor.txt.html();
-    }, false)
-
-    document.getElementById('btn2').addEventListener('click', function () {
-        // 读取 text
-        document.getElementById("aaa").innerHTML = editor.txt.html();
-    }, false)
-
+    function prev() {
+        let page=document.getElementById("page").innerText;
+        page--
+        $('#movieListSpace').load("search?page="+page+"&name="+name+"&reload=1");
+        scrollTo(0,0);
+    }
+    function toPage(p) {
+        $('#movieListSpace').load("search?page="+p+"&name="+name+"&reload=1");
+        scrollTo(0,0);
+    }
 </script>
 </body>
 </html>

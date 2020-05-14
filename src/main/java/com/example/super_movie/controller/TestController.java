@@ -32,21 +32,25 @@ public class TestController{
         System.out.println(iTestService.getById(12).getMagicId());
         return "login";
     }
-    @RequestMapping("/index")
-    public String toIndex(Model model){
-        return "index";
-
-    }
     @RequestMapping("/hhh")
     public String hhh(Model model){
-        return "hhhh";
+//        for (int i=6;i<83;i++){
+//            if (i!=58)
+//                redisUtil.lSetHead("publicHome",i);
+//        }
+
+        return "search";
 
     }
     @RequestMapping("/findMovie")
     public String toFindMovie(Model model){
         return "findMovie";
-
     }
+//    @RequestMapping("/testttt")
+//    public String aaaaaaaa(String[] vehicle){
+//        System.out.println(vehicle.length);
+//        return "findMovie";
+//    }
     @RequestMapping("/msg")
     public String toMsg(Model model){
         return "msg";
@@ -80,5 +84,14 @@ public class TestController{
         Person person=(Person)object1;
         System.out.println(person.getName());
         return person;
+    }
+
+    @ResponseBody
+    @RequestMapping("settt")
+    public String testtt(){
+        for (int i=0;i<=82;i++){
+            redisUtil.setBit("commentState",i,true);
+        }
+        return "succeed";
     }
 }

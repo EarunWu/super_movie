@@ -245,12 +245,12 @@
 					     <!--/browse-agile-w3ls -->
 						<div class="browse-agile-w3ls general-w3ls">
 								<div class="tittle-head">
-									<h4 class="latest-text">Family Movies </h4>
+									<h4 class="latest-text"><span th:text="${kind}"></span> </h4>
 									<div class="container">
 										<div class="agileits-single-top">
 											<ol class="breadcrumb">
-											  <li><a href="index.html">Home</a></li>
-											  <li class="active">Genres</li>
+											  <li><a href="index.html">主页</a></li>
+											  <li class="active"><span th:text="${kind}"></span></li>
 											</ol>
 										</div>
 									</div>
@@ -278,13 +278,13 @@
 				<!--//browse-agile-w3ls -->
 						<div class="blog-pagenat-wthree">
 							<ul>
-								<li><a class="frist" href="#">Prev</a></li>
-								<li><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a class="last" href="#">Next</a></li>
+								<li><a class="frist" th:href="'movieSelect?state='+${state}+'&page='+${(page==1?1:page-1)}">上一页</a></li>
+								<li th:if="${page} ne 1"><a th:href="'movieSelect?state='+${state}"></a></li>
+								<li th:if="${page} ne 1"><a href="#">...</a></li>
+								<li><a href="#" th:text="${page}"></a></li>
+								<li th:if="${page} ne ${pageNum}"><a href="#">...</a></li>
+								<li th:if="${pageNum} ne 1"><a th:href="'movieSelect?state='+${state}+'&page='+${pageNum}" th:text="${pageNum}"></a></li>
+								<li><a class="last" th:href="'movieSelect?state='+${state}+'&page='+${(page==pageNum?pageNum:page+1)}">下一页</a></li>
 							</ul>
 						</div>
 					</div>

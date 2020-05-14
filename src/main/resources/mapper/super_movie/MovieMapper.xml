@@ -35,4 +35,32 @@
     FROM movie_comment
     WHERE movie_id=#{movieId}
     </select>
+    <select id="findMovieListByKindOrderByTime" resultType="com.example.super_movie.vo.SelectMovieList" parameterType="java.lang.String">
+    SELECT id,name,time
+    FROM movie join kind_movie on movie.id=kind_movie.movie_id
+    WHERE kind=#{kind} order by time desc
+    </select>
+    <select id="findMovieListByKindOrderByHot" resultType="com.example.super_movie.vo.SelectMovieList" parameterType="java.lang.String">
+    SELECT movie.id,name,time,count(*) as hot
+    FROM movie
+    join movie_comment on movie.id=movie_comment.movie_id
+    left join kind_movie on movie.id=kind_movie.movie_id
+    WHERE kind_movie.kind=#{kind} GROUP BY id order by hot desc
+    </select>
+    <select id="getKindNumByKind" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    FROM kind_movie
+    WHERE kind=#{kind}
+    </select>
+    <select id="searchMovieByName" resultType="com.example.super_movie.vo.SelectMovieList">
+    select id,name,time,info
+    FROM movie
+    WHERE name like #{name}
+    limit #{start},10
+    </select>
+    <select id="getSearchCountNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    FROM movie
+    WHERE name like #{name}
+    </select>
 </mapper>

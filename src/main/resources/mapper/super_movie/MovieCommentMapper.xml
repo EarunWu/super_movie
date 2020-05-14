@@ -29,4 +29,15 @@
         WHERE user_id=#{userId} order by movie_comment.id desc
         LIMIT #{start},#{number}
     </select>
+    <select id="getPrivateHomeList" resultType="com.example.super_movie.vo.MovieCommentInfo" >
+    select movie_comment.*,user.username,movie.name
+    from movie_comment INNER join user on movie_comment.user_id=user.id
+    INNER JOIN movie on movie_comment.movie_id=movie.id
+    WHERE movie_comment.user_id in
+    <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+        #{id}
+    </foreach>
+    and movie_comment.create_time>#{date}
+    order by movie_comment.id desc
+    </select>
 </mapper>

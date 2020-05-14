@@ -37,7 +37,8 @@ public class ReplyOfCommentController{
     @RequestMapping("/saveReply")
     @ResponseBody
     public int toSaveReply(int movieCommentId,int replyId,String content){
-        int a=replyOfCommentService.saveReply(1, movieCommentId, replyId, content);
+        int userId=1;
+        int a=replyOfCommentService.saveReply(userId, movieCommentId, replyId, content);
         redisUtil.hincr("number","commentReply"+movieCommentId,1);
         return a;
     }

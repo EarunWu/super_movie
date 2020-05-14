@@ -61,9 +61,7 @@ public class MovieCommentController{
     @ResponseBody
     public int postMovieComment(String content,String title,int movieId,int score){
         int userId=1;
-        int id=movieCommentService.postMovieComment(userId, content,title,movieId,score);
-        redisUtil.zSet("likeNum"+movieId,0,id);
-        return id;
+        return movieCommentService.postMovieComment(userId, content,title,movieId,score);
     }
 
     @RequestMapping("userInfo")
@@ -114,6 +112,8 @@ public class MovieCommentController{
         //order为null则正序
         int userId=1;
         MovieCommentInfo movieComment=movieCommentService.getMovieCommentInfoById(id);
+        if (movieComment==null)
+            return "index";
         LocalDate date=movieComment.getCreateTime().toLocalDate();
         movieCommentService.getLikeStateById(1,id,date);
         model.addAttribute("movieComment",movieComment);

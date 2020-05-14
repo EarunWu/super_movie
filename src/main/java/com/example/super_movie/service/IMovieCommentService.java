@@ -26,4 +26,6 @@ public interface IMovieCommentService extends IService<MovieComment> {
     List<ZSetOperations.TypedTuple<Object>> getLikeRankIdByMovieId(int movieId,int start,int end);
     List<MovieCommentInfo> getCommentTimeOrderList(int movieId,int page,int pageNum);
     List<MovieCommentInfo> getCommentListByUserId(int userId,int page,int pageNum);
+    List<MovieCommentInfo> getPublicHomeList(Integer page);
+    List<MovieCommentInfo> getPrivateHomeList(int userId,int page);
 }

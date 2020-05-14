@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -544,7 +545,7 @@ public class RedisUtil {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return -1;
+            return 0;
         }
     }
 
@@ -578,6 +579,15 @@ public class RedisUtil {
             return false;
         }
     }
+    public boolean lSetHead(String key, Object value) {
+        try {
+            redisTemplate.opsForList().leftPush(key, value);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 将list放入缓存
@@ -605,7 +615,7 @@ public class RedisUtil {
      * @param value 值
      * @return
      */
-    public boolean lSetList(String key, List<Object> value) {
+    public boolean lSetList(String key, Collection value) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;

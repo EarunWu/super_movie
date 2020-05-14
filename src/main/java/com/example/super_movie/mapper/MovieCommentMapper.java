@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -23,4 +25,5 @@ public interface MovieCommentMapper extends BaseMapper<MovieComment> {
     MovieCommentInfo getMovieCommentInfoById(int id);
     List<MovieCommentInfo> getCommentTimeOrderList(int movieId,int start,int number);
     List<MovieCommentInfo> getCommentListByUserId(int userId,int start,int number);
+    List<MovieCommentInfo> getPrivateHomeList(Map<String, Object> map);
 }
