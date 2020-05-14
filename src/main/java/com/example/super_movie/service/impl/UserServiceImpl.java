@@ -162,6 +162,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //如果怕有人疯狂爆破修改密码可以把密码存在redis一份
         return getBaseMapper().updatePassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()), userId, DigestUtils.md5DigestAsHex(password.getBytes()));
     }
+    public Integer login(String email,String password){
+        User user=getBaseMapper().getStateByeMail(email);
+        if (DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword()))
+            return user.getId();
+        return null;
+    }
 
 
 }

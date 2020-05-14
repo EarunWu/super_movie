@@ -1,6 +1,7 @@
 package com.example.super_movie.controller;
 
 
+import com.example.super_movie.entity.User;
 import com.example.super_movie.service.IUserService;
 import com.example.super_movie.util.FileNameUtils;
 import com.example.super_movie.util.FileUtils;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -86,7 +89,7 @@ public class UserController{
     }
 
     //注册
-    @RequestMapping("/create")
+    @PostMapping("/create")
     public String login(Model model, String username, String password, String email){
         switch (userService.doRegister(username,password,email)){
             case -1:
@@ -102,6 +105,23 @@ public class UserController{
         }
         return "registerResult";
 
+    }
+
+    @PostMapping("/loginIn")
+    public String toLogin(HttpServletRequest request, String email, String password){
+        Integer userId=userService.login(email,password);
+        if (userId==null){
+            return "redirect:/login";
+        }
+        request.getSession().setAttribute("userId",userId);
+        request.getSession().setMaxInactiveInterval(120*60);
+        return "redirect:/index";
+
+    }
+    @RequestMapping("/loginOut")
+    public String loginOut(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "redirect:/login";
     }
 
     //激活

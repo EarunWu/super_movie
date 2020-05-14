@@ -28,8 +28,6 @@ public class TestController{
     private RedisUtil redisUtil;
     @RequestMapping("/login")
     public String getA(){
-        System.out.println(iTestService.getMagic(1));
-        System.out.println(iTestService.getById(12).getMagicId());
         return "login";
     }
     @RequestMapping("/hhh")

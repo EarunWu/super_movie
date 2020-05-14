@@ -35,4 +35,6 @@ public interface IUserService extends IService<User> {
 
     boolean getFollowState(int userId,int followId);
 
+    Integer login(String email,String password);
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class MessageController{
 
     //查看收件箱需要登录
     @RequestMapping("message")
-    public String toMessageList(Model model,Integer page){
-        int userId=1;
+    public String toMessageList(Model model, Integer page, HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         model.addAttribute("writer",userService.getUserInfoById(userId,userId));
         Integer num=(Integer) redisUtil.hget("number","message"+userId);
         int pageNum=num==null?0:num%7>0?(num/7)+1:num/7;
