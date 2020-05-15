@@ -37,15 +37,15 @@ public class UserController{
 
     @ResponseBody
     @RequestMapping("updateUserInfo")
-    public int updateUserInfo(Model model,String username,String introduction){
-        int userId=1;
+    public int updateUserInfo(Model model,String username,String introduction,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         return userService.updateUserInfo(username,introduction,userId);
     }
 
     @ResponseBody
     @RequestMapping("updatePassword")
-    public int updatePassword(Model model,String newPassword,String password){
-        int userId=1;
+    public int updatePassword(Model model,String newPassword,String password,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         //判断密码是否为空
         if (newPassword.length()==0||password.length()==0)
             return -1;
@@ -54,35 +54,37 @@ public class UserController{
 
     @ResponseBody
     @RequestMapping("follow")
-    public int follow(int followId){
-        int userId=1;
+    public int follow(int followId,HttpServletRequest request){
+        Integer userId=(Integer) request.getSession().getAttribute("userId");
+        if (userId==null)
+            return 2;
         return userService.follow(userId,followId);
     }
 
     @RequestMapping("getBlackList")
-    public String getBlackList(Model model){
-        int userId=1;
+    public String getBlackList(Model model,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         model.addAttribute("blackList",userService.getBlackList(userId));
         return "settings::blackListSpace";
     }
 
     @ResponseBody
     @RequestMapping("addBlackList")
-    public int addBlackList(int id){
-        int userId=1;
+    public int addBlackList(int id,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         return userService.addBlackList(userId,id);
     }
 
     @ResponseBody
     @RequestMapping("removeBlackList")
-    public int removeBlackList(int id){
-        int userId=1;
+    public int removeBlackList(int id,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         return userService.removeBlackList(userId,id);
     }
 
     @RequestMapping("settings")
-    public String settings(Model model){
-        int userId=1;
+    public String settings(Model model,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         model.addAttribute("blackList",new ArrayList<UserInfo>());
         model.addAttribute("userInfo",userService.getUserInfoById(userId,userId));
         return "settings";
@@ -90,7 +92,7 @@ public class UserController{
 
     //注册
     @PostMapping("/create")
-    public String login(Model model, String username, String password, String email){
+    public String create(Model model, String username, String password, String email){
         switch (userService.doRegister(username,password,email)){
             case -1:
                 model.addAttribute("information", "格式不正确");
@@ -120,6 +122,21 @@ public class UserController{
         request.getSession().setAttribute("userId",userId);
         request.getSession().setMaxInactiveInterval(120*60);
         return "redirect:/index";
+
+    }
+    @ResponseBody
+    @PostMapping("/loginSpace")
+    public String toLogin1(HttpServletRequest request, Model model, String email, String password){
+        Integer userId=userService.login(email,password);
+        if (userId==null){
+            return "-1";
+        }
+        if (userId==0){
+            return "0";
+        }
+        request.getSession().setAttribute("userId",userId);
+        request.getSession().setMaxInactiveInterval(120*60);
+        return "1";
 
     }
     @RequestMapping("/loginOut")

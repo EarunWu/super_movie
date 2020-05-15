@@ -42,6 +42,20 @@
         });
     </script>
 </head>
+<div style="z-index: 999;padding-top:80px;display: none; position: absolute;height: 100vh; width: 100vw;background-color: rgba(26,26,26,.65);"
+     id="modal">
+    <div style="text-align:center;border:1px solid black;margin: auto;height: 500px;width: 500px; background-color: #fff;">
+        <br>
+        <h4>发送给:<span id="replyUsername" name="0"></span><span style="color: #bd081c">(id=</span><span style="color: #bd081c" id="replyId"></span><span style="color: #bd081c">)</span><button style="float: right;border-width: 0px; border-radius: 3px; background: red;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="remove()">×</button></h4>
+        <br>
+        标题:<input id="title" style="width: 300px;border-radius: 3px;" autocomplete="off">
+        <br>
+        <br>
+        <textarea id="content" style="width: 350px;height: 340px"></textarea>
+        <br>
+        <button style="border-width: 0px; border-radius: 3px; background: #ffc107;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="sendMessage()">&nbsp;&nbsp;&nbsp;&nbsp;发送&nbsp;&nbsp;&nbsp;&nbsp;</button>
+    </div>
+</div>
 <body>
 <!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
@@ -242,7 +256,7 @@
         <div class="agileinfo-news-top-grids">
                 <div class="col-md-8 wthree-top-news-left">
                     <div th:fragment="commentListSpace" id="commentListSpace">
-                    <div class="wthree-related-news-left">
+                    <div class="wthree-news-left">
                         <h4>影评</h4>
                         <div th:each="comment:${commentList}" class="wthree-news-top-left">
                             <table>
@@ -283,7 +297,7 @@
                             <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
                         </div>
                         <br>
-                        <h3><a th:href="@{'userInfo?id='+${writer.id}}"><span th:text="${writer.username}"></span></a></h3>
+                        <h3><a th:href="@{'userInfo?id='+${writer.id}}"><span th:text="${writer.username}"></span></a>&nbsp;<a th:onclick="show([[${writer.username}]],[[${writer.id}]]);" style="color: red" class="agile-icon" href="#"><i class="fa fa-envelope-o"></i></a></h3>
                         <br>
                         <h4><span id="followNum" th:text="${writer.followNum}"></span>个粉丝</h4>
                         <br>
@@ -630,12 +644,57 @@
                 if (state==-1){
                     alert("取消关注成功");
                 }
+                if (state==2){
+                    alert("未登录")
+                    window.location("/login")
+                }
+            },
+            error:function(error) {
+                alert("未登录");
+                window.location("/login")
+            }
+        });
+    }
+    function show(username,sendId) {
+        document.getElementById("replyUsername").innerText=username
+        document.getElementById("replyId").innerText=sendId
+        let modal = document.getElementById("modal")
+        modal.style.display = "block"
+        modal.style.top = document.documentElement.scrollTop + 'px'
+        document.body.style = "overflow-y: hidden;overflow-x: hidden;"
+    }
+    function remove() {
+        let modal = document.getElementById("modal")
+        modal.style.display = "none"
+        document.body.style = ""
+        document.getElementById("title").value=""
+        document.getElementById("content").value=""
+    }
+    function sendMessage() {
+        $.ajax({
+            url:"sendMessage",
+            data:{"receiveId":document.getElementById("replyId").innerText,"title":document.getElementById("title").value,"content":document.getElementById("content").value},
+            async:false,
+            type:"post",
+            dataType:"json",
+            success:function(state){
+                if (state==1){
+                    alert("发送成功");
+                }
+                if (state==0){
+                    alert("用户不存在")
+                }
+                if (state==-1){
+                    alert("小伙子，你被他拉黑了")
+                }
+                remove();
             },
             error:function(error) {
                 alert("服务器繁忙");
                 alert(error);
             }
         });
+
     }
 </script>
 </body>

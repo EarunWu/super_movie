@@ -90,7 +90,7 @@
     <!--    }-->
     <!--</style>-->
 </head>
-<body>
+<body onload="getMessageState()">
 <!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
 <div class="header">
@@ -104,10 +104,14 @@
                 <input type="submit" value="Go">
             </form>
         </div>
-        <div class="w3l_sign_in_register">
+        <div th:if="${loginId==null}" class="w3l_sign_in_register">
             <ul>
-                <li><i class="fa fa-phone" aria-hidden="true"></i> (+000) 123 345 653</li>
                 <li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
+            </ul>
+        </div>
+        <div th:if="${loginId!=null}" class="w3l_sign_in_register">
+            <ul>
+                <li><a href="/message"  target="_blank"><span class="fa fa-bell"></span><span id="messageState">无新消息</span></a></li>
             </ul>
         </div>
         <div class="clearfix"> </div>
@@ -185,40 +189,19 @@
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                 <nav>
                     <ul class="nav navbar-nav">
-                        <li class="w3_home_act"><a href="index.html">Home</a></li>
+                        <li class="w3_home_act"><a href="/index">主页</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
-                            <ul class="dropdown-menu multi-column columns-3">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">分类 <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-3" style="width: 10px">
                                 <li>
-                                    <div class="col-sm-4">
+                                    <div>
                                         <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Action</a></li>
-                                            <li><a href="genres.html">Biography</a></li>
-                                            <li><a href="genres.html">Crime</a></li>
-                                            <li><a href="genres.html">Family</a></li>
-                                            <li><a href="horror.html">Horror</a></li>
-                                            <li><a href="genres.html">Romance</a></li>
-                                            <li><a href="genres.html">Sports</a></li>
-                                            <li><a href="genres.html">War</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Adventure</a></li>
-                                            <li><a href="comedy.html">Comedy</a></li>
-                                            <li><a href="genres.html">Documentary</a></li>
-                                            <li><a href="genres.html">Fantasy</a></li>
-                                            <li><a href="genres.html">Thriller</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Animation</a></li>
-                                            <li><a href="genres.html">Costume</a></li>
-                                            <li><a href="genres.html">Drama</a></li>
-                                            <li><a href="genres.html">History</a></li>
-                                            <li><a href="genres.html">Musical</a></li>
-                                            <li><a href="genres.html">Psychological</a></li>
+                                            <li><a href="/movieSelect?state=1">科幻</a></li>
+                                            <li><a href="/movieSelect?state=2">喜剧</a></li>
+                                            <li><a href="/movieSelect?state=3">恐怖</a></li>
+                                            <li><a href="/movieSelect?state=4">爱情</a></li>
+                                            <li><a href="/movieSelect?state=5">悬疑</a></li>
+                                            <li><a href="/movieSelect?state=6">动作</a></li>
                                         </ul>
                                     </div>
                                     <div class="clearfix"></div>
@@ -283,7 +266,7 @@
     <div class="container">
         <div class="agileits-news-top">
             <ol class="breadcrumb">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="/index">主页</a></li>
                 <li><span th:text="${movieInfo.name}"></span></li>
             </ol>
         </div>
@@ -341,7 +324,13 @@
                     </div>
                 </div>
                 <!-- agile-comments -->
-                <div class="agile-news-comments">
+                <div th:if="${loginId==null}" class="agile-news-comments">
+                    <div class="agile-news-comments-info">
+                        <h4>发表影评</h4>
+                        <h4 align="center"><a class="label label-warning" href="#" data-toggle="modal" data-target="#myModal">登录</a></h4>
+                    </div>
+                </div>
+                <div th:if="${loginId!=null}" class="agile-news-comments">
                     <div class="agile-news-comments-info">
                         <h4>发表影评</h4>
                         <input id="title" style="width: 100%" type="text" class="text" value="标题" autocomplete="off" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '标题';}">
@@ -373,95 +362,18 @@
             <div class="col-md-4 single-right">
                 <h3>推荐</h3>
                 <div class="single-grid-right">
-                    <div class="single-right-grids">
+                    <div th:each="movieRecommend:${recommend}" class="single-right-grids">
                         <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m1.jpg" alt=""></a>
+                            <a th:href="'movieInfo?movieId='+${movieRecommend.id}"><img src="images/m1.jpg" alt=""></a>
                         </div>
                         <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author"><a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
+                            <a th:href="'movieInfo?movieId='+${movieRecommend.id}" th:text="${movieRecommend.name}" class="title"></a>
+                            <p class="author">评分：<a href="#" class="author" th:text="${movieRecommend.avg}"></a></p>
+                            <p class="views" >评分人数：<span th:text="${movieRecommend.hot}"></span></p>
+                            <p class="views" th:text="${movieRecommend.time}"></p>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m2.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author"><a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views </p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m3.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author"><a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m4.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author"><a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m5.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author"><a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/c5.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author"><a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m6.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author">By <a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="single-right-grids">
-                        <div class="col-md-4 single-right-grid-left">
-                            <a href="single.html"><img src="images/m15.jpg" alt=""></a>
-                        </div>
-                        <div class="col-md-8 single-right-grid-right">
-                            <a href="single.html" class="title"> Nullam interdum metus</a>
-                            <p class="author">By <a href="#" class="author">John Maniya</a></p>
-                            <p class="views">2,114,200 views</p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-
                 </div>
             </div>
             <div class="clearfix"> </div>
@@ -804,6 +716,24 @@
         // 读取 text
         document.getElementById("aaa").innerHTML = editor.txt.html();
     }, false)
+
+    function getMessageState() {
+        $.ajax({
+            url:"getMessageState",    //请求的url地址
+            dataType:"json",   //返回格式为json
+            async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data:{},    //参数值
+            type:"GET",   //请求方式
+            success:function(req){
+                if (req==1){
+                    document.getElementById("messageState").innerText="有新消息"
+                }
+                //请求成功时处理
+            },
+            error:function(){
+                //请求出错处理
+            }
+        });}
 
 </script>
 </body>

@@ -5,6 +5,7 @@
         SELECT message.*,user.username
         FROM message join user on message.send_id=user.id
         WHERE message.receive_id=#{userId} and create_time>#{date}
+        order by id desc
     </select>
     <insert id="saveMessage" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
   insert into message (send_id,receive_id,title,content)

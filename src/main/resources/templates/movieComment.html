@@ -90,6 +90,20 @@
 <!--    }-->
 <!--</style>-->
 </head>
+<div style="z-index: 999;padding-top:80px;display: none; position: absolute;height: 100vh; width: 100vw;background-color: rgba(26,26,26,.65);"
+     id="modal">
+    <div style="text-align:center;border:1px solid black;margin: auto;height: 500px;width: 500px; background-color: #fff;">
+        <br>
+        <h4>发送给:<span id="replyUsername" name="0"></span><span style="color: #bd081c">(id=</span><span style="color: #bd081c" id="replyId"></span><span style="color: #bd081c">)</span><button style="float: right;border-width: 0px; border-radius: 3px; background: red;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="remove()">×</button></h4>
+        <br>
+        标题:<input id="title" style="width: 300px;border-radius: 3px;" autocomplete="off">
+        <br>
+        <br>
+        <textarea id="content" style="width: 350px;height: 340px"></textarea>
+        <br>
+        <button style="border-width: 0px; border-radius: 3px; background: #ffc107;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="sendMessage()">&nbsp;&nbsp;&nbsp;&nbsp;发送&nbsp;&nbsp;&nbsp;&nbsp;</button>
+    </div>
+</div>
 <body>
 <!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
@@ -358,11 +372,17 @@
                     </div>
                 </div>
                 <!-- agile-comments -->
-                <div class="agile-news-comments">
+                <div th:if="${loginId!=null}" class="agile-news-comments">
                     <div class="agile-news-comments-info">
-                        <h4>Comments</h4>
+                        <h4>发表评论</h4>
                         <textarea id="replyContent" style="width: 100%;height: 100px"></textarea>
                         <h3><a class="label label-warning" id="btn1">发布</a></h3>
+                    </div>
+                </div>
+                <div th:if="${loginId==null}" class="agile-news-comments">
+                    <div class="agile-news-comments-info">
+                        <h4>发表评论</h4>
+                        <h4 align="center"><a class="label label-warning" href="#" data-toggle="modal" data-target="#myModal">登录</a></h4>
                     </div>
                 </div>
                 <!-- //agile-comments -->
@@ -380,7 +400,7 @@
                         <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
                         </div>
                         <br>
-                        <h3><a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a></h3>
+                        <h3><a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a>&nbsp;<a th:onclick="show([[${writer.username}]],[[${writer.id}]]);" style="color: red" class="agile-icon" href="#"><i class="fa fa-envelope-o"></i></a></h3>
                         <br>
                         <h4><span id="followNum" th:text="${writer.followNum}"></span>个粉丝</h4>
                         <br>
@@ -723,10 +743,14 @@
                 if (state==-1){
                     alert("取消关注成功");
                 }
+                if (state==2){
+                    alert("未登录")
+                    window.location("/login")
+                }
             },
             error:function(error) {
-                alert("服务器繁忙");
-                alert(error);
+                alert("未登录");
+                window.location="/login"
             }
         });
     }
@@ -815,6 +839,47 @@
         // 读取 html
         // document.getElementById("aaa").innerHTML = editor.txt.html();
     }, false)
+    function show(username,sendId) {
+        document.getElementById("replyUsername").innerText=username
+        document.getElementById("replyId").innerText=sendId
+        let modal = document.getElementById("modal")
+        modal.style.display = "block"
+        modal.style.top = document.documentElement.scrollTop + 'px'
+        document.body.style = "overflow-y: hidden;overflow-x: hidden;"
+    }
+    function remove() {
+        let modal = document.getElementById("modal")
+        modal.style.display = "none"
+        document.body.style = ""
+        document.getElementById("title").value=""
+        document.getElementById("content").value=""
+    }
+    function sendMessage() {
+        $.ajax({
+            url:"sendMessage",
+            data:{"receiveId":document.getElementById("replyId").innerText,"title":document.getElementById("title").value,"content":document.getElementById("content").value},
+            async:false,
+            type:"post",
+            dataType:"json",
+            success:function(state){
+                if (state==1){
+                    alert("发送成功");
+                }
+                if (state==0){
+                    alert("用户不存在")
+                }
+                if (state==-1){
+                    alert("小伙子，你被他拉黑了")
+                }
+                remove();
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+                alert(error);
+            }
+        });
+
+    }
 </script>
 </body>
 </html>

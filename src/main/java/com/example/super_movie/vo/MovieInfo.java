@@ -27,7 +27,7 @@ public class MovieInfo extends Movie {
 
     }
     public MovieInfo(){
-    };
+    }
 
     public List<Person> getDirector() {
         return director;

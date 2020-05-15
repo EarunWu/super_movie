@@ -68,5 +68,11 @@ public class MessageController{
         int userId=(int)request.getSession().getAttribute("userId");
         return messageService.sendMessage(userId,receiveId,title,content);
     }
+    @ResponseBody
+    @RequestMapping("getMessageState")
+    public int getMessageState(HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
+        return messageService.getMessageState(userId)?1:0;
+    }
 
 }

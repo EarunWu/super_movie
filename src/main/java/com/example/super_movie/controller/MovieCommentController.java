@@ -9,9 +9,11 @@ import com.example.super_movie.util.FileUtils;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.EditorImg;
 import com.example.super_movie.vo.MovieCommentInfo;
+import com.example.super_movie.vo.SelectMovieList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -55,6 +57,9 @@ public class MovieCommentController{
     @Autowired
     IUserService userService;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
     @Value("${web.upload-path}")
     private String path;
 
@@ -87,13 +92,14 @@ public class MovieCommentController{
 //按热度排名获取影评列表
     @RequestMapping("/movieCommentList")
     public String toMovieList(Model model,Integer movieId,Integer state){
-            List<ZSetOperations.TypedTuple<Object>> maxLikeList=movieCommentService.getLikeRankIdByMovieId(movieId,0,9);
-            List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentList(maxLikeList);
-            model.addAttribute("commentList",movieCommentInfoList);
-            model.addAttribute("maxLikeList",maxLikeList);
-            model.addAttribute("page",0);
-            if (state!=null)
-                return "movieCommentList::commentListSpace";
+        List<ZSetOperations.TypedTuple<Object>> maxLikeList=movieCommentService.getLikeRankIdByMovieId(movieId,0,9);
+        List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentList(maxLikeList);
+        model.addAttribute("commentList",movieCommentInfoList);
+        model.addAttribute("maxLikeList",maxLikeList);
+        model.addAttribute("page",0);
+        if (state!=null)
+            return "movieCommentList::commentListSpace";
+        model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
         return "movieCommentList";
     }
     //按发表时间排名获取影评列表
@@ -113,6 +119,7 @@ public class MovieCommentController{
     @RequestMapping("movieComment")
     public String toMovieCommentPage(Model model, Integer id,Integer order,HttpServletRequest request){
         Integer userId=(Integer) request.getSession().getAttribute("userId");
+        model.addAttribute("loginId",userId);
         if (userId==null)
             userId=0;
         //order为null则正序

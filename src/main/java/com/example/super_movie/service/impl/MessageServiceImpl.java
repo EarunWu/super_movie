@@ -31,6 +31,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     RedisTemplate redisTemplate;
 
     public List<MessageInfo> getMessageList(int userId, int page,int pageNum){
+        redisUtil.setBit("messageState",userId,false);
         if (pageNum==0||page>pageNum)
             return new ArrayList<>();
         page=(page-1)*7;
@@ -72,6 +73,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
             return false;
         redisUtil.del("messageList"+userId);
         return getBaseMapper().deleteMessageByIdAndReceiveId(id,userId);
+    }
+    public boolean getMessageState(int id){
+        return redisUtil.getBit("messageState",id);
     }
 
 }

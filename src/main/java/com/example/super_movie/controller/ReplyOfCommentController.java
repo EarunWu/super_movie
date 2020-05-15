@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  *  前端控制器
@@ -36,8 +38,8 @@ public class ReplyOfCommentController{
     //对影评进行评论
     @RequestMapping("/saveReply")
     @ResponseBody
-    public int toSaveReply(int movieCommentId,int replyId,String content){
-        int userId=1;
+    public int toSaveReply(int movieCommentId, int replyId, String content, HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         int a=replyOfCommentService.saveReply(userId, movieCommentId, replyId, content);
         redisUtil.hincr("number","commentReply"+movieCommentId,1);
         return a;

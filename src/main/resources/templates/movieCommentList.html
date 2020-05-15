@@ -243,8 +243,8 @@
         <div class="agileinfo-news-top-grids">
             <div  th:fragment="commentListSpace" id="commentListSpace">
             <div class="col-md-8 wthree-top-news-left" th:if="${page} eq 0">
-                <div class="wthree-related-news-left">
-                    <h4>影评<a href="javascript:void(0);" onclick="toTime()" style="font-size: 15px;float: right;color: #777777">时间排序</a><a href="#" style="font-size: 15px;float: right;color: #777777">热度排序/</a> </h4>
+                <div class="wthree-news-left">
+                    <h3>影评<a href="javascript:void(0);" onclick="toTime()" style="font-size: 15px;float: right;color: #777777">时间排序</a><a href="#" style="font-size: 15px;float: right;color: #777777">热度排序/</a> </h3>
                     <div th:each="comment:${commentList}" class="wthree-news-top-left">
                         <table>
                             <tr>
@@ -268,8 +268,8 @@
                 </div>
             </div>
             <div class="col-md-8 wthree-top-news-left" th:if="${page} ne 0">
-                <div class="wthree-related-news-left">
-                    <h4>影评<a href="javascript:void(0);" onclick="toTime()" style="font-size: 15px;float: right;color: #777777">时间排序</a><a href="javascript:void(0);" onclick="toHot()" style="font-size: 15px;float: right;color: #777777">热度排序/</a> </h4>
+                <div class="wthree-news-left">
+                    <h3>影评<a href="javascript:void(0);" onclick="toTime()" style="font-size: 15px;float: right;color: #777777">时间排序</a><a href="javascript:void(0);" onclick="toHot()" style="font-size: 15px;float: right;color: #777777">热度排序/</a> </h3>
                     <div th:each="comment:${commentList}" class="wthree-news-top-left">
                         <table>
                             <tr>
@@ -299,24 +299,20 @@
                 </div>
             </div>
             </div>
-            <div class="col-md-4 wthree-news-right">
-                <!-- news-right-top -->
-                <div class="news-right-top">
-                    <div align="center" class="wthree-news-right-top">
-                        <h3>影评人</h3>
-                        <br>
-                        <div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
-                            <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
+            <div class="col-md-4 single-right">
+                <h3>推荐</h3>
+                <div class="single-grid-right">
+                    <div th:each="movieRecommend:${recommend}" class="single-right-grids">
+                        <div class="col-md-4 single-right-grid-left">
+                            <a th:href="'movieInfo?movieId='+${movieRecommend.id}"><img src="images/m1.jpg" alt=""></a>
                         </div>
-                        <br>
-                        <h3>nslkjf</h3>
-                        <br>
-                        <h4>8799个粉丝</h4>
-                        <br>
-                        <button>关注</button>
-                        <br>
-                        <br>
-                        <h4>一句话介绍自己</h4>
+                        <div class="col-md-8 single-right-grid-right">
+                            <a th:href="'movieInfo?movieId='+${movieRecommend.id}" th:text="${movieRecommend.name}" class="title"></a>
+                            <p class="author">评分：<a href="#" class="author" th:text="${movieRecommend.avg}"></a></p>
+                            <p class="views" >评分人数：<span th:text="${movieRecommend.hot}"></span></p>
+                            <p class="views" th:text="${movieRecommend.time}"></p>
+                        </div>
+                        <div class="clearfix"> </div>
                     </div>
                 </div>
             </div>

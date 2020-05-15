@@ -7,7 +7,9 @@ import com.example.super_movie.util.CNHToENG;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieCommentInfo;
 import com.example.super_movie.vo.MovieInfo;
+import com.example.super_movie.vo.SelectMovieList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,15 +40,20 @@ public class MovieController{
     @Autowired
     RedisUtil redisUtil;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
     //电影信息页面
     @RequestMapping("/movieInfo")
-    public String toMovieInfo(Model model,Integer movieId){
+    public String toMovieInfo(Model model,Integer movieId,HttpServletRequest request){
         MovieInfo movieInfo = movieService.getMovieInfo(movieId);
         List<ZSetOperations.TypedTuple<Object>> maxLikeList=movieCommentService.getLikeRankIdByMovieId(movieId,0,2);
         List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentList(maxLikeList);
         model.addAttribute("commentList",movieCommentInfoList);
         model.addAttribute("maxLikeList",maxLikeList);
+        model.addAttribute("loginId",request.getSession().getAttribute("userId"));
         model.addAttribute("movieInfo",movieInfo);
+        model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
         return "movie";
     }
 
@@ -95,6 +102,7 @@ public class MovieController{
         model.addAttribute("page",page);
         model.addAttribute("state",state==null?0:state);
         if (reload==null){
+            model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
             return "index";
         }
         return "index::commentListSpace";
@@ -110,6 +118,7 @@ public class MovieController{
         if (pageNum==0){
             model.addAttribute("movieList",new ArrayList<>());
             model.addAttribute("page",0);
+            model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
             return "search";
         }
 
@@ -117,8 +126,10 @@ public class MovieController{
             page=1;
         model.addAttribute("movieList",movieService.searchMovieByName(name,page));
         model.addAttribute("page",page);
-        if (reload==null)
+        if (reload==null){
+            model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
             return "search";
+        }
         return "search::movieListSpace";
     }
 }

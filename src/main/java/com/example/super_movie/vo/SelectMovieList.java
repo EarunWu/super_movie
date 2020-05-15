@@ -16,4 +16,5 @@ public class SelectMovieList {
     private LocalDate time;
     private String info;
     private int hot;
+    private double avg;
 }

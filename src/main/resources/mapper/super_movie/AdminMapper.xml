@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.super_movie.mapper.AdminMapper">
+    <select id="getASelectMovie" resultType="com.example.super_movie.vo.SelectMovieList" parameterType="java.lang.Integer">
+    SELECT id,name,time,TRUNCATE(IFNULL((SELECT avg(score) FROM movie_comment WHERE movie_id=#{movieId}),0),1) as avg ,(SELECT count(*) FROM movie_comment WHERE movie_id=#{movieId}) as hot
+    from movie
+    WHERE id=#{movieId}
+    </select>
+</mapper>

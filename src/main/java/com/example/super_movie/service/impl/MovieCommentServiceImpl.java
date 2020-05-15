@@ -175,7 +175,12 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             list.add(new MovieCommentInfo());
             redisTemplate.opsForList().rightPushAll("privateHome"+userId,list);
             redisUtil.expire("privateHome"+userId,5*60);
-            return list.subList((page-1)*5,(page-1)*5+5);
+            try {
+                return list.subList((page-1)*5,(page-1)*5+5);
+            }catch (Exception e){
+                System.out.println("越界");
+                return list.subList((page-1)*5,-1);
+            }
         }
         return list;
 
