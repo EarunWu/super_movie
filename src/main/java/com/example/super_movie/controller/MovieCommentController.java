@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,14 +60,16 @@ public class MovieCommentController{
 
     @RequestMapping("postMovieComment")
     @ResponseBody
-    public int postMovieComment(String content,String title,int movieId,int score){
-        int userId=1;
+    public int postMovieComment(String content,String title,int movieId,int score, HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         return movieCommentService.postMovieComment(userId, content,title,movieId,score);
     }
 
     @RequestMapping("userInfo")
-    public String toUserInfo(Model model,int id,Integer p,Integer state){
-        int userId=1;
+    public String toUserInfo(Model model,int id,Integer p,Integer state,HttpServletRequest request){
+        Integer userId=(Integer) request.getSession().getAttribute("userId");
+        if (userId==null)
+            userId=0;
         if (p==null)
             p=1;
         Integer num=(Integer)redisUtil.hget("number","userComment"+id);
@@ -108,9 +111,11 @@ public class MovieCommentController{
 
     //获取影评页面
     @RequestMapping("movieComment")
-    public String toMovieCommentPage(Model model, Integer id,Integer order){
+    public String toMovieCommentPage(Model model, Integer id,Integer order,HttpServletRequest request){
+        Integer userId=(Integer) request.getSession().getAttribute("userId");
+        if (userId==null)
+            userId=0;
         //order为null则正序
-        int userId=1;
         MovieCommentInfo movieComment=movieCommentService.getMovieCommentInfoById(id);
         if (movieComment==null)
             return "index";
@@ -125,8 +130,10 @@ public class MovieCommentController{
     }
     @ResponseBody
     @RequestMapping("like")
-    public int toLike(Model model,int commentId,int movieId,String localDate){
-        int userId=1;
+    public int toLike(Model model,int commentId,int movieId,String localDate,HttpServletRequest request){
+        Integer userId=(Integer) request.getSession().getAttribute("userId");
+        if (userId==null)
+            return 0;
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         movieCommentService.like(userId,commentId,movieId,LocalDate.parse(localDate, fmt));
         return 1;

@@ -17,7 +17,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2) throws Exception {
         //普通路径放行
-        if ("/index".equals(arg0.getRequestURI()) || "/login".equals(arg0.getRequestURI()) || "/movieInfo".equals(arg0.getRequestURI()) || "/movieComment".equals(arg0.getRequestURI()) || "/movieCommentList".equals(arg0.getRequestURI()) || "/getCommentListAsTime".equals(arg0.getRequestURI()) || "/show".equals(arg0.getRequestURI())) {
+        if ("/index".equals(arg0.getRequestURI()) || "/login".equals(arg0.getRequestURI()) || "/movieInfo".equals(arg0.getRequestURI()) || "/movieComment".equals(arg0.getRequestURI()) || "/movieCommentList".equals(arg0.getRequestURI()) || "/getCommentListAsTime".equals(arg0.getRequestURI()) || "/show".equals(arg0.getRequestURI()) || "/loginIn".equals(arg0.getRequestURI()) || "/like".equals(arg0.getRequestURI()) ) {
             return true;}
         //权限路径拦截
         Object object = arg0.getSession().getAttribute("userId");

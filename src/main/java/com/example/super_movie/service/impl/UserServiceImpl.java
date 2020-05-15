@@ -101,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public UserInfo getUserInfoById(int userId,int id){
             //检测目标用户是否存在
          if (!redisUtil.getBit("userState",userId))
-             return null;
+             return UserInfo.userInfo0;
          UserInfo userInfo=(UserInfo) redisUtil.get("userInfo"+userId);
          if (userInfo==null){
              userInfo=getBaseMapper().getUserInfoById(userId);
@@ -164,6 +164,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
     public Integer login(String email,String password){
         User user=getBaseMapper().getStateByeMail(email);
+        if (!redisUtil.getBit("userState",user.getId()))
+            return 0;
         if (DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword()))
             return user.getId();
         return null;

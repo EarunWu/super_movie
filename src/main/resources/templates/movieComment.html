@@ -735,11 +735,15 @@
         var likeNum=document.getElementById("likeNum").innerText;
         $.ajax({
             url:"like",
-            data:{"userId":userId,"commentId":id,"movieId":movieId,"localDate":date},
+            data:{"commentId":id,"movieId":movieId,"localDate":date},
             async:false,
             type:"post",
             dataType:"json",
             success:function(state){
+                if (state==0){
+                    alert("未登录")
+                    window.location = "/login"
+                }
             },
             error:function(error) {
                 alert("服务器繁忙");

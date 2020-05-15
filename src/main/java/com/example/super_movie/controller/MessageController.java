@@ -57,15 +57,15 @@ public class MessageController{
     }
     @ResponseBody
     @RequestMapping("deleteMessage")
-    public boolean deleteMessage(int id){
-        int userId=1;
+    public boolean deleteMessage(int id,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         return messageService.deleteMessage(id,userId);
     }
 
     @ResponseBody
     @RequestMapping("sendMessage")
-    public int sendMessage(int receiveId,String title,String content){
-        int userId=1;
+    public int sendMessage(int receiveId,String title,String content,HttpServletRequest request){
+        int userId=(int)request.getSession().getAttribute("userId");
         return messageService.sendMessage(userId,receiveId,title,content);
     }
 

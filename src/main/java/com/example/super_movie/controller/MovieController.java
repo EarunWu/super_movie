@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,7 @@ public class MovieController{
     }
 
     @RequestMapping("index")
-    public String toIndex(Model model,Integer page,Integer state,Integer reload){
-        int userId=1;
+    public String toIndex(HttpServletRequest request, Model model, Integer page, Integer state, Integer reload){
         int pageNum;
         if (state==null){
             pageNum=(int)redisUtil.lGetListSize("publicHome");
@@ -81,6 +81,9 @@ public class MovieController{
             model.addAttribute("movieCommentList",movieCommentService.getPublicHomeList(page));
         }
         else{
+            Integer userId=(Integer)request.getSession().getAttribute("userId");
+            if (userId==null)
+                return "redirect:/login";
             List<MovieCommentInfo> list=movieCommentService.getPrivateHomeList(userId,page);
             model.addAttribute("movieCommentList",list);
             pageNum=(int)redisUtil.lGetListSize("privateHome"+userId);

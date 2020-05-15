@@ -108,10 +108,14 @@ public class UserController{
     }
 
     @PostMapping("/loginIn")
-    public String toLogin(HttpServletRequest request, String email, String password){
+    public String toLogin(HttpServletRequest request, Model model, String email, String password){
         Integer userId=userService.login(email,password);
         if (userId==null){
             return "redirect:/login";
+        }
+        if (userId==0){
+            model.addAttribute("information", "账号状态异常");
+            return "registerResult";
         }
         request.getSession().setAttribute("userId",userId);
         request.getSession().setMaxInactiveInterval(120*60);
