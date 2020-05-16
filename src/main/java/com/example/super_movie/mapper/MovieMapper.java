@@ -3,6 +3,7 @@ package com.example.super_movie.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.super_movie.entity.Movie;
 import com.example.super_movie.entity.Person;
+import com.example.super_movie.vo.MovieInfo;
 import com.example.super_movie.vo.SelectMovieList;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,4 +37,6 @@ public interface MovieMapper extends BaseMapper<Movie> {
     int addNewMovie(Movie movie);
     int addKindForMovie(String kind,int movieId);
     int addPersonForMovie(int personId,int movieId,int job);
+    List<MovieInfo> getMovieAvgRankList(int num);
+    List<MovieInfo> getMovieHotRankList();
 }

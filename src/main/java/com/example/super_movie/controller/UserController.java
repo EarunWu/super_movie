@@ -126,7 +126,7 @@ public class UserController{
     }
     @ResponseBody
     @PostMapping("/loginSpace")
-    public String toLogin1(HttpServletRequest request, Model model, String email, String password){
+    public String toLogin1(HttpServletRequest request,  String email, String password){
         Integer userId=userService.login(email,password);
         if (userId==null){
             return "-1";

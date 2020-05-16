@@ -58,7 +58,7 @@ public class MovieController{
     }
 
     @RequestMapping("/movieSelect")
-    public String toMovieSelect(Model model,Integer state,Integer page,Integer order){
+    public String toMovieSelect(Model model,Integer state,Integer page,Integer order,HttpServletRequest request){
         //检测state是否合法
         if (state==null||state<1||state>6)
             state=1;
@@ -68,6 +68,8 @@ public class MovieController{
         model.addAttribute("page",page==null?1:page);
         model.addAttribute("kind", CNHToENG.getCHNById(state));
         model.addAttribute("state", state);
+        model.addAttribute("loginId",request.getSession().getAttribute("userId"));
+        model.addAttribute("order",order==null?0:1);
         model.addAttribute("movieList",movieService.getMovieListByKind(state,page,order));
         return "selectMovie";
     }
@@ -97,19 +99,21 @@ public class MovieController{
         model.addAttribute("page",page);
         model.addAttribute("state",state==null?0:state);
         if (reload==null){
+            model.addAttribute("loginId",request.getSession().getAttribute("userId"));
             model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
             return "index";
         }
         return "index::commentListSpace";
     }
-    @RequestMapping("search")
-    public String search(Model model,String name,Integer page,Integer reload){
+    @RequestMapping("/search")
+    public String search(HttpServletRequest request,Model model,String name,Integer page,Integer reload){
         if (name==null)
             return "redirect:/index";
         int pageNum=movieService.getSearchNumByName(name);
         pageNum=pageNum%10==0?pageNum/10:pageNum/10+1;
         model.addAttribute("pageNum",pageNum);
         model.addAttribute("name",name);
+        model.addAttribute("loginId",request.getSession().getAttribute("userId"));
         if (pageNum==0){
             model.addAttribute("movieList",new ArrayList<>());
             model.addAttribute("page",0);
@@ -126,5 +130,12 @@ public class MovieController{
             return "search";
         }
         return "search::movieListSpace";
+    }
+    @RequestMapping("/movieRank")
+    public String getMovieRank(HttpServletRequest request,Model model, Integer i){
+        model.addAttribute("movieList",movieService.getMovieRank(i==null?0:1));
+        model.addAttribute("i",i);
+        model.addAttribute("loginId",request.getSession().getAttribute("userId"));
+        return "movieRank";
     }
 }

@@ -102,9 +102,9 @@ public class AdminController{
     }
 
     @ResponseBody
-    @RequestMapping("updateKindNum")
+    @RequestMapping("updateKind")
     public String updateKindNum(){
-        movieService.updateKindNum();
+        movieService.updateKind();
         return "msg";
     }
 

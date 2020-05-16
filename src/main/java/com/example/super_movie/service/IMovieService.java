@@ -21,11 +21,12 @@ public interface IMovieService extends IService<Movie> {
     MovieInfo getMovieInfo(Integer movieId);
     int saveMovie(String name, LocalDate time, String country, int length, String info);
     List<SelectMovieList> getMovieListByKind(int state, Integer page,Integer order);
-    void updateKindNum();
+    void updateKind();
     int getSearchNumByName(String name);
     List<SelectMovieList> searchMovieByName(String name, int page);
     int addNewMovie(String name, LocalDate time, String country,int length,String info);
     int addKindForMovie(int movieId,int kindId);
     int addPersonForMovie(int personId,int movieId,int job);
+    List<MovieInfo> getMovieRank(int i);
 
 }

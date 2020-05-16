@@ -96,7 +96,7 @@
         <br>
         <h4>发送给:<span id="replyUsername" name="0"></span><span style="color: #bd081c">(id=</span><span style="color: #bd081c" id="replyId"></span><span style="color: #bd081c">)</span><button style="float: right;border-width: 0px; border-radius: 3px; background: red;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="remove()">×</button></h4>
         <br>
-        标题:<input id="title" style="width: 300px;border-radius: 3px;" autocomplete="off">
+        标题:<input id="title" name="title" style="width: 300px;border-radius: 3px;" autocomplete="off">
         <br>
         <br>
         <textarea id="content" style="width: 350px;height: 340px"></textarea>
@@ -104,24 +104,28 @@
         <button style="border-width: 0px; border-radius: 3px; background: #ffc107;cursor: pointer; outline: none; font-family: Microsoft YaHei; color: white;font-size: 17px;" onclick="sendMessage()">&nbsp;&nbsp;&nbsp;&nbsp;发送&nbsp;&nbsp;&nbsp;&nbsp;</button>
     </div>
 </div>
-<body>
+<body onload="getMessageState()">
 <!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
 <div class="header">
     <div class="container">
         <div class="w3layouts_logo">
-            <a href="index.html"><h1>One<span>Movies</span></h1></a>
+            <a href="index.html"><h1>SP<span>Movie</span></h1></a>
         </div>
         <div class="w3_search">
-            <form action="#" method="post">
-                <input type="text" name="Search" placeholder="Search" required="">
-                <input type="submit" value="Go">
+            <form action="/search" method="get">
+                <input type="text" name="name" placeholder="输入搜索内容" required="">
+                <input type="submit" value="搜索">
             </form>
         </div>
-        <div class="w3l_sign_in_register">
+        <div th:if="${loginId==null}" class="w3l_sign_in_register">
             <ul>
-                <li><i class="fa fa-phone" aria-hidden="true"></i> (+000) 123 345 653</li>
-                <li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#myModal">登录</a></li>
+            </ul>
+        </div>
+        <div th:if="${loginId!=null}" class="w3l_sign_in_register">
+            <ul>
+                <li><a href="/message"  target="_blank"><span class="fa fa-bell"></span><span id="messageState">无新消息</span></a></li>
             </ul>
         </div>
         <div class="clearfix"> </div>
@@ -133,7 +137,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                Sign In & Sign Up
+                登 录 & 注 册
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <section>
@@ -144,24 +148,21 @@
                                 <div class="tooltip">Click Me</div>
                             </div>
                             <div class="form">
-                                <h3>Login to your account</h3>
-                                <form action="#" method="post">
-                                    <input type="text" name="Username" placeholder="Username" required="">
-                                    <input type="password" name="Password" placeholder="Password" required="">
-                                    <input type="submit" value="Login">
-                                </form>
+                                <h3>登 录</h3>
+                                <input id="email" type="text" name="email" placeholder="邮箱" required="">
+                                <input id="password" type="password" name="password" placeholder="password" required="">
+                                <input onclick="login()" type="submit" value="登录">
                             </div>
                             <div class="form">
-                                <h3>Create an account</h3>
-                                <form action="#" method="post">
-                                    <input type="text" name="Username" placeholder="Username" required="">
-                                    <input type="password" name="Password" placeholder="Password" required="">
-                                    <input type="email" name="Email" placeholder="Email Address" required="">
-                                    <input type="text" name="Phone" placeholder="Phone Number" required="">
-                                    <input type="submit" value="Register">
+                                <h3>注 册</h3>
+                                <form action="/create" method="post">
+                                    <input type="text" name="username" placeholder="昵称" required="">
+                                    <input type="text" name="email" placeholder="邮箱" required="">
+                                    <input type="password" name="password" placeholder="密码" required="">
+                                    <input type="submit" value="注册">
                                 </form>
                             </div>
-                            <div class="cta"><a href="#">Forgot your password?</a></div>
+                            <div class="cta"><a href="#">忘记密码</a></div>
                         </div>
                     </div>
                 </div>
@@ -199,105 +200,43 @@
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                 <nav>
                     <ul class="nav navbar-nav">
-                        <li class="w3_home_act"><a href="index.html">Home</a></li>
+                        <li class="w3_home_act"><a href="/index">主页</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Genres <b class="caret"></b></a>
-                            <ul class="dropdown-menu multi-column columns-3">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">分类 <b class="caret"></b></a>
+                            <ul class="dropdown-menu multi-column columns-3" style="width: 10px">
                                 <li>
-                                    <div class="col-sm-4">
+                                    <div>
                                         <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Action</a></li>
-                                            <li><a href="genres.html">Biography</a></li>
-                                            <li><a href="genres.html">Crime</a></li>
-                                            <li><a href="genres.html">Family</a></li>
-                                            <li><a href="horror.html">Horror</a></li>
-                                            <li><a href="genres.html">Romance</a></li>
-                                            <li><a href="genres.html">Sports</a></li>
-                                            <li><a href="genres.html">War</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Adventure</a></li>
-                                            <li><a href="comedy.html">Comedy</a></li>
-                                            <li><a href="genres.html">Documentary</a></li>
-                                            <li><a href="genres.html">Fantasy</a></li>
-                                            <li><a href="genres.html">Thriller</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Animation</a></li>
-                                            <li><a href="genres.html">Costume</a></li>
-                                            <li><a href="genres.html">Drama</a></li>
-                                            <li><a href="genres.html">History</a></li>
-                                            <li><a href="genres.html">Musical</a></li>
-                                            <li><a href="genres.html">Psychological</a></li>
+                                            <li><a href="/movieSelect?state=1">科幻</a></li>
+                                            <li><a href="/movieSelect?state=2">喜剧</a></li>
+                                            <li><a href="/movieSelect?state=3">恐怖</a></li>
+                                            <li><a href="/movieSelect?state=4">爱情</a></li>
+                                            <li><a href="/movieSelect?state=5">悬疑</a></li>
+                                            <li><a href="/movieSelect?state=6">动作</a></li>
                                         </ul>
                                     </div>
                                     <div class="clearfix"></div>
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="series.html">tv - series</a></li>
-                        <li><a href="news.html">news</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Country <b class="caret"></b></a>
-                            <ul class="dropdown-menu multi-column columns-3">
-                                <li>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Asia</a></li>
-                                            <li><a href="genres.html">France</a></li>
-                                            <li><a href="genres.html">Taiwan</a></li>
-                                            <li><a href="genres.html">United States</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">China</a></li>
-                                            <li><a href="genres.html">HongCong</a></li>
-                                            <li><a href="genres.html">Japan</a></li>
-                                            <li><a href="genres.html">Thailand</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <ul class="multi-column-dropdown">
-                                            <li><a href="genres.html">Euro</a></li>
-                                            <li><a href="genres.html">India</a></li>
-                                            <li><a href="genres.html">Korea</a></li>
-                                            <li><a href="genres.html">United Kingdom</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="short-codes.html">Short Codes</a></li>
-                        <li><a href="list.html">A - z list</a></li>
+                        <li><a href="/movieRank">排行榜</a></li>
+                        <li><a href="/userInfo">我的影评</a></li>
+                        <li><a href="/message">我的消息</a></li>
+                        <li><a href="/settings">设置</a></li>
+                        <li><a th:if="${loginId!=null}" href="/loginOut">注销</a><a th:if="${loginId==null}" href="#" data-toggle="modal" data-target="#myModal">登录</a></li>
                     </ul>
                 </nav>
             </div>
         </nav>
     </div>
 </div>
-<!-- //nav -->
-<!--<div class="general_social_icons">-->
-<!--    <nav class="social">-->
-<!--        <ul>-->
-<!--            <li class="w3_twitter"><a href="#">Twitter <i class="fa fa-twitter"></i></a></li>-->
-<!--            <li class="w3_facebook"><a href="#">Facebook <i class="fa fa-facebook"></i></a></li>-->
-<!--            <li class="w3_dribbble"><a href="#">Dribbble <i class="fa fa-dribbble"></i></a></li>-->
-<!--            <li class="w3_g_plus"><a href="#">Google+ <i class="fa fa-google-plus"></i></a></li>-->
-<!--        </ul>-->
-<!--    </nav>-->
 <!--</div>-->
 <!-- faq-banner -->
 <div class="faq">
     <div class="container">
         <div class="agileits-news-top">
             <ol class="breadcrumb">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="/index">主页</a></li>
                 <li><a th:href="@{'movieInfo?movieId='+${movieComment.movieId}}"><span th:text="${movieComment.name}"></span></a></li>
                 <li><a th:href="@{'movieCommentList?movieId='+${movieComment.movieId}}" style="font-size: 15px;float: right;color: #777777">影评列表</a></li>
                 <li class="active"><span th:text="${writer.username}"></span>的影评</li>
@@ -345,7 +284,7 @@
                                 <div>
                                     <p style="word-wrap: break-word;" th:text="${reply.content}"></p>
                                 </div>
-                                <p style="float: right"><span th:text="${5*p-5}+${replyStat.index+1}+'楼'"></span><a style="color: red" class="agile-icon" href="javascript:void(0);" th:onclick="report([[${reply.id}]],true)"><i class="fa fa-exclamation"></i>举报</a></p>
+                                <p style="float: right"><span th:text="${5*p-5}+${replyStat.index+1}+'楼 '"></span><a style="color: red" class="agile-icon" href="javascript:void(0);" th:onclick="report([[${reply.id}]],true)"><i class="fa fa-exclamation-triangle"></i>举报</a></p>
                             </div>
                         </div>
 <!--                        <table width="100%">-->
@@ -414,198 +353,6 @@
             <div class="clearfix"> </div>
         </div>
     </div>
-    <div class="w3l-latest-movies-grids">
-        <h4 class="latest-text w3_latest_text">Latest Movies</h4>
-        <div class="container">
-            <!-- /latest-movies -->
-            <div class="browse-inner">
-                <div class="col-md-2 w3l-movie-gride-agile">
-                    <a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m7.jpg" title="album-name" alt=" " />
-                        <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-                    </a>
-                    <div class="mid-1">
-                        <div class="w3l-movie-text">
-                            <h6><a href="single.html">Light B/t Oceans</a></h6>
-                        </div>
-                        <div class="mid-2">
-
-                            <p>2016</p>
-                            <div class="block-stars">
-                                <ul class="w3l-ratings">
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-
-
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                    </div>
-                    <div class="ribben">
-                        <p>NEW</p>
-                    </div>
-                </div>
-                <div class="col-md-2 w3l-movie-gride-agile">
-                    <a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m8.jpg" title="album-name" alt=" " />
-                        <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-                    </a>
-                    <div class="mid-1">
-                        <div class="w3l-movie-text">
-                            <h6><a href="single.html">The BFG</a></h6>
-                        </div>
-                        <div class="mid-2">
-
-                            <p>2016</p>
-                            <div class="block-stars">
-                                <ul class="w3l-ratings">
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-
-
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                    </div>
-                    <div class="ribben">
-                        <p>NEW</p>
-                    </div>
-                </div>
-                <div class="col-md-2 w3l-movie-gride-agile">
-                    <a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m9.jpg" title="album-name" alt=" " />
-                        <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-                    </a>
-                    <div class="mid-1">
-                        <div class="w3l-movie-text">
-                            <h6><a href="single.html">Central Intelligence</a></h6>
-                        </div>
-                        <div class="mid-2">
-
-                            <p>2016</p>
-                            <div class="block-stars">
-                                <ul class="w3l-ratings">
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-
-
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                    </div>
-                    <div class="ribben">
-                        <p>NEW</p>
-                    </div>
-                </div>
-                <div class="col-md-2 w3l-movie-gride-agile">
-                    <a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m10.jpg" title="album-name" alt=" " />
-                        <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-                    </a>
-                    <div class="mid-1">
-                        <div class="w3l-movie-text">
-                            <h6><a href="single.html">Don't Think Twice</a></h6>
-                        </div>
-                        <div class="mid-2">
-
-                            <p>2016</p>
-                            <div class="block-stars">
-                                <ul class="w3l-ratings">
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-
-
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                    </div>
-                    <div class="ribben">
-                        <p>NEW</p>
-                    </div>
-                </div>
-                <div class="col-md-2 w3l-movie-gride-agile">
-                    <a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m11.jpg" title="album-name" alt=" " />
-                        <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-                    </a>
-                    <div class="mid-1">
-                        <div class="w3l-movie-text">
-                            <h6><a href="single.html">X-Men</a></h6>
-                        </div>
-                        <div class="mid-2">
-
-                            <p>2016</p>
-                            <div class="block-stars">
-                                <ul class="w3l-ratings">
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-
-
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                    </div>
-                    <div class="ribben">
-                        <p>NEW</p>
-                    </div>
-                </div>
-                <div class="col-md-2 w3l-movie-gride-agile">
-                    <a href="single.html" class="hvr-shutter-out-horizontal"><img src="images/m12.jpg" title="album-name" alt=" " />
-                        <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
-                    </a>
-                    <div class="mid-1">
-                        <div class="w3l-movie-text">
-                            <h6><a href="single.html">Greater</a></h6>
-                        </div>
-                        <div class="mid-2">
-
-                            <p>2016</p>
-                            <div class="block-stars">
-                                <ul class="w3l-ratings">
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-
-
-                                </ul>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                    </div>
-                    <div class="ribben">
-                        <p>NEW</p>
-                    </div>
-                </div>
-
-                <div class="clearfix"> </div>
-            </div>
-            <!-- //latest-movies -->
-
-        </div>
-    </div>
 </div>
 <!-- //faq-banner -->
 <!-- footer -->
@@ -614,45 +361,27 @@
         <div class="w3ls_footer_grid">
             <div class="col-md-6 w3ls_footer_grid_left">
                 <div class="w3ls_footer_grid_left1">
-                    <h2>Subscribe to us</h2>
+                    <h2>订阅我们的消息</h2>
                     <div class="w3ls_footer_grid_left1_pos">
                         <form action="#" method="post">
-                            <input type="email" name="email" placeholder="Your email..." required="">
-                            <input type="submit" value="Send">
+                            <input type="email" name="email" placeholder="您的邮箱" required="">
+                            <input type="submit" value="订阅">
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 w3ls_footer_grid_right">
-                <a href="index.html"><h2>One<span>Movies</span></h2></a>
+                <a href="index.html"><h2>SP<span>movie</span></h2></a>
             </div>
             <div class="clearfix"> </div>
         </div>
         <div class="col-md-5 w3ls_footer_grid1_left">
-            <p>Copyright &copy; 2016.Company name All rights reserved.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+            <p>Copyright &copy; 2020.Company name All rights reserved.</p>
         </div>
         <div class="col-md-7 w3ls_footer_grid1_right">
             <ul>
                 <li>
-                    <a href="genres.html">Movies</a>
-                </li>
-                <li>
-                    <a href="faq.html">FAQ</a>
-                </li>
-                <li>
-                    <a href="horror.html">Action</a>
-                </li>
-                <li>
-                    <a href="genres.html">Adventure</a>
-                </li>
-                <li>
-                    <a href="comedy.html">Comedy</a>
-                </li>
-                <li>
-                    <a href="icons.html">Icons</a>
-                </li>
-                <li>
-                    <a href="contact.html">Contact Us</a>
+                    <a href="#">联系我们</a>
                 </li>
             </ul>
         </div>
@@ -896,6 +625,51 @@
             },
             error:function(error) {
                 alert("未登录");
+            }
+        });
+    }
+    function getMessageState() {
+        $.ajax({
+            url:"getMessageState",    //请求的url地址
+            dataType:"json",   //返回格式为json
+            async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+            data:{},    //参数值
+            type:"GET",   //请求方式
+            success:function(req){
+                if (req==1){
+                    document.getElementById("messageState").innerText="有新消息"
+                }
+                //请求成功时处理
+            },
+            error:function(){
+                //请求出错处理
+            }
+        });}
+
+    function login() {
+        var email=document.getElementById("email").value;
+        var password=document.getElementById("password").value;
+        $.ajax({
+            url:"/loginSpace",    //请求的url地址
+            dataType:"json",   //返回格式为json
+            async:false,//请求是否异步，默认为异步，这也是ajax重要特性
+            data:{"email":email,"password":password},    //参数值
+            type:"POST",   //请求方式
+            success:function(req){
+                if (req==-1){
+                    alert("密码错误")
+                }
+                if (req==0){
+                    alert("账号状态异常")
+                }
+                if (req==1){
+                    alert("登录成功")
+                    location.reload();
+                }
+                //请求成功时处理
+            },
+            error:function(){
+                //请求出错处理
             }
         });
     }

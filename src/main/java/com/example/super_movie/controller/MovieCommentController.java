@@ -71,8 +71,13 @@ public class MovieCommentController{
     }
 
     @RequestMapping("userInfo")
-    public String toUserInfo(Model model,int id,Integer p,Integer state,HttpServletRequest request){
+    public String toUserInfo(Model model,Integer id,Integer p,Integer state,HttpServletRequest request){
         Integer userId=(Integer) request.getSession().getAttribute("userId");
+        if (id==null)
+            id=userId;
+        if (id==null)
+            return "redirect:/login";
+        model.addAttribute("loginId",userId);
         if (userId==null)
             userId=0;
         if (p==null)
@@ -91,7 +96,7 @@ public class MovieCommentController{
 
 //按热度排名获取影评列表
     @RequestMapping("/movieCommentList")
-    public String toMovieList(Model model,Integer movieId,Integer state){
+    public String toMovieList(Model model,Integer movieId,Integer state,HttpServletRequest request){
         List<ZSetOperations.TypedTuple<Object>> maxLikeList=movieCommentService.getLikeRankIdByMovieId(movieId,0,9);
         List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentList(maxLikeList);
         model.addAttribute("commentList",movieCommentInfoList);
@@ -100,6 +105,7 @@ public class MovieCommentController{
         if (state!=null)
             return "movieCommentList::commentListSpace";
         model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
+        model.addAttribute("loginId",request.getSession().getAttribute("userId"));
         return "movieCommentList";
     }
     //按发表时间排名获取影评列表

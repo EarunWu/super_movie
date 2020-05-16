@@ -9,6 +9,7 @@ import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieInfo;
 import com.example.super_movie.vo.SelectMovieList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,8 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
     private RedisUtil redisUtil;
     @Autowired
     RedisTemplate redisTemplate;
+    @Value("${avgNum}")
+    private int avgNum;
 
     //取电影信息
     public MovieInfo getMovieInfo(Integer movieId){
@@ -56,7 +59,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
     //按时间顺序获取此种类电影list
     public List<SelectMovieList> getMovieListByKindOrderByTime(int state, int page){
         List<SelectMovieList> list=redisTemplate.opsForList().range("kindTime"+state,(page-1)*30,(page-1)*30+30);
-        if (list==null){
+        if (list==null||list.size()==0){
             list= getBaseMapper().findMovieListByKindOrderByTime(CNHToENG.getCHNById(state));
             redisUtil.lSetList("kindTime"+state,list);
         }
@@ -65,7 +68,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
     //按热度顺序获取此种类电影list
     public List<SelectMovieList> getMovieListByKindOrderByHot(int state, int page){
         List<SelectMovieList> list=redisTemplate.opsForList().range("kindHot"+state,(page-1)*30,(page-1)*30+30);
-        if (list==null){
+        if (list==null||list.size()==0){
             list= getBaseMapper().findMovieListByKindOrderByHot(CNHToENG.getCHNById(state));
             redisUtil.lSetList("kindHot"+state,list);
         }
@@ -82,13 +85,14 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
             page=1;
         if (page>num)
             page=num;
-        if (order==null)
+        if (order==null||order==0)
             return getMovieListByKindOrderByHot(state,page);
         return getMovieListByKindOrderByTime(state,page);
     }
 
-    public void updateKindNum(){
+    public void updateKind(){
         for (int i=1;i<7;i++){
+            redisUtil.del("kindTime"+i);
             redisUtil.hset("number","kind"+i,getBaseMapper().getKindNumByKind(CNHToENG.getCHNById(i)));
         }
     }
@@ -116,6 +120,25 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
             return getBaseMapper().addPersonForMovie(personId, movieId, job);
         }catch (Exception e){
             return 0;
+        }
+    }
+    public List<MovieInfo> getMovieRank(int i){
+        if (i==1){
+            List<MovieInfo> list=redisTemplate.opsForList().range("movieAvgRank",0,-1);
+            if (list==null||list.size()==0){
+                list=getBaseMapper().getMovieAvgRankList(avgNum);
+                redisUtil.lSetList("movieAvgRank",list);
+                redisUtil.expire("movieAvgRank",60*60);
+            }
+            return list;
+        }else {
+            List<MovieInfo> list=redisTemplate.opsForList().range("movieHotRank",0,-1);
+            if (list==null||list.size()==0){
+                list=getBaseMapper().getMovieHotRankList();
+                redisUtil.lSetList("movieHotRank",list);
+                redisUtil.expire("movieHotRank",60*60);
+            }
+            return list;
         }
     }
 }

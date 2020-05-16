@@ -75,4 +75,19 @@
     insert into person_movie (person_id,movie_id,job)
     values (#{personId},#{movieId},#{job})
     </insert>
+    <select id="getMovieAvgRankList" resultType="com.example.super_movie.vo.MovieInfo" parameterType="java.lang.Integer">
+    SELECT movie.*,count(movie_comment.movie_id) as sum,TRUNCATE(IFNULL(avg(movie_comment.score),0),1) as score
+    FROM movie left join movie_comment on movie.id=movie_comment.movie_id
+    GROUP BY movie.id
+    HAVING sum>#{num}
+    order by score desc
+    limit 0,25
+    </select>
+    <select id="getMovieHotRankList" resultType="com.example.super_movie.vo.MovieInfo">
+    SELECT movie.*,count(movie_comment.movie_id) as sum,TRUNCATE(IFNULL(avg(movie_comment.score),0),1) as score
+    FROM movie left join movie_comment on movie.id=movie_comment.movie_id
+    GROUP BY movie.id
+    order by sum desc
+    limit 0,25
+    </select>
 </mapper>

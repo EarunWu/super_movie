@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>个人设置</title>
+<title>List</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,15 +12,21 @@
 <!-- //for-mobile-apps -->
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/style1.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/single.css" rel='stylesheet' type='text/css' />
-<link rel="stylesheet" href="css/contactstyle.css" type="text/css" media="all" />
 <link rel="stylesheet" href="css/faqstyle.css" type="text/css" media="all" />
 <link href="css/medile.css" rel='stylesheet' type='text/css' />
+<link href="css/single.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="css/contactstyle.css" type="text/css" media="all" />
+<!-- news-css -->
+<link rel="stylesheet" href="news-css/news.css" type="text/css" media="all" />
+<!-- //news-css -->
+<!-- list-css -->
+<link rel="stylesheet" href="list-css/list.css" type="text/css" media="all" />
+<!-- //list-css -->
 <!-- font-awesome icons -->
 <link rel="stylesheet" href="css/font-awesome.min.css" />
 <!-- //font-awesome icons -->
 <!-- js -->
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 <!-- //js -->
 <!---<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300' rel='stylesheet' type='text/css'>--->
 <!-- start-smoth-scrolling -->
@@ -35,25 +41,101 @@
 	});
 </script>
 <!-- start-smoth-scrolling -->
-<link href="css/owl.carousel.css" rel="stylesheet" type="text/css" media="all">
-<script src="js/owl.carousel.js"></script>
-<script>
-	$(document).ready(function() { 
-		$("#owl-demo").owlCarousel({
-	 
-		  autoPlay: 3000, //Set AutoPlay to 3 seconds
-	 
-		  items : 5,
-		  itemsDesktop : [640,5],
-		  itemsDesktopSmall : [414,4]
-	 
-		});
-	 
-	}); 
-</script> 
+<!-- tables -->
+<link rel="stylesheet" type="text/css" href="list-css/table-style.css" />
+<link rel="stylesheet" type="text/css" href="list-css/basictable.css" />
+<script type="text/javascript" src="list-js/jquery.basictable.min.js"></script>
+ <script type="text/javascript">
+    $(document).ready(function() {
+      $('#table').basictable();
+
+      $('#table-breakpoint').basictable({
+        breakpoint: 768
+      });
+	   $('#table-breakpoint1').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint2').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint3').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint4').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint5').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint6').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint7').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint8').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint9').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint10').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint11').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint12').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint13').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint14').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint15').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint16').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint17').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint18').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint19').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint20').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint21').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint22').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint23').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint24').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint25').basictable({
+        breakpoint: 768
+      });
+	  $('#table-breakpoint26').basictable({
+        breakpoint: 768
+      });
+    });
+  </script>
+<!-- //tables -->
 </head>
 
-<body>
+<body onload="getMessageState()">
 <!--<div th:utext="${movieComment.getContent()}"></div>-->
 <!-- header -->
 <div class="header">
@@ -67,7 +149,12 @@
 				<input type="submit" value="搜索">
 			</form>
 		</div>
-		<div class="w3l_sign_in_register">
+		<div th:if="${loginId==null}" class="w3l_sign_in_register">
+			<ul>
+				<li><a href="#" data-toggle="modal" data-target="#myModal">登录</a></li>
+			</ul>
+		</div>
+		<div th:if="${loginId!=null}" class="w3l_sign_in_register">
 			<ul>
 				<li><a href="/message"  target="_blank"><span class="fa fa-bell"></span><span id="messageState">无新消息</span></a></li>
 			</ul>
@@ -167,105 +254,61 @@
 						<li><a href="/userInfo">我的影评</a></li>
 						<li><a href="/message">我的消息</a></li>
 						<li><a href="/settings">设置</a></li>
-						<li><a href="/loginOut">注销</a></li>
+						<li><a th:if="${loginId!=null}" href="/loginOut">注销</a><a th:if="${loginId==null}" href="#" data-toggle="modal" data-target="#myModal">登录</a></li>
 					</ul>
 				</nav>
 			</div>
 		</nav>
 	</div>
-</div>
+</div><!-- //nav -->
+<!-- faq-banner -->
 	<div class="faq">
-<!-- general -->
-	<div class="general_agileits_genres">
-		<h4 class="latest-text w3_latest_text">个人设置</h4>
-		<div class="container">
-            <div class="agileits-single-top">
-				<ol class="breadcrumb">
-				  <li><a href="index.html">Home</a></li>
-				  <li class="active">个人设置</li>
-				</ol>
-			</div>
-		</div>
-		<div class="container">
-			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-				<ul id="myTab" class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">修改个人信息</a></li>
-					<li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">修改密码</a></li>
-					<li role="presentation"><a href="#rating" onclick="blackList()" id="rating-tab" role="tab" data-toggle="tab" aria-controls="rating" aria-expanded="true">管理黑名单</a></li>
-<!--					<li role="presentation"><a href="#imdb" role="tab" id="imdb-tab" data-toggle="tab" aria-controls="imdb" aria-expanded="false">Recently Added</a></li>-->
-				</ul>
-				<div id="myTabContent" class="tab-content">
-					<div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab" >
-						<div class="w3_agile_featured_movies" align="center">
-							<div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
-								<img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
-							</div>
-							<div><a href="#"><h3 class="glyphicon glyphicon-camera" aria-hidden="true"></h3></a></div>
-							<div style="display:flex;justify-content:center;align-items:center;">
-								<div class="input-group input-group-lg w3_w3layouts">
-									<span class="input-group-addon">用户昵称</span>
-									<input id="username" type="text" class="form-control" style="width: 300px" th:value="${userInfo.username}" aria-describedby="sizing-addon1">
+		<h4 th:if="${i==null}" class="latest-text w3_faq_latest_text w3_latest_text">热度排行榜<a class="agile-icon" href="/movieRank?i=1"><i class="fa fa-exchange"></i></a></h4>
+		<h4 th:if="${i!=null}" class="latest-text w3_faq_latest_text w3_latest_text">评分排行榜<a class="agile-icon" href="/movieRank"><i class="fa fa-exchange"></i></a></h4>
+			<div class="container">
+				<div class="agileits-news-top">
+					<ol class="breadcrumb">
+					  <li><a href="/index">主页</a></li>
+					  <li class="active">排行榜</li>
+					</ol>
+				</div>
+				<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+						<div id="myTabContent" class="tab-content">
+							<div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+								<div class="agile-news-table">
+									<div class="w3ls-news-result">
+									</div>
+									<table id="table-breakpoint">
+										<thead>
+										  <tr>
+											<th>No.</th>
+											<th>电影名</th>
+											<th>年份</th>
+											<th>时长</th>
+											<th>国家</th>
+											<th>人数</th>
+											<th>分数</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  <tr th:each="movie:${movieList}">
+											<td><span th:text="${movieStat.index+1}"></span></td>
+											<td class="w3-list-img"><a th:href="'/movieInfo?movieId='+${movie.id}"><img src="images/n1.jpg" alt="" /> <span th:text="${movie.name}"></span></a></td>
+											<td><span th:text="${movie.time.getYear()}"></span></td>
+											<td><span th:text="${movie.length}"></span></td>
+											<td class="w3-list-info"><span th:text="${movie.country}"></span></td>
+											<td class="w3-list-info"><span th:text="${movie.sum}"></span></td>
+											<td><span th:text="${movie.score}"></span></td>
+										  </tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
-							<div style="display:flex;justify-content:center;align-items:center;">
-								<div class="input-group input-group-lg w3_w3layouts">
-									<span class="input-group-addon">用户签名</span>
-									<input id="introduction" type="text" class="form-control" style="width: 300px" th:value="${userInfo.introduction}" aria-describedby="sizing-addon1">
-								</div>
-							</div>
-							<div><h3><a href="javascript:void(0);" onclick="updateUserInfo()" class="label label-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></h3></div>
-							<div class="clearfix"> </div>
 						</div>
-
-					</div>
-					<div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab" >
-						<div style="display:flex;justify-content:center;align-items:center;">
-							<div class="input-group input-group-lg w3_w3layouts">
-								<span class="input-group-addon">原密码</span>
-								<input id="password" type="password" class="form-control" style="width: 300px" aria-describedby="sizing-addon1">
-							</div>
-						</div>
-						<div style="display:flex;justify-content:center;align-items:center;">
-							<div class="input-group input-group-lg w3_w3layouts">
-								<span class="input-group-addon">新密码</span>
-								<input id="newPassword"  type="password" class="form-control" style="width: 300px" aria-describedby="sizing-addon1">
-							</div>
-						</div>
-						<div align="center"><h3><a href="javascript:void(0);" onclick="updatePassword()" class="label label-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></h3></div>
-						<div class="clearfix"> </div>
-					</div>
-					<div role="tabpanel" class="tab-pane fade" id="rating" aria-labelledby="rating-tab">
-						<div class="bs-docs-example" th:fragment="blackListSpace" id="blackListSpace">
-							<table class="table">
-								<thead>
-								<tr>
-									<th>序号</th>
-									<th>id</th>
-									<th>用户名</th>
-									<th>移除</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr th:id="'tr'+${black.id}" th:each="black:${blackList}">
-									<td><span th:text="${blackStat.index+1}"></span></td>
-									<td><span th:text="${black.id}"></span></td>
-									<td><span th:text="${black.username}"></span></td>
-									<td><h4><a href="javascript:void(0);" th:onclick="removeBlackList([[${black.id}]])" class="label label-danger">移除</a></h4></td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-
-						<div class="clearfix"> </div>
-					</div>
 				</div>
 			</div>
-		</div>
 	</div>
-<!--body wrapper start-->
-	<div class="review-slider">
-
-	</div>
+<!-- //faq-banner -->
 <!-- footer -->
 <div class="footer">
 	<div class="container">
@@ -318,83 +361,66 @@ $(document).ready(function(){
 </script>
 <!-- //Bootstrap Core JavaScript -->
 <!-- here stars scrolling icon -->
-<script type="text/javascript" th:inline="javascript">
-	var username=unescape([[${userInfo.username}]]);
-	var introduction=unescape([[${userInfo.introduction}]]);
-	function updateUserInfo() {
-		if (username!=document.getElementById("username").value||introduction!=document.getElementById("introduction").value){
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+		function getMessageState() {
 			$.ajax({
-				url:"updateUserInfo",
-				data:{"username":document.getElementById("username").value,"introduction":document.getElementById("introduction").value},
-				async:false,
-				type:"post",
-				dataType:"json",
-				success:function(state){
-					if (state==1){
-						alert("修改成功");
-					}else {
-						alert("未知错误")
+				url:"getMessageState",    //请求的url地址
+				dataType:"json",   //返回格式为json
+				async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+				data:{},    //参数值
+				type:"GET",   //请求方式
+				success:function(req){
+					if (req==1){
+						document.getElementById("messageState").innerText="有新消息"
 					}
+					//请求成功时处理
 				},
-				error:function(error) {
-					alert("服务器繁忙");
-					alert(error);
+				error:function(){
+					//请求出错处理
+				}
+			});}
+
+		function login() {
+			var email=document.getElementById("email").value;
+			var password=document.getElementById("password").value;
+			$.ajax({
+				url:"/loginSpace",    //请求的url地址
+				dataType:"json",   //返回格式为json
+				async:false,//请求是否异步，默认为异步，这也是ajax重要特性
+				data:{"email":email,"password":password},    //参数值
+				type:"POST",   //请求方式
+				success:function(req){
+					if (req==-1){
+						alert("密码错误")
+					}
+					if (req==0){
+						alert("账号状态异常")
+					}
+					if (req==1){
+						alert("登录成功")
+						location.reload();
+					}
+					//请求成功时处理
+				},
+				error:function(){
+					//请求出错处理
 				}
 			});
-			username=document.getElementById("username").value;
-			introduction=document.getElementById("introduction").value;
 		}
-	}
-	function updatePassword() {
-		$.ajax({
-			url:"updatePassword",
-			data:{"newPassword":document.getElementById("newPassword").value,"password":document.getElementById("password").value},
-			async:false,
-			type:"post",
-			dataType:"json",
-			success:function(state){
-				if (state==1){
-					alert("修改成功");
-				}
-				if (state==0){
-					alert("密码错误")
-				}
-				if (state==-1){
-					alert("密码不能为空")
-				}
-			},
-			error:function(error) {
-				alert("服务器繁忙");
-				alert(error);
-			}
-		});
-	}
-	function blackList() {
-		$('#blackListSpace').load("getBlackList");
-	}
-	function removeBlackList(id) {
-		$.ajax({
-			url:"removeBlackList",
-			data:{"id":id},
-			async:false,
-			type:"post",
-			dataType:"json",
-			success:function(state){
-				if (state==1){
-					document.getElementById("tr"+id).style.display="none";
-					alert("删除成功");
-				}
-				if (state==0){
-					document.getElementById("tr"+id).style.display="none";
-					alert("不能重复删除")
-				}
-			},
-			error:function(error) {
-				alert("服务器繁忙");
-				alert(error);
-			}
-		});
-	}
-</script>
+	</script>
+<!-- //here ends scrolling icon -->
 </body>
 </html>

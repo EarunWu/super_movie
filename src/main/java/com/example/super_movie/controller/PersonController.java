@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,12 +25,13 @@ public class PersonController {
     @Autowired
     private IPersonService personService;
     @RequestMapping("/person")
-    public String toPerson(Model model, Integer personId){
+    public String toPerson(HttpServletRequest request, Model model, Integer personId){
         Person person=personService.getPersonById(personId);
         List<PersonMovie> personMovieList=personService.getMovieByPerson(personId);
         model.addAttribute("person",person);
         model.addAttribute("personMovieList",personMovieList);
         model.addAttribute("jobList",personService.getJobByPersonId(personId));
+        model.addAttribute("loginId",request.getSession().getAttribute("userId"));
         return "person";
     }
 
