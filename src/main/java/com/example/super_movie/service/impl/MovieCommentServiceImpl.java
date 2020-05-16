@@ -2,18 +2,23 @@ package com.example.super_movie.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.MovieComment;
+import com.example.super_movie.entity.ReplyOfComment;
 import com.example.super_movie.mapper.MovieCommentMapper;
 import com.example.super_movie.service.IMovieCommentService;
+import com.example.super_movie.service.IReplyOfCommentService;
 import com.example.super_movie.service.IUserService;
 import com.example.super_movie.util.RedisService;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieCommentInfo;
+import com.example.super_movie.vo.ReplyOfCommentInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -34,6 +39,11 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     RedisService redisService;
     @Autowired
     IUserService userService;
+    @Autowired
+    IReplyOfCommentService replyOfCommentService;
+    @Value("${reportNum}")
+    private int reportAble;
+
     public int postMovieComment(Integer userId,String content,String title,Integer movieId,int score){
         MovieComment movieComment=new MovieComment(userId,content,title,movieId,score);
         getBaseMapper().postMovieComment(movieComment);
@@ -96,8 +106,6 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             System.out.println("数据库不存在此数据");
             return null;
         }
-        movieCommentInfo.setLike(getLikeNum(movieCommentInfo.getId(),movieCommentInfo.getMovieId()));
-        movieCommentInfo.setState(getLikeStateById(movieCommentInfo.getUserId(),id,movieCommentInfo.getCreateTime().toLocalDate()));
         return movieCommentInfo;
     }
     //获取指定电影的最高点赞的影评
@@ -175,27 +183,36 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             list.add(new MovieCommentInfo());
             redisTemplate.opsForList().rightPushAll("privateHome"+userId,list);
             redisUtil.expire("privateHome"+userId,5*60);
-            try {
-                return list.subList((page-1)*5,(page-1)*5+5);
-            }catch (Exception e){
-                System.out.println("越界");
-                return list.subList((page-1)*5,-1);
-            }
+            if (list.size()<(page-1)*5+5)
+                return list.subList((page-1)*5,list.size());
+            return list.subList((page-1)*5,(page-1)*5+5);
         }
         return list;
 
     }
 
-//    public int report(int state,int id,int userId){
-//        //0为举报影评，1为举报评论
-//        if (state==0){
-//            //把点赞数设置为举报人的id
-//            MovieCommentInfo movieCommentInfo=getMovieCommentInfoById(id);
-//            movieCommentInfo.setLike(userId);
-//            redisUtil.zSetInc("commentReport",movieCommentInfo,1);
-//        }
-//        if (state==1){
-//            redisUtil.lSet("replyReport",id);
-//        }
-//    }
+    public int report(boolean state,int id,int userId){
+        int num=-1;
+        //0为举报影评，1为举报评论
+        if (!state&&redisUtil.sSet("reportUser","0_"+id+"_"+userId)==1){
+            num=(int)redisUtil.zSetInc("commentReportNum",id,1);
+            if (num==reportAble){
+                MovieCommentInfo movieCommentInfo=getMovieCommentInfoById(id);
+                //把点赞数设置成举报人id，时间设置为举报时间
+                movieCommentInfo.setLike(userId);
+                movieCommentInfo.setUpdateTime(LocalDateTime.now());
+                redisUtil.lSet("commentReport",movieCommentInfo );
+            }
+        }
+        if (state&&redisUtil.sSet("reportUser","1_"+id+"_"+userId)==1){
+            num=(int)redisUtil.zSetInc("replyReportNum",id,1);
+            if (num==reportAble){
+                ReplyOfComment replyOfComment=replyOfCommentService.getById(id);
+                //把点replyId设置成举报人id，时间设置为举报时间
+                replyOfComment.setReplyId(userId);
+                redisUtil.lSet("replyReport",replyOfComment);
+            }
+        }
+        return num;
+    }
 }

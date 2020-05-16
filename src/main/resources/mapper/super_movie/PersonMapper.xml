@@ -9,4 +9,8 @@
     <select id="findJobByPersonId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
         SELECT DISTINCT job FROM person_movie WHERE person_id=#{personId} order by job
     </select>
+    <insert id="addPerson">
+    insert into person (name,sex,born,info,eng_name,country)
+    values (#{name},#{sex},#{born},#{info},#{enName},#{country})
+    </insert>
 </mapper>

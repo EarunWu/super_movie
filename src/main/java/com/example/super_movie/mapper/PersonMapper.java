@@ -5,6 +5,7 @@ import com.example.super_movie.entity.Person;
 import com.example.super_movie.vo.PersonMovie;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -19,4 +20,5 @@ import java.util.List;
 public interface PersonMapper extends BaseMapper<Person> {
     List<PersonMovie> findMovieByPerson(int personId);
     List<Integer> findJobByPersonId(int personId);
+    int addPerson(String name, Boolean sex, LocalDate born, String info, String enName, String country);
 }

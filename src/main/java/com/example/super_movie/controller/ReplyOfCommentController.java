@@ -32,6 +32,7 @@ public class ReplyOfCommentController{
     public String toReplyPage(int id, int page, Integer order, Model model){
         model.addAttribute("order",order);
         model.addAttribute("replyList",replyOfCommentService.getReplyOfCommentByIdAndPage(id,page,order));
+        model.addAttribute("p",page);
         return "movieComment::replySpace";
     }
 

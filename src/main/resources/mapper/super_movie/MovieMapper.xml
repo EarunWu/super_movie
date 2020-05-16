@@ -63,4 +63,16 @@
     FROM movie
     WHERE name like #{name}
     </select>
+    <insert id="addNewMovie" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
+    insert into movie (name,time,country,length,info)
+    values (#{name},#{time},#{country},#{length},#{info})
+    </insert>
+    <insert id="addKindForMovie">
+    insert into kind_movie (kind,movie_id)
+    values (#{kind},#{movieId})
+    </insert>
+    <insert id="addPersonForMovie">
+    insert into person_movie (person_id,movie_id,job)
+    values (#{personId},#{movieId},#{job})
+    </insert>
 </mapper>

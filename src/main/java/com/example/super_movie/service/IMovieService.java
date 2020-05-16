@@ -24,5 +24,8 @@ public interface IMovieService extends IService<Movie> {
     void updateKindNum();
     int getSearchNumByName(String name);
     List<SelectMovieList> searchMovieByName(String name, int page);
+    int addNewMovie(String name, LocalDate time, String country,int length,String info);
+    int addKindForMovie(int movieId,int kindId);
+    int addPersonForMovie(int personId,int movieId,int job);
 
 }

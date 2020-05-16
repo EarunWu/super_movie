@@ -71,11 +71,6 @@ public class MovieController{
         model.addAttribute("movieList",movieService.getMovieListByKind(state,page,order));
         return "selectMovie";
     }
-    @RequestMapping("updateKindNum")
-    public String updateKindNum(Model model,Integer state,Integer page,Integer order){
-        movieService.updateKindNum();
-        return "msg";
-    }
 
     @RequestMapping("index")
     public String toIndex(HttpServletRequest request, Model model, Integer page, Integer state, Integer reload){

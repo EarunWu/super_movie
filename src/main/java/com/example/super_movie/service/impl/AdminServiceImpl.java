@@ -27,4 +27,35 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return redisUtil.lSet("recommend",movie);
     }
 
+    public boolean removeAllRecommend(){
+        try {
+            redisUtil.del("recommend");
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public boolean banUser(int userId){
+        return redisUtil.setBit("userState",userId,false);
+    }
+
+    public boolean unBanUser(int userId){
+        return redisUtil.setBit("userState",userId,true);
+    }
+
+    public boolean banMovieComment(int id){
+        return redisUtil.setBit("commentState",id,false);
+    }
+
+    public boolean unBanMovieComment(int id){
+        return redisUtil.setBit("commentState",id,true);
+    }
+
+    public boolean removeReply(int id){
+        return getBaseMapper().deleteReply(id)>0;
+    }
+
+
+
 }

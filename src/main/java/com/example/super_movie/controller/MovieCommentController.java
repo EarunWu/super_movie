@@ -120,19 +120,19 @@ public class MovieCommentController{
     public String toMovieCommentPage(Model model, Integer id,Integer order,HttpServletRequest request){
         Integer userId=(Integer) request.getSession().getAttribute("userId");
         model.addAttribute("loginId",userId);
-        if (userId==null)
-            userId=0;
         //order为null则正序
         MovieCommentInfo movieComment=movieCommentService.getMovieCommentInfoById(id);
         if (movieComment==null)
             return "index";
-        LocalDate date=movieComment.getCreateTime().toLocalDate();
-        movieCommentService.getLikeStateById(1,id,date);
+        //标记点赞数和用户是否点赞
+        movieComment.setLike(movieCommentService.getLikeNum(movieComment.getId(),movieComment.getMovieId()));
+        movieComment.setState(movieCommentService.getLikeStateById(userId==null?0:userId,id,movieComment.getCreateTime().toLocalDate()));
         model.addAttribute("movieComment",movieComment);
+        model.addAttribute("p",1);
         model.addAttribute("page",replyOfCommentService.getPageNum(id));
         model.addAttribute("replyList",replyOfCommentService.getReplyOfCommentByIdAndPage(id,1,order));
         model.addAttribute("order",order);
-        model.addAttribute("writer",userService.getUserInfoById(movieComment.getUserId(),userId));
+        model.addAttribute("writer",userService.getUserInfoById(movieComment.getUserId(),userId==null?0:userId));
         return "movieComment";
     }
     @ResponseBody
@@ -184,6 +184,11 @@ public class MovieCommentController{
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+    @RequestMapping("/report")
+    @ResponseBody
+    public int report(int id,boolean state,HttpServletRequest request){
+        return movieCommentService.report(state,id,(int)request.getSession().getAttribute("userId"));
     }
 
 }

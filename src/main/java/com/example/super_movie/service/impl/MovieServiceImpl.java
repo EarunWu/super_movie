@@ -43,7 +43,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
                 BigDecimal avg=(BigDecimal)map.get("avg");
                 avg=avg.setScale(1,BigDecimal.ROUND_DOWN);
                 Long sum=(Long)map.get("sum");
-                movieInfo=new MovieInfo(movie.getId(),movie.getName(),movie.getTime(),movie.getCountry(),movie.getLength(),movie.getInfo(),getBaseMapper().findDirectorById(movieId),getBaseMapper().findScreenwriterById(movieId),getBaseMapper().findActorById(movieId),getBaseMapper().findKindByMovieId(movieId),getBaseMapper().findLanguageByMovieId(movieId),avg.doubleValue(),sum.intValue());
+                movieInfo=new MovieInfo(movie,getBaseMapper().findDirectorById(movieId),getBaseMapper().findScreenwriterById(movieId),getBaseMapper().findActorById(movieId),getBaseMapper().findKindByMovieId(movieId),getBaseMapper().findLanguageByMovieId(movieId),avg.doubleValue(),sum.intValue());
                 redisUtil.set("movieInfo"+movieId,movieInfo,3600);
                 System.out.println("mysql中取得movieInfo并存入redis");
             }
@@ -97,5 +97,25 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
     }
     public List<SelectMovieList> searchMovieByName(String name,int page){
         return getBaseMapper().searchMovieByName("%"+name+"%", (page-1)*10);
+    }
+    public int addNewMovie(String name, LocalDate time, String country,int length,String info){
+        Movie movie=new Movie(0, name, time,country,length,info);
+        if (getBaseMapper().addNewMovie(movie)>0)
+            return movie.getId();
+        return -1;
+    }
+    public int addKindForMovie(int movieId,int kindId){
+        try {
+            return getBaseMapper().addKindForMovie(CNHToENG.getCHNById(kindId),movieId);
+        }catch (Exception e){
+            return 0;
+        }
+    }
+    public int addPersonForMovie(int personId,int movieId,int job){
+        try {
+            return getBaseMapper().addPersonForMovie(personId, movieId, job);
+        }catch (Exception e){
+            return 0;
+        }
     }
 }

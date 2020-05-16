@@ -6,4 +6,9 @@
     from movie
     WHERE id=#{movieId}
     </select>
+    <update id="deleteReply">
+  update reply_of_comment set
+    state=0
+  where id = #{id}
+    </update>
 </mapper>

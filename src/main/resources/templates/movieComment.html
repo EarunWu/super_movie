@@ -307,7 +307,7 @@
             <div class="col-md-8 wthree-top-news-left">
                 <div class="wthree-news-left">
                     <div class="wthree-news-left-img">
-                        <h4><span th:text="${movieComment.title}"></span><span style="float: right;color: #ffc107" th:text="评分：+${movieComment.score}"></span> </h4>
+                        <h4><span th:text="${movieComment.title}"></span><a style="color: red" class="agile-icon" href="javascript:void(0);" th:onclick="report([[${movieComment.id}]],false)"><i class="fa fa-exclamation"></i>举报</a><span style="float: right;color: #ffc107" th:text="评分：+${movieComment.score}"></span> </h4>
                         <div class="s-author">
                             <p>作者：<a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a> &nbsp;&nbsp;发布时间：<span th:text="${movieComment.createTime.toLocalDate()}"></span>&nbsp;&nbsp;最后修改：<span th:text="${movieComment.updateTime.toLocalDate()}"></span></p>
                         </div>
@@ -332,7 +332,7 @@
                             </div>
                         </div>
                     <div th:each="reply:${replyList}"  class="wthree-news-top-left">
-                        <div style="width: 100%;">
+                        <div th:if="${reply.state==1}" style="width: 100%;">
                             <div style="display: inline-block; width: 60px;height: 60px;border-radius:50%;overflow:hidden;vertical-align: top; ">
                                 <img  src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
                             </div>
@@ -345,7 +345,7 @@
                                 <div>
                                     <p style="word-wrap: break-word;" th:text="${reply.content}"></p>
                                 </div>
-                                <p style="float: right" th:text="${replyStat.index}"></p>
+                                <p style="float: right"><span th:text="${5*p-5}+${replyStat.index+1}+'楼'"></span><a style="color: red" class="agile-icon" href="javascript:void(0);" th:onclick="report([[${reply.id}]],true)"><i class="fa fa-exclamation"></i>举报</a></p>
                             </div>
                         </div>
 <!--                        <table width="100%">-->
@@ -879,6 +879,25 @@
             }
         });
 
+    }
+
+    function report(id, state) {
+        $.ajax({
+            url:"/report",
+            data:{"state":state,"id":id},
+            async:false,
+            type:"get",
+            dataType:"json",
+            success:function(num){
+                if (num==-1)
+                    alert("请勿重复举报")
+                else
+                    alert("举报人数"+num)
+            },
+            error:function(error) {
+                alert("未登录");
+            }
+        });
     }
 </script>
 </body>

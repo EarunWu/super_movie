@@ -9,7 +9,7 @@ public class CNHToENG {
             case(4):return "爱情";
             case(5):return "悬疑";
             case(6):return "动作";
-            default:return null;
+            default:return "什么鬼";
         }
     }
 }

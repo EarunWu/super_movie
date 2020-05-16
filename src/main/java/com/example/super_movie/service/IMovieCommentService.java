@@ -28,4 +28,6 @@ public interface IMovieCommentService extends IService<MovieComment> {
     List<MovieCommentInfo> getCommentListByUserId(int userId,int page,int pageNum);
     List<MovieCommentInfo> getPublicHomeList(Integer page);
     List<MovieCommentInfo> getPrivateHomeList(int userId,int page);
+    int getLikeNum(int commentId,int movieId);
+    int report(boolean state,int id,int userId);
 }

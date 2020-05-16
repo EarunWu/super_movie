@@ -30,5 +30,7 @@ public class ReplyOfComment{
 
     private Timestamp createTime;
 
+    private int state;
+
 
 }

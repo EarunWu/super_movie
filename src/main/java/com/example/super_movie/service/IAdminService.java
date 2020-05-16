@@ -13,5 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IAdminService extends IService<Admin> {
     boolean pushMovieToRecommend(int id);
+    boolean removeAllRecommend();
+    boolean banUser(int userId);
+    boolean unBanUser(int userId);
+    boolean banMovieComment(int id);
+    boolean unBanMovieComment(int id);
+    boolean removeReply(int id);
 
 }

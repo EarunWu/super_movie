@@ -60,7 +60,7 @@ public class Person implements Serializable {
         this.born = born;
         this.info = info;
     }
-    public Person(){};
+    public Person(){}
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

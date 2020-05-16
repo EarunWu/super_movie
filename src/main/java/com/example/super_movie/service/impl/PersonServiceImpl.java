@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -54,4 +55,7 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
         return getBaseMapper().findJobByPersonId(personId);
     }
 
+    public boolean addPerson(String name, Boolean sex, LocalDate born,String info,String enName,String country){
+        return getBaseMapper().addPerson(name, sex, born,info,enName,country)>0;
+    }
 }
