@@ -16,7 +16,7 @@ public class MovieInfo extends Movie {
     private int sum;
 
     public MovieInfo(Movie movie, List<Person> director, List<Person> screenwriter, List<Person> actor, List<String> kind, List<String> language, Double score,int sum) {
-        super(movie.getId(), movie.getName(), movie.getTime(), movie.getCountry(), movie.getLength(), movie.getInfo());
+        super(movie.getId(), movie.getName(), movie.getTime(), movie.getCountry(), movie.getLength(), movie.getInfo(),movie.getState());
         this.director = director;
         this.screenwriter = screenwriter;
         this.actor = actor;

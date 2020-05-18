@@ -40,4 +40,8 @@ public interface MovieMapper extends BaseMapper<Movie> {
     List<MovieInfo> getMovieAvgRankList(int num);
     List<MovieInfo> getMovieHotRankList();
     int addLanguagesForMovie(Map<String, Object> map);
+    int banMovie(int id);
+    int updateMovie(int id,String name, LocalDate time, String country,int length,String info);
+    int deleteKinds(int movieId);
+    int deleteLanguages(int movieId);
 }

@@ -42,13 +42,16 @@ public class Movie{
      */
     private String info;
 
-    public Movie(int id, String name, LocalDate time, String country, Integer length, String info) {
+    private int state;
+
+    public Movie(int id, String name, LocalDate time, String country, Integer length, String info,int state) {
         this.id = id;
         this.name = name;
         this.time = time;
         this.country = country;
         this.length = length;
         this.info = info;
+        this.state=state;
     }
 
     public Movie() {
@@ -102,4 +105,11 @@ public class Movie{
         this.info = info;
     }
 
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
 }

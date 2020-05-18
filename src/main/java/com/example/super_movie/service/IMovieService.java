@@ -28,5 +28,7 @@ public interface IMovieService extends IService<Movie> {
     int addLanguagesForMovie(int movieId, String[] languages);
     int addPersonForMovie(int personId, int movieId, int job);
     List<MovieInfo> getMovieRank(int i);
+    int banMovie(int id);
+    boolean updateMovie(int id,String name, LocalDate time, String country,int length,String info,String[] lan,String[] kind);
 
 }

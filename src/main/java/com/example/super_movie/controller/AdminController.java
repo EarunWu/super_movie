@@ -75,7 +75,21 @@ public class AdminController{
                 movieService.addKindsForMovie(movieId,kind);
             if (lan!=null)
                 movieService.addLanguagesForMovie(movieId,lan);
-        return 1;
+        return movieId;
+    }
+
+    @ResponseBody
+    @RequestMapping("updateMovie")
+    public int updateMovie(int id,String name, String time, String country,int length,String info,String[] lan,String[] kind){
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(time, fmt);
+        return movieService.updateMovie(id,name,date,country,length,info,lan,kind)?1:0;
+    }
+
+    @ResponseBody
+    @RequestMapping("banMovie")
+    public int banMovie(int movieId){
+        return movieService.banMovie(movieId);
     }
 
     @ResponseBody

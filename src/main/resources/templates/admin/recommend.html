@@ -308,7 +308,7 @@
                                                     <td style="text-align: center;vertical-align: center"><span th:text="${movie.avg}"></span></td>
                                                     <td style="text-align: center;vertical-align: center"><span th:text="${movie.hot}"></span></td>
                                                     <td style="text-align: center;vertical-align: center"><span th:text="${movie.time}"></span></td>
-                                                    <td style="text-align: center;vertical-align: center"><button th:onclick="addRecommend([[${movie.id}]])"  class="btn btn-label btn-primary"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>添加到推荐</button></td>
+                                                    <td style="text-align: center;vertical-align: center"><button th:onclick="addRecommend([[${movie.id}]])"  class="btn btn-label btn-primary"><label><i class="mdi mdi-checkbox-marked-circle-outline"></i></label>推荐</button><button class="btn btn-label btn-warning"><label><i class="mdi mdi-delete-empty"></i></label>修改</button><button th:onclick="banMovie([[${movie.id}]])" class="btn btn-label btn-danger"><label><i class="mdi mdi-close"></i></label>移除</button></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -374,6 +374,7 @@
 </body>
 <script type="text/javascript" th:inline="javascript">
     var name=[[${name}]]
+
     function del() {
         $.ajax({
             url:"removeRecommend",
@@ -435,6 +436,30 @@
     function toPage(p) {
         $('#movieListSpace').load("recommend?page="+p+"&name="+name+"&reload=1");
         scrollTo(0,0);
+    }
+    function banMovie(id) {
+        $.ajax({
+            url:"banMovie",
+            data:{"movieId":id},
+            async:false,
+            type:"post",
+            dataType:"json",
+            success:function(state){
+                if (state!=0){
+                    alert("删除成功")
+                    location.reload();
+                }
+                if (state==0){
+                    alert("失败")
+                }
+                remove();
+            },
+            error:function(error) {
+                alert("服务器繁忙");
+                alert(error);
+            }
+        });
+
     }
 </script>
 </html>

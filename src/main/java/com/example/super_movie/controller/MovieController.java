@@ -47,6 +47,8 @@ public class MovieController{
     @RequestMapping("/movieInfo")
     public String toMovieInfo(Model model,Integer movieId,HttpServletRequest request){
         MovieInfo movieInfo = movieService.getMovieInfo(movieId);
+        if (movieInfo.getState()==0)
+            return "redirect:/index";
         List<ZSetOperations.TypedTuple<Object>> maxLikeList=movieCommentService.getLikeRankIdByMovieId(movieId,0,2);
         List<MovieCommentInfo> movieCommentInfoList=movieCommentService.getCommentList(maxLikeList);
         model.addAttribute("commentList",movieCommentInfoList);

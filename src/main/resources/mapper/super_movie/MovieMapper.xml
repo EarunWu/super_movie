@@ -55,7 +55,7 @@
     <select id="searchMovieByName" resultType="com.example.super_movie.vo.SelectMovieList">
     SELECT movie.id,movie.name,movie.time,movie.info,count(movie_comment.movie_id) as hot,TRUNCATE(IFNULL(avg(movie_comment.score),0),1) as avg
     FROM movie left join movie_comment on movie.id=movie_comment.movie_id
-	WHERE movie.name like "%"#{name}"%" or movie.id=#{name}
+	WHERE (movie.name like "%"#{name}"%" or movie.id=#{name}) and movie.state=1
     GROUP BY movie.id
     order by hot desc
     limit #{start},10
@@ -100,4 +100,20 @@
     order by sum desc
     limit 0,25
     </select>
+    <update id="banMovie">
+        update movie set
+        state=0
+        where id=#{id}
+    </update>
+    <insert id="updateMovie">
+        update movie set
+        name=(#{name},time=#{time},country=#{country},length=#{country},info=#{info}
+        where id=#{id}
+    </insert>
+    <delete id="deleteKinds">
+        delete from kind_movie where movie_id=#{movieId}
+    </delete>
+    <delete id="deleteLanguages">
+        delete from language where movie_id=#{movieId}
+    </delete>
 </mapper>

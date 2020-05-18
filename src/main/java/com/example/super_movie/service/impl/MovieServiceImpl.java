@@ -104,7 +104,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
         return getBaseMapper().searchMovieByName(name, (page-1)*10);
     }
     public int addNewMovie(String name, LocalDate time, String country,int length,String info){
-        Movie movie=new Movie(0, name, time,country,length,info);
+        Movie movie=new Movie(0, name, time,country,length,info,1);
         if (getBaseMapper().addNewMovie(movie)>0)
             return movie.getId();
         return -1;
@@ -146,5 +146,16 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
             }
             return list;
         }
+    }
+    public int banMovie(int id){
+        return getBaseMapper().banMovie(id);
+    }
+    public boolean updateMovie(int id,String name, LocalDate time, String country,int length,String info,String[] lan,String[] kind){
+        getBaseMapper().updateMovie(id, name, time, country, length, info);
+        getBaseMapper().deleteKinds(id);
+        getBaseMapper().deleteLanguages(id);
+        addKindsForMovie(id,kind);
+        addLanguagesForMovie(id,lan);
+        return true;
     }
 }
