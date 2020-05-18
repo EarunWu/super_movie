@@ -23,4 +23,12 @@
     <insert id="saveReply">
         INSERT INTO reply_of_comment (user_id,movie_comment_id,reply_id,content)VALUES(#{userId},#{movieCommentId},#{replyId},#{content})
     </insert>
+    <select id="getNewReplyByUserId" resultType="com.example.super_movie.vo.ReplyOfCommentInfo" parameterType="java.lang.Integer" >
+        SELECT a.content,c.id as comment_id,user.id as user_id,user.username,c.title,a.id as id,a.reply_id as rid FROM reply_of_comment as a left JOIN reply_of_comment as b on a.reply_id=b.id
+        join movie_comment as c on a.movie_comment_id=c.id
+        JOIN user on a.user_id=user.id
+        WHERE c.user_id=#{id} or b.user_id=#{id}
+        order by a.create_time desc
+        limit #{start},#{size}
+    </select>
 </mapper>

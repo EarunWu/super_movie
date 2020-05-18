@@ -67,9 +67,17 @@
     insert into movie (name,time,country,length,info)
     values (#{name},#{time},#{country},#{length},#{info})
     </insert>
-    <insert id="addKindForMovie">
-    insert into kind_movie (kind,movie_id)
-    values (#{kind},#{movieId})
+    <insert id="addKindsForMovie">
+    replace into kind_movie (kind,movie_id) values
+        <foreach collection="array" item="kind" index="index" separator=",">
+            (#{kind},#{movieId})
+        </foreach>
+    </insert>
+    <insert id="addLanguagesForMovie">
+        replace into language (movie_id,language ) values
+        <foreach collection="array" item="language" index="index" separator=",">
+            (#{movieId},#{language})
+        </foreach>
     </insert>
     <insert id="addPersonForMovie">
     insert into person_movie (person_id,movie_id,job)

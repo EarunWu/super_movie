@@ -19,22 +19,24 @@ public interface IUserService extends IService<User> {
 
     boolean activeUser(String code);
 
-    UserInfo getUserInfoById(int userId,int id);
+    UserInfo getUserInfoById(int userId, int id);
 
-    int follow(int userId,int followId);
+    int follow(int userId, int followId);
 
     List<UserInfo> getBlackList(int userId);
 
-    int addBlackList(int userId,int id);
+    int addBlackList(int userId, int id);
 
-    int removeBlackList(int userId,int id);
+    int removeBlackList(int userId, int id);
 
-    int updateUserInfo(String username,String introduction,int userId);
+    int updateUserInfo(String username, String introduction, int userId);
 
-    int updatePassword(String newPassword,int userId,String password);
+    int updatePassword(String newPassword, int userId, String password);
 
-    boolean getFollowState(int userId,int followId);
+    boolean getFollowState(int userId, int followId);
 
-    Integer login(String email,String password);
+    Integer login(String email, String password);
+
+    int banUser(Integer userId);
 
 }

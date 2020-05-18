@@ -5,8 +5,8 @@ import com.example.super_movie.entity.User;
 import com.example.super_movie.vo.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -28,8 +28,10 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<String> getFollowByUserId(int userId);
 
-    int updateUserInfo(String username,String introduction,int userId);
+    int updateUserInfo(String username, String introduction, int userId);
 
-    int updatePassword(String newPassword,int userId,String password);
+    int updatePassword(String newPassword, int userId, String password);
+
+    int banUser(int userId, LocalDateTime time);
 
 }

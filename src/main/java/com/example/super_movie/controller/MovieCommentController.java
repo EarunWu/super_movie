@@ -124,6 +124,10 @@ public class MovieCommentController{
     //获取影评页面
     @RequestMapping("movieComment")
     public String toMovieCommentPage(Model model, Integer id,Integer order,HttpServletRequest request){
+        if (!redisUtil.getBit("commentState",id)){
+            System.out.println("数据库不存在此数据或者被删除");
+            return "redirect:/index";
+        }
         Integer userId=(Integer) request.getSession().getAttribute("userId");
         model.addAttribute("loginId",userId);
         //order为null则正序

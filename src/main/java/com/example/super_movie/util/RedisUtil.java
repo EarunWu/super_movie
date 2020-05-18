@@ -472,6 +472,39 @@ public class RedisUtil {
             return null;
         }
     }
+    //与上面相反
+    public Set<ZSetOperations.TypedTuple<Object>> zGetRangeWithScoreDesc(String key, long l1, long l2) {
+        try {
+            return redisTemplate.opsForZSet().rangeByScoreWithScores(key,l1,l2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * 移除指定分数区间的值
+     * @param key 键
+     * @param l1 开始
+     * @param l2 结束
+     * @return
+     */
+    public long zRemoveByScore(String key, long l1, long l2) {
+        try {
+            return redisTemplate.opsForZSet().removeRangeByScore(key,l1,l2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public long zRemove(String key, Object o) {
+        try {
+            return redisTemplate.opsForZSet().remove(key,o);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
     /**
      * 统计value数量
      * @param key 键

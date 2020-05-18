@@ -1,6 +1,8 @@
 package com.example.super_movie.entity;
 
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -41,6 +43,10 @@ public class User{
     private String code;
 
     private String introduction;
+
+    private LocalDateTime time;
+
+    private LocalDate createDate;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -100,5 +106,21 @@ public class User{
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 }

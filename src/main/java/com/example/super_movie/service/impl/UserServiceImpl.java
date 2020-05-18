@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -98,7 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
     }
 //userId是被被关注者，id是关注者
-    public UserInfo getUserInfoById(int userId,int id){
+    public UserInfo getUserInfoById(int userId, int id){
             //检测目标用户是否存在
          if (!redisUtil.getBit("userState",userId))
              return UserInfo.userInfo0;
@@ -169,6 +170,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword()))
             return user.getId();
         return null;
+    }
+    public int banUser(Integer userId){
+        int num=(int)redisUtil.hincr("userBanTimes",userId.toString(),1 );
+        if (num>10)
+            return redisUtil.setBit("userState",userId,false)?1:0;
+        return getBaseMapper().banUser(userId, LocalDateTime.now().plusDays(num));
     }
 
 

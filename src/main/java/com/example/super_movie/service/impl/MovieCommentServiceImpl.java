@@ -10,13 +10,13 @@ import com.example.super_movie.service.IUserService;
 import com.example.super_movie.util.RedisService;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieCommentInfo;
-import com.example.super_movie.vo.ReplyOfCommentInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -102,10 +102,6 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
             movieCommentInfo=getBaseMapper().getMovieCommentInfoById(id);
             redisUtil.set("comment"+id,movieCommentInfo,60*60*24);
         }
-        if (!redisUtil.getBit("commentState",id)){
-            System.out.println("数据库不存在此数据");
-            return null;
-        }
         return movieCommentInfo;
     }
     //获取指定电影的最高点赞的影评
@@ -130,7 +126,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         return new ArrayList<>(set);
     }
     //获取指定电影的影评按时间排序，按页码取
-    public List<MovieCommentInfo> getCommentTimeOrderList(int movieId,int page,int pageNum){
+    public List<MovieCommentInfo> getCommentTimeOrderList(int movieId, int page, int pageNum){
         if (pageNum==0)
             return new ArrayList<>();
         List<MovieCommentInfo> list=redisTemplate.opsForList().range("commentList"+movieId+"_"+page,0,-1);
@@ -142,7 +138,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         return list;
     }
     //获取用户的影评，时间倒序
-    public List<MovieCommentInfo> getCommentListByUserId(int userId,int page,int pageNum){
+    public List<MovieCommentInfo> getCommentListByUserId(int userId, int page, int pageNum){
         //过滤
         if (pageNum==0||!redisUtil.getBit("userState",userId))
             return new ArrayList<>();
@@ -170,7 +166,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         return movieCommentInfoList;
     }
 
-    public List<MovieCommentInfo> getPrivateHomeList(int userId,int page){
+    public List<MovieCommentInfo> getPrivateHomeList(int userId, int page){
         userService.getFollowState(userId,0);
         Set set=redisUtil.sGet("follow"+userId);
         List<MovieCommentInfo> list=redisTemplate.opsForList().range("privateHome"+userId,(page-1)*5,(page-1)*5+4);
@@ -201,7 +197,8 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
                 //把点赞数设置成举报人id，时间设置为举报时间
                 movieCommentInfo.setLike(userId);
                 movieCommentInfo.setUpdateTime(LocalDateTime.now());
-                redisUtil.lSet("commentReport",movieCommentInfo );
+                int i=(int)redisUtil.hincr("number","i",1);
+                redisUtil.zSet("commentReport",i,movieCommentInfo);
             }
         }
         if (state&&redisUtil.sSet("reportUser","1_"+id+"_"+userId)==1){
@@ -210,7 +207,9 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
                 ReplyOfComment replyOfComment=replyOfCommentService.getById(id);
                 //把点replyId设置成举报人id，时间设置为举报时间
                 replyOfComment.setReplyId(userId);
-                redisUtil.lSet("replyReport",replyOfComment);
+                replyOfComment.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
+                int j=(int)redisUtil.hincr("number","j",1);
+                redisUtil.zSet("replyReport",j,replyOfComment);
             }
         }
         return num;

@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
         return list;
     }
     //整合以上两个查找
-    public List<SelectMovieList> getMovieListByKind(int state,Integer page,Integer order){
+    public List<SelectMovieList> getMovieListByKind(int state, Integer page, Integer order){
 
         Integer num=(Integer) redisUtil.hget("number","kind"+state);
         if (num==null||num==0)
@@ -99,7 +100,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
     public int getSearchNumByName(String name){
         return getBaseMapper().getSearchCountNum("%"+name+"%");
     }
-    public List<SelectMovieList> searchMovieByName(String name,int page){
+    public List<SelectMovieList> searchMovieByName(String name, int page){
         return getBaseMapper().searchMovieByName("%"+name+"%", (page-1)*10);
     }
     public int addNewMovie(String name, LocalDate time, String country,int length,String info){
@@ -108,12 +109,17 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
             return movie.getId();
         return -1;
     }
-    public int addKindForMovie(int movieId,int kindId){
-        try {
-            return getBaseMapper().addKindForMovie(CNHToENG.getCHNById(kindId),movieId);
-        }catch (Exception e){
-            return 0;
-        }
+    public int addKindsForMovie(int movieId,String[] kinds){
+        Map<String,Object> map=new HashMap<>();
+        map.put("movieId",movieId);
+        map.put("array",kinds);
+        return getBaseMapper().addKindsForMovie(map);
+    }
+    public int addLanguagesForMovie(int movieId,String[] languages){
+        Map<String,Object> map=new HashMap<>();
+        map.put("movieId",movieId);
+        map.put("array",languages);
+        return getBaseMapper().addLanguagesForMovie(map);
     }
     public int addPersonForMovie(int personId,int movieId,int job){
         try {

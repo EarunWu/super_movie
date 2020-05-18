@@ -32,11 +32,12 @@ public interface MovieMapper extends BaseMapper<Movie> {
     List<SelectMovieList> findMovieListByKindOrderByTime(String kind);
     List<SelectMovieList> findMovieListByKindOrderByHot(String kind);
     Integer getKindNumByKind(String kind);
-    List<SelectMovieList> searchMovieByName(@Param("name")String name,@Param("start")int start);
+    List<SelectMovieList> searchMovieByName(@Param("name") String name, @Param("start") int start);
     int getSearchCountNum(String name);
     int addNewMovie(Movie movie);
-    int addKindForMovie(String kind,int movieId);
-    int addPersonForMovie(int personId,int movieId,int job);
+    int addKindsForMovie(Map<String, Object> map);
+    int addPersonForMovie(int personId, int movieId, int job);
     List<MovieInfo> getMovieAvgRankList(int num);
     List<MovieInfo> getMovieHotRankList();
+    int addLanguagesForMovie(Map<String, Object> map);
 }

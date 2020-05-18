@@ -7,7 +7,6 @@ import com.example.super_movie.vo.SelectMovieList;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -20,13 +19,14 @@ import java.util.Map;
 public interface IMovieService extends IService<Movie> {
     MovieInfo getMovieInfo(Integer movieId);
     int saveMovie(String name, LocalDate time, String country, int length, String info);
-    List<SelectMovieList> getMovieListByKind(int state, Integer page,Integer order);
+    List<SelectMovieList> getMovieListByKind(int state, Integer page, Integer order);
     void updateKind();
     int getSearchNumByName(String name);
     List<SelectMovieList> searchMovieByName(String name, int page);
-    int addNewMovie(String name, LocalDate time, String country,int length,String info);
-    int addKindForMovie(int movieId,int kindId);
-    int addPersonForMovie(int personId,int movieId,int job);
+    int addNewMovie(String name, LocalDate time, String country, int length, String info);
+    int addKindsForMovie(int movieId, String[] kinds);
+    int addLanguagesForMovie(int movieId, String[] languages);
+    int addPersonForMovie(int personId, int movieId, int job);
     List<MovieInfo> getMovieRank(int i);
 
 }

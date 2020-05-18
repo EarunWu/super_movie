@@ -3,6 +3,7 @@ package com.example.super_movie.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.ReplyOfComment;
 import com.example.super_movie.mapper.ReplyOfCommentMapper;
+import com.example.super_movie.service.IMovieCommentService;
 import com.example.super_movie.service.IReplyOfCommentService;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.ReplyOfCommentInfo;
@@ -29,11 +30,11 @@ public class ReplyOfCommentServiceImpl extends ServiceImpl<ReplyOfCommentMapper,
     @Autowired
     RedisUtil redisUtil;
     @Autowired
-    ReplyOfCommentServiceImpl replyOfCommentService;
+    IMovieCommentService movieCommentService;
 
 
     //根据影评id和页码获取评论
-    public List<ReplyOfCommentInfo> getReplyOfCommentByIdAndPage(int id,int page,Integer order){
+    public List<ReplyOfCommentInfo> getReplyOfCommentByIdAndPage(int id, int page, Integer order){
         Integer num=(Integer) redisUtil.hget("number","commentReply"+id);
         if (num==null||num==0)
             return new ArrayList<>();
@@ -63,10 +64,19 @@ public class ReplyOfCommentServiceImpl extends ServiceImpl<ReplyOfCommentMapper,
 
     }
     public  int saveReply(int userId,int movieCommentId,int replyId,String content){
-        int page=replyOfCommentService.getPageNum(movieCommentId);
-        if (redisTemplate.opsForList().range("reply"+movieCommentId+"_"+page+"_0",0,-1).size()<5){
-            redisTemplate.delete("reply"+movieCommentId+"_"+page+"_0");
+        int page=getPageNum(movieCommentId);
+        if (redisUtil.lGetListSize("reply"+movieCommentId+"_"+page+"_0")<5){
+            redisUtil.del("reply"+movieCommentId+"_"+page+"_0");
         }
+//        if (redisTemplate.opsForList().range("reply"+movieCommentId+"_"+page+"_0",0,-1).size()<5){
+//            redisTemplate.delete("reply"+movieCommentId+"_"+page+"_0");
+//        }
         return getBaseMapper().saveReply(userId, movieCommentId, replyId, content);
+    }
+    public List<ReplyOfCommentInfo> getNewReply(int id, int page , int size){
+        List<ReplyOfCommentInfo> list=redisTemplate.opsForList().range("newReply"+id+"_"+page,0,-1);
+        if (list==null||list.size()==0){
+        }
+        return null;
     }
 }

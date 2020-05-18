@@ -20,4 +20,5 @@ public interface ReplyOfCommentMapper extends BaseMapper<ReplyOfComment> {
     List<ReplyOfCommentInfo> findReplyListByCommentId(int id, int star, int end);
     List<ReplyOfCommentInfo> findReplyListByCommentIdDesc(int id, int start, int end);
     Integer saveReply(int userId, int movieCommentId, int replyId, String content);
+    List<ReplyOfCommentInfo> getNewReplyByUserId(int id, int start, int size);
 }

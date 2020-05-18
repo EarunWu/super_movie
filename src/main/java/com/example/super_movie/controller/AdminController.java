@@ -4,13 +4,21 @@ package com.example.super_movie.controller;
 import com.example.super_movie.service.IAdminService;
 import com.example.super_movie.service.IMovieService;
 import com.example.super_movie.service.IPersonService;
+import com.example.super_movie.service.IUserService;
+import com.example.super_movie.util.RedisUtil;
+import com.example.super_movie.vo.MovieCommentInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +37,10 @@ public class AdminController{
     IMovieService movieService;
     @Autowired
     IPersonService personService;
+    @Autowired
+    RedisUtil redisUtil;
+    @Autowired
+    IUserService userService;
 
     @ResponseBody
     @RequestMapping("/addRecommend")
@@ -42,43 +54,24 @@ public class AdminController{
         return adminService.removeAllRecommend()?1:0;
     }
 
-    @ResponseBody
-    @RequestMapping("/removeReply")
-    public int removeReply(int id){
-        return adminService.removeReply(id)?1:0;
-    }
 
-    @ResponseBody
-    @RequestMapping("/banUser")
-    public int banUser(int id,Integer state){
-        if (state==null)
-            return adminService.banUser(id)?1:0;
-        return !adminService.unBanUser(id)?1:0;
+    @RequestMapping("/movie")
+    public String addMovie(){
+        return "admin/addMovie";
     }
-
-    @ResponseBody
-    @RequestMapping("/banMovieComment")
-    public int banMovieComment(int id,Integer state){
-        if (state==null)
-            return adminService.banMovieComment(id)?1:0;
-        return !adminService.unBanMovieComment(id)?1:0;
-    }
-
-    @ResponseBody
-    @RequestMapping("/ban")
-    public int ban(int id,Integer state){
-        if (state==null)
-            return adminService.banMovieComment(id)?1:0;
-        return adminService.unBanMovieComment(id)?1:0;
-    }
-
 
     @ResponseBody
     @RequestMapping("/addMovie")
-    public int addMovie(String name, String time, String country,int length,String info){
+    public int addMovie(String name, String time, String country,int length,String info,String[] lan,String[] kind){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(time, fmt);
-        return movieService.addNewMovie(name, date, country, length, info);
+        int movieId=movieService.addNewMovie(name, date, country, length, info);
+        if (movieId>0)
+            if (kind!=null)
+                movieService.addKindsForMovie(movieId,kind);
+            if (lan!=null)
+                movieService.addLanguagesForMovie(movieId,lan);
+        return 1;
     }
 
     @ResponseBody
@@ -91,8 +84,8 @@ public class AdminController{
 
     @ResponseBody
     @RequestMapping("/addKindForMovie")
-    public int addKindForMovie(int kind,int movieId){
-        return movieService.addKindForMovie(movieId,kind);
+    public int addKindForMovie(){
+        return movieService.addKindsForMovie(1, new String[]{"1","2"});
     }
 
     @ResponseBody
@@ -107,5 +100,69 @@ public class AdminController{
         movieService.updateKind();
         return "msg";
     }
+
+    @RequestMapping("/reportList")
+    public String toReportList(Model model){
+        int num=(int)redisUtil.zCard("commentReport");
+        if (num!=0)
+            model.addAttribute("reportList",adminService.getCommentReportList(1));
+        else
+            model.addAttribute("reportList",new ArrayList<>());
+        model.addAttribute("num",num);
+        return "admin/reportList";
+    }
+    @RequestMapping("/reportList1")
+    public String toReportList1(Model model){
+        int num=(int)redisUtil.zCard("replyReport");
+        if (num!=0)
+            model.addAttribute("reportList",adminService.getReplyReportList(1));
+        else
+            model.addAttribute("reportList",new ArrayList<>());
+        model.addAttribute("num",num);
+        return "admin/reportList1";
+    }
+    @ResponseBody
+    @RequestMapping("delMovieComment")
+    public int delMovieComment(int movieId,int commentId, int score){
+        return adminService.banMovieComment(movieId,commentId,score)?1:0;
+    }
+    @ResponseBody
+    @RequestMapping("delReply")
+    public int delReply(int replyId, int score){
+        return adminService.removeReply(replyId,score)?1:0;
+    }
+
+    @ResponseBody
+    @RequestMapping("skipReport")
+    public int skip(int score,Integer state){
+        if (state!=null)
+            return (int)redisUtil.zRemoveByScore("replyReport",score,score);
+        return (int)redisUtil.zRemoveByScore("commentReport",score,score);
+    }
+
+    @ResponseBody
+    @RequestMapping("delAndBanMovieComment")
+    public int delAndBanMovieComment(int userId,int movieId,int commentId, int score){
+        adminService.banMovieComment(movieId,commentId,score);
+        return userService.banUser(userId);
+    }
+
+    @ResponseBody
+    @RequestMapping("delAndBanReply")
+    public int delAndBanReply(int userId,int replyId, int score){
+        adminService.removeReply(replyId,score);
+        return userService.banUser(userId);
+    }
+
+    @RequestMapping("/index")
+    public String kk(){
+        return "admin/index";
+    }
+
+    @RequestMapping("/moviePic")
+    public String addMoviePic(){
+        return "admin/addMoviePic";
+    }
+
 
 }

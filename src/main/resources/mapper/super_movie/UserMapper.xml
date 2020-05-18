@@ -35,4 +35,9 @@
     password=#{newPassword}
     where id = #{userId} and password=#{password}
     </update>
+    <update id="banUser">
+    update user set
+    time=#{time}
+    where id =#{userId}
+    </update>
 </mapper>

@@ -1,9 +1,9 @@
 package com.example.super_movie.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.entity.Message;
 import com.example.super_movie.mapper.MessageMapper;
 import com.example.super_movie.service.IMessageService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MessageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -30,7 +29,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     @Autowired
     RedisTemplate redisTemplate;
 
-    public List<MessageInfo> getMessageList(int userId, int page,int pageNum){
+    public List<MessageInfo> getMessageList(int userId, int page, int pageNum){
         redisUtil.setBit("messageState",userId,false);
         if (pageNum==0||page>pageNum)
             return new ArrayList<>();
