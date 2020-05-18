@@ -53,12 +53,14 @@ public class Person implements Serializable {
         this.country = country;
     }
 
-    public Person(int id, String name, Boolean sex, LocalDate born, String info) {
+    public Person(int id, String name, Boolean sex, LocalDate born,String engName, String info,String country) {
         this.id = id;
         this.name = name;
         this.sex = sex;
         this.born = born;
         this.info = info;
+        this.engName=engName;
+        this.country=country;
     }
     public Person(){}
 

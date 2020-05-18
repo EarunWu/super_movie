@@ -304,7 +304,7 @@
                                                 <tbody>
                                                 <tr th:each="movie:${movieList}">
                                                     <th scope="row"><span th:text="${movieStat.index+1}"></span></th>
-                                                    <td style="text-align: center;vertical-align: center"><a th:href="'movieInfo?movieId='+${movie.id}" th:text="${movie.name}"></a></td>
+                                                    <td style="text-align: center;vertical-align: center"><a th:href="'/movieInfo?movieId='+${movie.id}" th:text="${movie.name}"></a></td>
                                                     <td style="text-align: center;vertical-align: center"><span th:text="${movie.avg}"></span></td>
                                                     <td style="text-align: center;vertical-align: center"><span th:text="${movie.hot}"></span></td>
                                                     <td style="text-align: center;vertical-align: center"><span th:text="${movie.time}"></span></td>
@@ -346,7 +346,7 @@
                                             <tbody>
                                             <tr th:each="movieRecommend:${recommend}">
                                                 <th scope="row"><span th:text="${movieRecommendStat.index+1}"></span></th>
-                                                <td style="text-align: center;vertical-align: center"><a th:href="'movieInfo?movieId='+${movieRecommend.id}" th:text="${movieRecommend.name}"></a></td>
+                                                <td style="text-align: center;vertical-align: center"><a th:href="'/movieInfo?movieId='+${movieRecommend.id}" th:text="${movieRecommend.name}"></a></td>
                                                 <td style="text-align: center;vertical-align: center"><span th:text="${movieRecommend.avg}"></span></td>
                                                 <td style="text-align: center;vertical-align: center">评分人数：<span th:text="${movieRecommend.hot}"></span></td>
                                                 <td style="text-align: center;vertical-align: center"><span th:text="${movieRecommend.time}"></span></td>

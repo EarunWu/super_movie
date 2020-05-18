@@ -9,9 +9,9 @@
     <select id="findJobByPersonId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
         SELECT DISTINCT job FROM person_movie WHERE person_id=#{personId} order by job
     </select>
-    <insert id="addPerson">
+    <insert id="addPerson" useGeneratedKeys="true" keyProperty="id"  keyColumn="id">
     insert into person (name,sex,born,info,eng_name,country)
-    values (#{name},#{sex},#{born},#{info},#{enName},#{country})
+    values (#{name},#{sex},#{born},#{info},#{engName},#{country})
     </insert>
     <insert id="addPersonForMovie">
         replace into person_movie (person_id,movie_id,job) values(#{personId},#{movieId},#{job})

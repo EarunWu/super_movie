@@ -20,7 +20,7 @@ import java.util.List;
 public interface PersonMapper extends BaseMapper<Person> {
     List<PersonMovie> findMovieByPerson(int personId);
     List<Integer> findJobByPersonId(int personId);
-    int addPerson(String name, Boolean sex, LocalDate born, String info, String enName, String country);
+    int addPerson(Person person);
     int addPersonForMovie(int personId,int movieId,int job);
     int deletePersonMovie(int personId,int movieId,int job);
     List<Person> getPersonByMovieIdAndJob(int movieId,int job);

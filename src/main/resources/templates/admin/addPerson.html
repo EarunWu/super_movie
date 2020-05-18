@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>修改电影信息 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>创建新人物 - 光年(Light Year Admin)后台管理系统模板</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -107,7 +107,7 @@
                             <span class="lyear-toggler-bar"></span>
                             <span class="lyear-toggler-bar"></span>
                         </div>
-                        <span class="navbar-page-title"> 修改电影信息 </span>
+                        <span class="navbar-page-title"> 修改人物信息 </span>
                     </div>
 
                     <ul class="topbar-right">
@@ -268,85 +268,40 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 th:text="'id='+${id}"></h4>
-                                <form action="toUpdateMovie" method="post" class="row">
-                                    <input type="text" name="id" th:value="${id}" style="display:none" />
+                                <form action="toAddPerson" method="post" class="row">
+                                    <input type="text" name="id" value="" style="display:none" />
                                     <div class="form-group col-md-12">
-                                        <label for="title">电影名</label>
-                                        <input autocomplete="off" type="text" class="form-control" id="title" name="name" th:value="${movie.name}" placeholder="请输入电影名" />
+                                        <label for="title">中文名</label>
+                                        <input autocomplete="off" type="text" class="form-control" id="title" name="name" value="" />
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="length">时长</label>
-                                        <input type="text" class="form-control" id="length" name="length" th:value="${movie.length}" placeholder="输入时长" />
+                                        <label for="engName">英文名</label>
+                                        <input autocomplete="off" type="text" class="form-control" id="engName" name="engName" value="" />
                                     </div>
                                     <div class="form-group col-md-12">
-                                        <label for="time">上映时间</label>
-                                        <input autocomplete="off" class="form-control js-datepicker m-b-10" type="text" id="time" name="time" th:value="${movie.time}" data-date-format="yyyy-mm-dd">
+                                        <div class="example-box">
+                                            <label class="lyear-radio radio-inline radio-primary">
+                                                <input type="radio" name="sex" value="1" checked><span>男</span>
+                                            </label>
+                                            <label class="lyear-radio radio-inline radio-primary">
+                                                <input type="radio" name="sex" value="1"><span>女</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label for="time">生日</label>
+                                        <input autocomplete="off" class="form-control js-datepicker m-b-10" type="text" id="time" name="born" value="" data-date-format="yyyy-mm-dd">
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="country">国家</label>
-                                        <input type="text" class="form-control" id="country" name="country" th:value="${movie.country}" placeholder="输入国家" />
+                                        <input type="text" class="form-control" id="country" name="country" value="" placeholder="输入国家" />
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="info">描述</label>
-                                        <textarea class="form-control" id="info" name="info" rows="5" th:value="${movie.info}" placeholder="描述"></textarea>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="example-box">
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="汉语"><span>汉语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="英语"><span>英语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="法语"><span>法语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="德语"><span>德语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="西班牙语"><span>西班牙语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="葡萄牙"><span>葡萄牙</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="意大利语"><span>意大利语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="俄语"><span>俄语</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="lan" value="其他"><span>其他</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="example-box">
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="kind" value="科幻"><span>科幻</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="kind" value="喜剧"><span>喜剧</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="kind" value="恐怖"><span>恐怖</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="kind" value="悬疑"><span>悬疑</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="kind" value="动作"><span>动作</span>
-                                            </label>
-                                            <label class="lyear-checkbox checkbox-inline checkbox-primary">
-                                                <input type="checkbox" name="kind" value="爱情"><span>爱情</span>
-                                            </label>
-                                        </div>
+                                        <textarea class="form-control" id="info" name="info" rows="5" value="" placeholder="描述"></textarea>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <button type="submit" class="btn btn-primary ajax-post" target-form="add-form">确 定</button>
-                                        <button type="button" class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
                                     </div>
                                 </form>
 

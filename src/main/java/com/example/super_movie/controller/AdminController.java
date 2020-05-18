@@ -101,11 +101,11 @@ public class AdminController{
     }
 
     @ResponseBody
-    @RequestMapping("/addPerson")
-    public int addPerson(String name, Boolean sex, String born,String info,String enName,String country){
+    @RequestMapping("/toAddPerson")
+    public int addPerson(String name, Boolean sex, String born,String info,String engName,String country){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(born, fmt);
-        return personService.addPerson(name, sex, date, info, enName, country)?1:0;
+        return personService.addPerson(name, sex, date, info, engName, country);
     }
 
 
@@ -232,6 +232,26 @@ public class AdminController{
     public String searchPerson(Model model,String name){
         model.addAttribute("personList",personService.searchPerson(name));
         return "admin/personForMovie::personListSpace";
+    }
+
+    @RequestMapping("addPerson")
+    public String addPerson(){
+        return "admin/addPerson";
+    }
+
+    @RequestMapping("updatePerson")
+    public String updatePerson(Model model,int id){
+        model.addAttribute("person",personService.getBaseMapper().selectById(id));
+        return "admin/updatePerson";
+    }
+
+    @ResponseBody
+    @RequestMapping("toUpdatePerson")
+    public int toUpdatePerson(int id,String name, Boolean sex, String born,String info,String engName,String country){
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(born, fmt);
+        Person person=new Person(id,name,sex,date,engName,info,country);
+        return personService.getBaseMapper().updateById(person);
     }
 
 }
