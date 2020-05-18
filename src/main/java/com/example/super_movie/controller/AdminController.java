@@ -1,6 +1,7 @@
 package com.example.super_movie.controller;
 
 
+import com.example.super_movie.entity.Person;
 import com.example.super_movie.service.IAdminService;
 import com.example.super_movie.service.IMovieService;
 import com.example.super_movie.service.IPersonService;
@@ -64,9 +65,8 @@ public class AdminController{
         return "admin/addMovie";
     }
 
-    @ResponseBody
     @RequestMapping("/addMovie")
-    public int addMovie(String name, String time, String country,int length,String info,String[] lan,String[] kind){
+    public String addMovie(String name, String time, String country,int length,String info,String[] lan,String[] kind){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(time, fmt);
         int movieId=movieService.addNewMovie(name, date, country, length, info);
@@ -75,15 +75,23 @@ public class AdminController{
                 movieService.addKindsForMovie(movieId,kind);
             if (lan!=null)
                 movieService.addLanguagesForMovie(movieId,lan);
-        return movieId;
+        return "redirect:personForMovie?movieId="+movieId;
     }
 
-    @ResponseBody
     @RequestMapping("updateMovie")
-    public int updateMovie(int id,String name, String time, String country,int length,String info,String[] lan,String[] kind){
+    public String update(Model model,int id){
+        model.addAttribute("movie",movieService.getBaseMapper().selectById(id));
+        model.addAttribute("id",id);
+        return "admin/updateMovie";
+    }
+
+
+    @RequestMapping("toUpdateMovie")
+    public String updateMovie(int id,String name, String time, String country,int length,String info,String[] lan,String[] kind){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(time, fmt);
-        return movieService.updateMovie(id,name,date,country,length,info,lan,kind)?1:0;
+        movieService.updateMovie(id,name,date,country,length,info,lan,kind);
+        return "redirect:personForMovie?movieId="+id;
     }
 
     @ResponseBody
@@ -201,5 +209,29 @@ public class AdminController{
         return "admin/recommend::movieListSpace";
     }
 
+    @RequestMapping("personForMovie")
+    public String personForMovie(Model model,Integer movieId,String name){
+        model.addAttribute("job1",personService.getPersonListByMovieAndJob(movieId,1));
+        model.addAttribute("job2",personService.getPersonListByMovieAndJob(movieId,2));
+        model.addAttribute("job3",personService.getPersonListByMovieAndJob(movieId,3));
+        model.addAttribute("movie",movieService.getBaseMapper().selectById(movieId));
+        if (name==null)
+            model.addAttribute("personList",new ArrayList<Person>());
+        else
+            model.addAttribute("personList",personService.searchPerson(name));
+        return "admin/personForMovie";
+    }
+
+    @ResponseBody
+    @RequestMapping("delPersonForMovie")
+    public int delPersonForMovie(int personId, int movieId, int job){
+        return personService.deletePersonForMovie(personId, movieId, job);
+    }
+
+    @RequestMapping("searchPerson")
+    public String searchPerson(Model model,String name){
+        model.addAttribute("personList",personService.searchPerson(name));
+        return "admin/personForMovie::personListSpace";
+    }
 
 }

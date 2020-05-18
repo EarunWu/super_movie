@@ -107,7 +107,7 @@
     </update>
     <insert id="updateMovie">
         update movie set
-        name=(#{name},time=#{time},country=#{country},length=#{country},info=#{info}
+        name=#{name},time=#{time},country=#{country},length=#{length},info=#{info}
         where id=#{id}
     </insert>
     <delete id="deleteKinds">

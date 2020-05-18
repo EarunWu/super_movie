@@ -58,4 +58,17 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
     public boolean addPerson(String name, Boolean sex, LocalDate born,String info,String enName,String country){
         return getBaseMapper().addPerson(name, sex, born,info,enName,country)>0;
     }
+
+    public List<Person> searchPerson(String name){
+        return getBaseMapper().searchPerson(name);
+    }
+    public List<Person> getPersonListByMovieAndJob(int movieId,int job){
+        return getBaseMapper().getPersonByMovieIdAndJob(movieId,job);
+    }
+    public int addPersonForMovie(int personId,int movieId,int job){
+        return getBaseMapper().addPersonForMovie(personId, movieId, job);
+    }
+    public int deletePersonForMovie(int personId,int movieId,int job){
+        return getBaseMapper().deletePersonMovie(personId, movieId, job);
+    }
 }

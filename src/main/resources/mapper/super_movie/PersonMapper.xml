@@ -13,4 +13,18 @@
     insert into person (name,sex,born,info,eng_name,country)
     values (#{name},#{sex},#{born},#{info},#{enName},#{country})
     </insert>
+    <insert id="addPersonForMovie">
+        replace into person_movie (person_id,movie_id,job) values(#{personId},#{movieId},#{job})
+    </insert>
+    <delete id="deletePersonMovie">
+        delete from person_movie where person_id=#{personId} and movie_id=#{movieId} and job=#{job}
+    </delete>
+    <select id="getPersonByMovieIdAndJob" resultType="com.example.super_movie.entity.Person" parameterType="java.lang.Integer">
+        select person.* from person JOIN person_movie on person.id=person_movie.person_id
+        WHERE job=#{job} and movie_id=#{movieId}
+    </select>
+    <select id="searchPerson" resultType="com.example.super_movie.entity.Person" parameterType="java.lang.String">
+        select * FROM person WHERE name like "%"#{name}"%" or id=#{name}
+    </select>
+
 </mapper>
