@@ -196,10 +196,13 @@
                                         </div>
                                         <div class="col-sm-7 wthree-news-info">
                                             <h5><a th:text="${movie.name}" th:href="'movieInfo?movieId='+${movie.id}"></a></h5>
-                                            <p th:text="${movie.info}"></p>
+                                            <p th:text="'评分：'+${movie.avg}"></p>
+                                            <p th:text="'热度：'+${movie.hot}"></p>
+                                            <p style="max-width: 200px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" th:text="'简介：'+${movie.info}"></p>
                                             <ul>
                                                 <li><i class="fa fa-clock-o" aria-hidden="true"></i> <span th:text="${movie.time}"></span></li>
                                             </ul>
+                                            <p> </p>
                                         </div>
                                         <div class="clearfix"> </div>
                                     </div>
@@ -211,9 +214,9 @@
                             <ul>
                                 <li><a class="frist" href="javascript:void(0);" onclick="prev()">上一页</a></li>
                                 <li th:if="${page} ne 1"><a href="javascript:void(0);" onclick="toPage(1)">1</a></li>
-                                <li th:if="${page} ne 1"><a href="#">...</a></li>
+                                <li th:if="${page>2}"><a href="#">...</a></li>
                                 <li><a style="color: white;background: black" id="page" href="#" th:text="${page}"></a></li>
-                                <li th:if="${page} ne ${pageNum}"><a href="#">...</a></li>
+                                <li th:if="${page<(pageNum-1)}"><a href="#">...</a></li>
                                 <li th:if="${pageNum!=1 &&pageNum!=page}"><a href="javascript:void(0);" th:onclick="toPage([[${pageNum}]])" th:text="${pageNum}"></a></li>
                                 <li><a class="last" href="javascript:void(0);" onclick="next()">下一页</a></li>
                             </ul>

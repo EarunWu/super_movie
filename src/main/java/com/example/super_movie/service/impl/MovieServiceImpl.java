@@ -101,7 +101,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
         return getBaseMapper().getSearchCountNum("%"+name+"%");
     }
     public List<SelectMovieList> searchMovieByName(String name, int page){
-        return getBaseMapper().searchMovieByName("%"+name+"%", (page-1)*10);
+        return getBaseMapper().searchMovieByName(name, (page-1)*10);
     }
     public int addNewMovie(String name, LocalDate time, String country,int length,String info){
         Movie movie=new Movie(0, name, time,country,length,info);

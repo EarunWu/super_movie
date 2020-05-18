@@ -7,7 +7,9 @@ import com.example.super_movie.service.IPersonService;
 import com.example.super_movie.service.IUserService;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieCommentInfo;
+import com.example.super_movie.vo.SelectMovieList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +43,8 @@ public class AdminController{
     RedisUtil redisUtil;
     @Autowired
     IUserService userService;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @ResponseBody
     @RequestMapping("/addRecommend")
@@ -82,11 +86,6 @@ public class AdminController{
         return personService.addPerson(name, sex, date, info, enName, country)?1:0;
     }
 
-    @ResponseBody
-    @RequestMapping("/addKindForMovie")
-    public int addKindForMovie(){
-        return movieService.addKindsForMovie(1, new String[]{"1","2"});
-    }
 
     @ResponseBody
     @RequestMapping("/addPersonForMovie")
@@ -162,6 +161,30 @@ public class AdminController{
     @RequestMapping("/moviePic")
     public String addMoviePic(){
         return "admin/addMoviePic";
+    }
+
+    @RequestMapping("/recommend")
+    public String search(Model model,String name,Integer page,Integer reload){
+        int pageNum=movieService.getSearchNumByName(name);
+        pageNum=pageNum%10==0?pageNum/10:pageNum/10+1;
+        model.addAttribute("pageNum",pageNum);
+        model.addAttribute("name",name);
+        if (pageNum==0||name==null){
+            model.addAttribute("movieList",new ArrayList<>());
+            model.addAttribute("page",0);
+            model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
+            return "admin/recommend";
+        }
+
+        if (page==null||page>pageNum||page<1)
+            page=1;
+        model.addAttribute("movieList",movieService.searchMovieByName(name,page));
+        model.addAttribute("page",page);
+        if (reload==null){
+            model.addAttribute("recommend",(List<SelectMovieList>)redisTemplate.opsForList().range("recommend",0,-1));
+            return "admin/recommend";
+        }
+        return "admin/recommend::movieListSpace";
     }
 
 
