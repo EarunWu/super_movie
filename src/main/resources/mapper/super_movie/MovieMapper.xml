@@ -43,8 +43,8 @@
     <select id="findMovieListByKindOrderByHot" resultType="com.example.super_movie.vo.SelectMovieList" parameterType="java.lang.String">
     SELECT movie.id,name,time,count(*) as hot
     FROM movie
-    join movie_comment on movie.id=movie_comment.movie_id
-    left join kind_movie on movie.id=kind_movie.movie_id
+    left join movie_comment on movie.id=movie_comment.movie_id
+    join kind_movie on movie.id=kind_movie.movie_id
     WHERE kind_movie.kind=#{kind} GROUP BY id order by hot desc
     </select>
     <select id="getKindNumByKind" resultType="java.lang.Integer" parameterType="java.lang.String">

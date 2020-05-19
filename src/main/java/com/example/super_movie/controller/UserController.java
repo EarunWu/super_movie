@@ -93,18 +93,20 @@ public class UserController{
     //注册
     @PostMapping("/create")
     public String create(Model model, String username, String password, String email){
+        String info="";
         switch (userService.doRegister(username,password,email)){
             case -1:
-                model.addAttribute("information", "格式不正确");
+                info="格式不正确";
                 break;
             case 0:
-                model.addAttribute("information", "该邮箱已被注册");
+                info="邮箱已被注册";
                 break;
             case 1:
-                model.addAttribute("information", "请前往邮箱激活");
+                info="请前往邮箱激活";
                 break;
-            default:model.addAttribute("information", "未知错误");
+            default:info="未知错误";
         }
+        model.addAttribute("information",info);
         return "registerResult";
 
     }

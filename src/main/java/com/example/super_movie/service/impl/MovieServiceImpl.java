@@ -63,6 +63,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
         if (list==null||list.size()==0){
             list= getBaseMapper().findMovieListByKindOrderByTime(CNHToENG.getCHNById(state));
             redisUtil.lSetList("kindTime"+state,list);
+            redisUtil.expire("kindTime"+state,24*60*60);
         }
         return list;
     }
@@ -72,6 +73,7 @@ public class MovieServiceImpl extends ServiceImpl<MovieMapper, Movie> implements
         if (list==null||list.size()==0){
             list= getBaseMapper().findMovieListByKindOrderByHot(CNHToENG.getCHNById(state));
             redisUtil.lSetList("kindHot"+state,list);
+            redisUtil.expire("kindHot"+state,24*60*60);
         }
         return list;
     }
