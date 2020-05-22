@@ -192,7 +192,7 @@
                                     </div>
                                     <div th:each="movie:${movieList}" class="col-md-6 w3-agileits-news-left">
                                         <div class="col-sm-5 wthree-news-img">
-                                            <a th:href="'movieInfo?movieId='+${movie.id}"><img src="images/m9.jpg" alt=""></a>
+                                            <a th:href="'movieInfo?movieId='+${movie.id}"><img th:src="'/show?fileName=movie'+${movie.id}+'.jpg'" width="122px" height="179px" alt=""></a>
                                         </div>
                                         <div class="col-sm-7 wthree-news-info">
                                             <h5><a th:text="${movie.name}" th:href="'movieInfo?movieId='+${movie.id}"></a></h5>

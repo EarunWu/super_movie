@@ -293,7 +293,7 @@
 										<tbody>
 										  <tr th:each="movie:${movieList}">
 											<td><span th:text="${movieStat.index+1}"></span></td>
-											<td class="w3-list-img"><a th:href="'/movieInfo?movieId='+${movie.id}"><img src="images/n1.jpg" alt="" /> <span th:text="${movie.name}"></span></a></td>
+											<td class="w3-list-img"><a th:href="'/movieInfo?movieId='+${movie.id}"><div style="width: 300px"><img th:src="'/show?fileName=movie'+${movie.id}+'.jpg'" alt="" /> </div><span th:text="${movie.name}"></span></a></td>
 											<td><span th:text="${movie.time.getYear()}"></span></td>
 											<td><span th:text="${movie.length}"></span></td>
 											<td class="w3-list-info"><span th:text="${movie.country}"></span></td>

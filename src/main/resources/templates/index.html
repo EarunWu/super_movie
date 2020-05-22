@@ -242,7 +242,7 @@
 				<div class="single-grid-right">
 					<div th:each="movieRecommend:${recommend}" class="single-right-grids">
 						<div class="col-md-4 single-right-grid-left">
-							<a th:href="'movieInfo?movieId='+${movieRecommend.id}"><img src="images/m1.jpg" alt=""></a>
+							<a th:href="'movieInfo?movieId='+${movieRecommend.id}"><img th:src="'/show?fileName=movie'+${movieRecommend.id}+'.jpg'" alt=""></a>
 						</div>
 						<div class="col-md-8 single-right-grid-right">
 							<a th:href="'movieInfo?movieId='+${movieRecommend.id}" th:text="${movieRecommend.name}" class="title"></a>

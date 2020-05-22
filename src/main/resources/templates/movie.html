@@ -244,8 +244,8 @@
                         <span style="float: right" th:text="'('+${movieInfo.sum}+'人评分)'"></span>
                         <div id="fb-root"></div>
                         <div>
-                            <div style="float: left">
-                                <img src="images/m1.jpg" height="412" width="287" alt="" />
+                            <div style="float: left;height: 412px;width: 287px">
+                                <img th:src="'/show?fileName=movie'+${movieInfo.id}+'.jpg'" alt="" />
                             </div>
                             <div style="float: right;width: 370px">
                                 <div class="clearfix"></div>
@@ -333,7 +333,7 @@
                 <div class="single-grid-right">
                     <div th:each="movieRecommend:${recommend}" class="single-right-grids">
                         <div class="col-md-4 single-right-grid-left">
-                            <a th:href="'movieInfo?movieId='+${movieRecommend.id}"><img src="images/m1.jpg" alt=""></a>
+                            <a th:href="'movieInfo?movieId='+${movieRecommend.id}"><img th:src="'/show?fileName=movie'+${movieRecommend.id}+'.jpg'" alt=""></a>
                         </div>
                         <div class="col-md-8 single-right-grid-right">
                             <a th:href="'movieInfo?movieId='+${movieRecommend.id}" th:text="${movieRecommend.name}" class="title"></a>

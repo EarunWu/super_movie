@@ -208,7 +208,7 @@
 								     <div class="container">
 							<div class="browse-inner">
 							   <div th:each="list:${movieList}" class="col-md-2 w3l-movie-gride-agile">
-										 <a th:href="@{'movieInfo?movieId='+${list.id}}" ><img src="images/m7.jpg" title="album-name" alt=" " />
+										 <a th:href="@{'movieInfo?movieId='+${list.id}}" ><img th:src="'/show?fileName=movie'+${list.id}+'.jpg'" width="122px" height="179px" title="album-name" alt=" " />
 									</a>
 									  <div class="mid-1">
 										<div class="w3l-movie-text">

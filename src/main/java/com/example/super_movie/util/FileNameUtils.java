@@ -26,7 +26,11 @@ public class FileNameUtils {
      * @return
      */
     public static String getHeadFileName(String fileOriginName,int userId){
-        return "userHead"+userId + FileNameUtils.getSuffix(fileOriginName);
+//        return "userHead"+userId + FileNameUtils.getSuffix(fileOriginName);
+        return "userHead"+userId + ".jpg";
+    }
+    public static String getMovieFileName(String fileOriginName,int movieId){
+        return "movie"+movieId + ".jpg";
     }
 
 }

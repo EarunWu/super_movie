@@ -265,21 +265,21 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-header"><h4><span th:text="${movie.name}+' 的人员管理'"></span> </h4></div>
+                            <div class="card-header"><h4><span th:text="${movie.name}+' 的人员管理'"></span><button style="float: right;" class="btn btn-dark btn-w-md" type="button" th:onclick="uploadImage([[${movie.id}]])">设置图片</button></h4></div>
                             <div class="card-body">
                                 <div class="example-box">
-                                    <h4>导演</h4><button th:each="person:${job1}" th:onclick="delPerson([[${person.id}]],[[${movie.id}]],1)" th:text="${person.name}" class="btn btn-w-xs btn-info"></button>
+                                    <h4>导演</h4><button th:each="person:${job1}" th:onclick="delPerson([[${person.id}]],[[${movie.id}]],1)" th:text="${person.name}" class="btn btn-w-xs btn-info"></button><button th:if="${job1.size()==0}" class="btn btn-w-xs btn-info">空</button>
                                 </div>
                                 <div class="example-box">
-                                    <h4>编剧</h4><button th:each="person:${job2}" th:onclick="delPerson([[${person.id}]],[[${movie.id}]],2)" th:text="${person.name}" class="btn btn-w-xs btn-primary"></button>
+                                    <h4>编剧</h4><button th:each="person:${job2}" th:onclick="delPerson([[${person.id}]],[[${movie.id}]],2)" th:text="${person.name}" class="btn btn-w-xs btn-primary"></button><button th:if="${job2.size()==0}" class="btn btn-w-xs btn-primary">空</button>
                                 </div>
                                 <div class="example-box">
-                                    <h4>演员</h4><button th:each="person:${job3}" th:onclick="delPerson([[${person.id}]],[[${movie.id}]],3)" class="btn btn-w-xs btn-warning"><span th:text="${person.name}"></span></button>
+                                    <h4>演员</h4><button th:each="person:${job3}" th:onclick="delPerson([[${person.id}]],[[${movie.id}]],3)" th:text="${person.name}" class="btn btn-w-xs btn-warning"></button><button th:if="${job3.size()==0}" class="btn btn-w-xs btn-warning">空</button>
                                 </div>
                                     <div class="form-group">
                                         <h4>为电影添加人员</h4>
                                         <label class="sr-only" for="name">根据人名搜索</label>
-                                        <input class="form-control" type="text" id="name" name="name" autocomplete="off">
+                                        <input class="form-control" type="text" id="name" name="name" th:value="${name}" autocomplete="off">
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-default" onclick="search()" type="submit">搜索</button>
@@ -289,6 +289,9 @@
                                 <div th:fragment="personListSpace" id="personListSpace">
                                     <div class="card-header" th:if="${personList.size()==0}">
                                         <h5>无搜索结果</h5><button class="btn btn-w-md btn-round btn-success" onclick="window.location='addPerson'" >创建新人物</button>
+                                    </div>
+                                    <div class="card-header" th:if="${personList.size()!=0}">
+                                        <h5><span id="searchContent" th:text="${name}"></span> 的搜索结果</h5>
                                     </div>
                                     <table style="text-align: center;vertical-align: center" class="table table-striped">
                                         <thead>
@@ -360,7 +363,6 @@
     }
     function add(personId,job) {
         var a=document.getElementById("name").value;
-
         $.ajax({
             url:"addPersonForMovie",
             data:{"personId":personId,"movieId":movie,"job":job},
@@ -416,5 +418,32 @@
         var name=document.getElementById("name").value;
         $('#personListSpace').load("searchPerson?name="+name);
     }
+    function uploadImage(movieId) {
+        var btn = document.createElement("input");
+        btn.type = "file";
+        btn.accept = "image/png, image/jpeg";
+        btn.onchange = event => {
+            var input = event.currentTarget;
+            var file = input.files[0]; //获取文件
+            var formData = new FormData();
+            formData.append("file", file);
+            formData.append("movieId",movieId);
+            $.ajax({
+                url: "upMoviePic",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                async: false,
+                success: function (result) {
+                    alert(result)
+                }
+            })
+            console.log(file)
+        };
+        btn.click();
+        console.log(event);
+    }
+
 </script>
 </html>

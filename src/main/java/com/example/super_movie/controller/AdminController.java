@@ -6,16 +6,21 @@ import com.example.super_movie.service.IAdminService;
 import com.example.super_movie.service.IMovieService;
 import com.example.super_movie.service.IPersonService;
 import com.example.super_movie.service.IUserService;
+import com.example.super_movie.util.FileNameUtils;
+import com.example.super_movie.util.FileUtils;
 import com.example.super_movie.util.RedisUtil;
 import com.example.super_movie.vo.MovieCommentInfo;
 import com.example.super_movie.vo.SelectMovieList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +51,14 @@ public class AdminController{
     IUserService userService;
     @Autowired
     RedisTemplate redisTemplate;
+    @Value("${web.upload-path}")
+    private String path;
+
+
+    @RequestMapping("login")
+    public String toLogin(){
+        return "admin/login";
+    }
 
     @ResponseBody
     @RequestMapping("/addRecommend")
@@ -215,8 +228,9 @@ public class AdminController{
         model.addAttribute("job2",personService.getPersonListByMovieAndJob(movieId,2));
         model.addAttribute("job3",personService.getPersonListByMovieAndJob(movieId,3));
         model.addAttribute("movie",movieService.getBaseMapper().selectById(movieId));
+        model.addAttribute("name",name);
         if (name==null)
-            model.addAttribute("personList",new ArrayList<Person>());
+            model.addAttribute("personList",personService.searchPerson(""));
         else
             model.addAttribute("personList",personService.searchPerson(name));
         return "admin/personForMovie";
@@ -231,6 +245,7 @@ public class AdminController{
     @RequestMapping("searchPerson")
     public String searchPerson(Model model,String name){
         model.addAttribute("personList",personService.searchPerson(name));
+        model.addAttribute("name",name);
         return "admin/personForMovie::personListSpace";
     }
 
@@ -253,5 +268,25 @@ public class AdminController{
         Person person=new Person(id,name,sex,date,engName,info,country);
         return personService.getBaseMapper().updateById(person);
     }
+
+    @ResponseBody
+    @RequestMapping("upMoviePic")
+    public String uploadHead(MultipartFile file,int movieId){
+        // 要上传的目标文件存放路径
+        String localPath = path;
+        String fileName= FileNameUtils.getMovieFileName(file.getOriginalFilename(),movieId);
+        System.out.println(fileName);
+        String msg = "";
+
+        if (FileUtils.upload(file, localPath, fileName)){
+            // 上传成功，给出页面提示
+            msg = "上传成功！";
+        }else {
+            msg = "上传失败！";
+
+        }
+        return msg;
+    }
+
 
 }

@@ -137,7 +137,6 @@
 		</nav>
 	</div>
 </div>
-	<div class="faq">
 <!-- general -->
 	<div class="general_agileits_genres">
 		<h4 class="latest-text w3_latest_text">个人设置</h4>
@@ -161,7 +160,7 @@
 					<div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab" >
 						<div class="w3_agile_featured_movies" align="center">
 							<div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
-								<img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
+								<img th:src="'/show?fileName=userHead'+${userInfo.id}+'.jpg'" width="200" height="200">
 							</div>
 							<div><a href="javascript:void(0)" onclick="uploadImage()"><h3 class="glyphicon glyphicon-camera" aria-hidden="true"></h3></a></div>
 							<div style="display:flex;justify-content:center;align-items:center;">

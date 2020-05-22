@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -113,15 +114,19 @@ public class UserController{
 
     @PostMapping("/loginIn")
     public String toLogin(HttpServletRequest request, Model model, String email, String password){
-        Integer userId=userService.login(email,password);
-        if (userId==null){
+        User user=userService.login(email,password);
+        if (user==null){
             return "redirect:/login";
         }
-        if (userId==0){
-            model.addAttribute("information", "账号状态异常");
+        if (user.getState()==0){
+            model.addAttribute("information", "未激活");
             return "registerResult";
         }
-        request.getSession().setAttribute("userId",userId);
+        if (user.getTime().isAfter(LocalDateTime.now())){
+            model.addAttribute("information", "封号至"+user.getTime());
+            return "registerResult";
+        }
+        request.getSession().setAttribute("userId",user.getId());
         request.getSession().setMaxInactiveInterval(120*60);
         return "redirect:/index";
 
@@ -129,14 +134,14 @@ public class UserController{
     @ResponseBody
     @PostMapping("/loginSpace")
     public String toLogin1(HttpServletRequest request,  String email, String password){
-        Integer userId=userService.login(email,password);
-        if (userId==null){
+        User user=userService.login(email,password);
+        if (user==null){
             return "-1";
         }
-        if (userId==0){
+        if (user.getTime().isAfter(LocalDateTime.now())){
             return "0";
         }
-        request.getSession().setAttribute("userId",userId);
+        request.getSession().setAttribute("userId",user.getId());
         request.getSession().setMaxInactiveInterval(120*60);
         return "1";
 
@@ -150,12 +155,10 @@ public class UserController{
     //激活
     @RequestMapping("/register")
     public String register(Model model,String code){
-        String a="激活成功";
-        String b="激活失败，请检查相关信息";
         if(userService.activeUser(code)){
-            model.addAttribute("information", a);
+            model.addAttribute("information", "激活成功");
         }else{
-            model.addAttribute("information", b);
+            model.addAttribute("information", "激活失败，请检查相关信息");
         }
         return "registerResult";
     }
