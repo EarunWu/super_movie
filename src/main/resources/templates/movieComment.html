@@ -273,7 +273,7 @@
                     <div th:each="reply:${replyList}"  class="wthree-news-top-left">
                         <div th:if="${reply.state==1}" style="width: 100%;">
                             <div style="display: inline-block; width: 60px;height: 60px;border-radius:50%;overflow:hidden;vertical-align: top; ">
-                                <img  src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
+                                <img  th:src="'/show?fileName=userHead'+${reply.userId}+'.jpg'" width="60" height="60" >
                             </div>
                             <div style="display: inline-block;width: 90%;">
                                 <div style="height: 25px">
@@ -336,7 +336,7 @@
                         <h3>影评人</h3>
                         <br>
                         <div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
-                        <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
+                        <img th:src="'/show?fileName=userHead'+${writer.id}+'.jpg'" width="200" height="200">
                         </div>
                         <br>
                         <h3><a th:href="@{'userInfo?id='+${movieComment.userId}}"><span th:text="${writer.username}"></span></a>&nbsp;<a th:onclick="show([[${writer.username}]],[[${writer.id}]]);" style="color: red" class="agile-icon" href="#"><i class="fa fa-envelope-o"></i></a></h3>

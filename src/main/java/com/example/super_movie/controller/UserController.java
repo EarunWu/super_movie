@@ -161,14 +161,12 @@ public class UserController{
     }
     @ResponseBody
     @RequestMapping("uploadHead")
-    public String uploadHead(@RequestParam("fileName") MultipartFile file){
-        int  userId=1;
+    public String uploadHead(@RequestParam("file") MultipartFile file, HttpServletRequest request){
+        Integer userId=(Integer) request.getSession().getAttribute("userId");
         // 要上传的目标文件存放路径
         String localPath = path;
         String fileName= FileNameUtils.getHeadFileName(file.getOriginalFilename(),userId);
         System.out.println(fileName);
-//        String[] imgData={"/show?fileName="+fileName};
-        // 上传成功或者失败的提示
         String msg = "";
 
         if (FileUtils.upload(file, localPath, fileName)){

@@ -77,43 +77,6 @@
 </div>
 <!-- //header -->
 <!-- bootstrap-pop-up -->
-<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				登 录 & 注 册
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			</div>
-			<section>
-				<div class="modal-body">
-					<div class="w3_login_module">
-						<div class="module form-module">
-							<div class="toggle"><i class="fa fa-times fa-pencil"></i>
-								<div class="tooltip">Click Me</div>
-							</div>
-							<div class="form">
-								<h3>登 录</h3>
-								<input id="email" type="text" name="email" placeholder="邮箱" required="">
-								<input id="password" type="password" name="password" placeholder="password" required="">
-								<input onclick="login()" type="submit" value="登录">
-							</div>
-							<div class="form">
-								<h3>注 册</h3>
-								<form action="/create" method="post">
-									<input type="text" name="username" placeholder="昵称" required="">
-									<input type="text" name="email" placeholder="邮箱" required="">
-									<input type="password" name="password" placeholder="密码" required="">
-									<input type="submit" value="注册">
-								</form>
-							</div>
-							<div class="cta"><a href="#">忘记密码</a></div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
-</div>
 <script>
 	$('.toggle').click(function(){
 		// Switches the Icon
@@ -200,7 +163,7 @@
 							<div style="width:200px; height:200px; border-radius:50%; overflow:hidden;">
 								<img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="200" height="200">
 							</div>
-							<div><a href="#"><h3 class="glyphicon glyphicon-camera" aria-hidden="true"></h3></a></div>
+							<div><a href="javascript:void(0)" onclick="uploadImage()"><h3 class="glyphicon glyphicon-camera" aria-hidden="true"></h3></a></div>
 							<div style="display:flex;justify-content:center;align-items:center;">
 								<div class="input-group input-group-lg w3_w3layouts">
 									<span class="input-group-addon">用户昵称</span>
@@ -394,6 +357,31 @@ $(document).ready(function(){
 				alert(error);
 			}
 		});
+	}
+	function uploadImage() {
+		var btn = document.createElement("input");
+		btn.type = "file";
+		btn.accept = "image/png, image/jpeg";
+		btn.onchange = event => {
+			var input = event.currentTarget;
+			var file = input.files[0]; //获取文件
+			var formData = new FormData();
+			formData.append("file", file);
+			$.ajax({
+				url: "/uploadHead",
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				async: false,
+				success: function (result) {
+					console.log(result)
+				}
+			})
+			console.log(file)
+		};
+		btn.click();
+		console.log(event);
 	}
 </script>
 </body>

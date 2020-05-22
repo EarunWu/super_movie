@@ -46,6 +46,7 @@ public class MessageController{
         Integer num=(Integer) redisUtil.hget("number","message"+userId);
         int pageNum=num==null?0:num%7>0?(num/7)+1:num/7;
         model.addAttribute("page",pageNum);
+        model.addAttribute("userId",userId);
         if (page==null||page<1){
             model.addAttribute("messageList",messageService.getMessageList(userId,1,pageNum));
             model.addAttribute("pageNum",1);

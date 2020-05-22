@@ -188,7 +188,7 @@
                         <table>
                             <tr>
                                 <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
-                                    <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
+                                    <img th:src="'/show?fileName=userHead'+${comment.userId}+'.jpg'" width="60" height="60" >
                                 </div></td>
                                 <td rowspan="3">&nbsp;&nbsp;</td>
                                 <td style="font-weight: 600;color: #777777;width: 20%"><a th:href="'userInfo?id='+${comment.userId}"><span th:text="${comment.username}"></span><span style="color: red;font-size: 80%" th:text="'(id='+${comment.userId}+')'"></span> </a></td>
@@ -213,7 +213,7 @@
                         <table>
                             <tr>
                                 <td rowspan="3"><div style="width:60px; height:60px; border-radius:50%; overflow:hidden;">
-                                    <img src="/show?fileName=1c0a3cd803d24afc97da0179d0526eff.jpg" width="60" height="60" >
+                                    <img th:src="'/show?fileName=userHead'+${comment.userId}+'.jpg'" width="60" height="60" >
                                 </div></td>
                                 <td rowspan="3">&nbsp;&nbsp;</td>
                                 <td style="font-weight: 600;color: #777777"><a th:href="'userInfo?id='+${comment.userId}"><span th:text="${comment.username}"></span><span style="color: red;font-size: 80%" th:text="'(id='+${comment.userId}+')'"></span></a></td>
