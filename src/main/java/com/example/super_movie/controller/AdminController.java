@@ -1,6 +1,7 @@
 package com.example.super_movie.controller;
 
 
+import com.example.super_movie.entity.Admin;
 import com.example.super_movie.entity.Person;
 import com.example.super_movie.service.IAdminService;
 import com.example.super_movie.service.IMovieService;
@@ -57,6 +58,19 @@ public class AdminController{
 
     @RequestMapping("login")
     public String toLogin(){
+        return "admin/login";
+    }
+    @RequestMapping("loginIn")
+    public String loginIn(String username,String password){
+        Integer num=(Integer) redisUtil.get("admin"+username);
+        if (num!=null&&num>3){
+            System.out.println("密码错误次数太多");
+            return "admin/login";
+        }
+        Admin admin=adminService.getAdmin(username);
+        if (admin!=null&&admin.getPassword().equals(password))
+            return "admin/index";
+        redisUtil.incr("admin"+username,1);
         return "admin/login";
     }
 

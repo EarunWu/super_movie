@@ -45,6 +45,8 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
     private int reportAble;
 
     public int postMovieComment(Integer userId,String content,String title,Integer movieId,int score){
+        if (redisUtil.sSet("movie_user",movieId+"_"+userId)!=1)
+            return -1;
         MovieComment movieComment=new MovieComment(userId,content,title,movieId,score);
         getBaseMapper().postMovieComment(movieComment);
         int id=movieComment.getId();
@@ -172,7 +174,7 @@ public class MovieCommentServiceImpl extends ServiceImpl<MovieCommentMapper, Mov
         List<MovieCommentInfo> list=redisTemplate.opsForList().range("privateHome"+userId,(page-1)*5,(page-1)*5+4);
         if (list==null||list.size()==0){
             Map<String,Object> map=new HashMap<>();
-            LocalDate localDate=LocalDate.now().minusMonths(1);
+            LocalDate localDate=LocalDate.now().minusMonths(2);
             map.put("list",new ArrayList<>(set));
             map.put("date",localDate.toString());
             list=getBaseMapper().getPrivateHomeList(map);

@@ -458,8 +458,13 @@
                 data:{"content":editor.txt.html(),"title":document.getElementById('title').value,"movieId":movieId,"score":document.getElementById('score').value},    //参数值
                 type:"POST",   //请求方式
                 success:function(req){
-                    alert("成功")
-                    location.href = "movieComment?id="+req;
+                    if (req==-1){
+                        alert("已发布过")
+                    }else {
+                        alert("成功")
+                        location.href = "movieComment?id="+req;
+                    }
+
                     //请求成功时处理
                 },
                 error:function(){

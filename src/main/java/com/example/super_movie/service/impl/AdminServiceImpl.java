@@ -83,6 +83,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return list;
     }
 
-
+    public Admin getAdmin(String username){
+        return getBaseMapper().getAdminByUsername(username);
+    }
 
 }

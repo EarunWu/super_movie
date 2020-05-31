@@ -17,5 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AdminMapper extends BaseMapper<Admin> {
     SelectMovieList getASelectMovie(int movieId);
     int deleteReply(int id);
-
+    Admin getAdminByUsername(String username);
 }

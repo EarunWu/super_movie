@@ -11,4 +11,7 @@
     state=0
   where id = #{id}
     </update>
+    <select id="getAdminByUsername" resultType="com.example.super_movie.entity.Admin" parameterType="java.lang.String">
+    SELECT * from Admin where username=#{username}
+    </select>
 </mapper>

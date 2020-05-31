@@ -25,5 +25,5 @@ public interface IAdminService extends IService<Admin> {
     boolean removeReply(int id, int score);
     List<ZSetOperations.TypedTuple<MovieCommentInfo>> getCommentReportList(int page);
     List<ZSetOperations.TypedTuple<ReplyOfComment>> getReplyReportList(int page);
-
+    Admin getAdmin(String username);
 }
